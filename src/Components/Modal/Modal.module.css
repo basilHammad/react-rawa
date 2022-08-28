@@ -1,0 +1,29 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #333333b8;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  height: 90vh;
+  background-color: #fff;
+  border-radius: calc(var(--base) * 4);
+  position: relative;
+  padding: calc(var(--base) * 5);
+  overflow-y: auto;
+}
+
+.modal .close {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  cursor: pointer;
+  user-select: none;
+}

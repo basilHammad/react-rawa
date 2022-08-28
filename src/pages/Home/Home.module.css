@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--base) * 4);
+  margin-top: calc(var(--base) * 20);
+}
+
+.mainLink {
+  background-color: var(--yellow);
+  flex-grow: 1;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: calc(var(--base) * 4);
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .mainLink {
+    height: 20vh;
+  }
+}

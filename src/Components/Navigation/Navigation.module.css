@@ -1,0 +1,7 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--base) * 3);
+  margin-top: calc(var(--base) * 5);
+  margin-bottom: calc(var(--base) * 4);
+}

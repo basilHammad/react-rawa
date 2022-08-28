@@ -1,0 +1,84 @@
+.label {
+  margin-bottom: calc(var(--base) * 4);
+  margin-top: calc(var(--base) * 4);
+  display: block;
+}
+
+.wrapper {
+  width: 100%;
+  position: relative;
+  height: 40px;
+}
+
+.wrapper > input {
+  height: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  box-shadow: 0px 0px 6px -1px var(--gray);
+  border: none;
+  border-radius: calc(var(--base) * 2);
+  padding: calc(var(--base) * 2) calc(var(--base) * 4);
+}
+
+.wrapper > input:focus {
+  box-shadow: 0px 0px 6px -1px var(--blue);
+  border: none;
+  outline: none;
+}
+
+.wrapper > input.slected {
+  box-shadow: 0px 0px 6px -1px var(--green);
+}
+
+.icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.optionsWrapper {
+  background-color: #fff;
+  position: absolute;
+  top: calc(100% + calc(var(--base) * 3));
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0px 0px 6px -1px var(--gray);
+  border-radius: calc(var(--base) * 2);
+  z-index: 50;
+}
+
+.optionsWrapper::-webkit-scrollbar-track {
+  border: 1px solid rgba(100, 97, 97, 0.75);
+  padding: 2px 0;
+  background-color: rgba(100, 97, 97, 0.75);
+  border-radius: calc(var(--base) * 2);
+}
+
+.optionsWrapper::-webkit-scrollbar {
+  width: 10px;
+}
+
+.optionsWrapper::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #737272;
+  border: 1px solid #000;
+  border-radius: calc(var(--base) * 2);
+}
+
+.optionsWrapper > span {
+  display: block;
+  padding: calc(var(--base) * 2) calc(var(--base) * 4);
+}
+
+.optionsWrapper > span:hover {
+  background-color: var(--blue);
+}

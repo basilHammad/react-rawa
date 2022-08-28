@@ -1,0 +1,59 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.title {
+  margin: calc(var(--base) * 8) 0 calc(var(--base));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.title > strong {
+  text-align: center;
+  color: var(--yellow);
+  background-color: #fff;
+  z-index: 10;
+  padding: 0 calc(var(--base) * 3);
+}
+
+.title::before {
+  content: "";
+  height: 1px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  background-color: #a399b5;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btnWrapper > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--base);
+  background-color: var(--green);
+  color: #fff;
+  padding: calc(var(--base) * 1) calc(var(--base) * 3);
+  border-radius: calc(var(--base) * 2);
+}
+
+.submit {
+  width: 100%;
+  height: 44px;
+  background-color: var(--blue);
+  border-radius: calc(var(--base) * 2);
+  color: #fff;
+  margin-top: calc(var(--base) * 4);
+  position: absolute;
+  bottom: 20px;
+}
