@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Blocks } from "react-loader-spinner";
+
 import Card from "../../../Components/Card/Card";
 import Layout from "../../../Components/Layout/Layout";
+import MainBtn from "../../../Components/MainBtn/MainBtn";
 import Modal from "../../../Components/Modal/Modal";
 import Navigation from "../../../Components/Navigation/Navigation";
 import SummaryPopup from "../../../Components/SummaryPopup/SummaryPopup";
+import {
+  getProviderItems,
+  submitDirectOrder,
+} from "../../../store/actions/posActions";
 
 import stl from "./Sales.module.css";
 
@@ -12,31 +20,23 @@ const links = [
   { text: "طلبات", path: "/pos/orders" },
 ];
 
-const cards = [
-  { id: 1, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 2, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 3, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 4, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 5, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 6, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 7, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 8, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 9, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 10, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-];
-
 const Sales = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const products = useSelector((state) => state.pos.items);
+  const dispatch = useDispatch();
 
   const closeModal = (e) => {
     if (e.target !== e.currentTarget) return;
     setShowModal(false);
   };
 
-  const handleItemSelect = (card, flag) => {
-    const foundItem = selectedItems.find((item) => item.id === card.id);
-    const foundItemPrice = cards.find((item) => item.id === card.id).price;
+  const handleItemSelect = (product, flag) => {
+    const foundItem = selectedItems.find((item) => item.id === product.id);
+    const foundItemPrice = products.find(
+      (item) => item.id === product.id
+    ).price;
 
     if (foundItem) {
       const foundItemIndex = selectedItems.indexOf(foundItem);
@@ -62,33 +62,57 @@ const Sales = () => {
 
     if (flag === "-" && !foundItem) return;
 
-    setSelectedItems((pre) => [...pre, { ...card, qty: 1 }]);
+    setSelectedItems((pre) => [...pre, { ...product, qty: 1 }]);
   };
 
   const onModalSubmit = () => {
-    setShowModal(false);
-    setSelectedItems([]);
+    // setShowModal(false);
+    // setSelectedItems([]);
+    if (!selectedItems.length) return;
+
+    dispatch(submitDirectOrder(selectedItems));
   };
+
+  useEffect(() => {
+    dispatch(getProviderItems());
+  }, []);
+
+  console.log(products);
 
   return (
     <Layout>
       <Navigation links={links} />
 
       <div className={stl.cardsWrapper}>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            item={card}
-            handleItemSelect={handleItemSelect}
-            selectedItem={selectedItems.find((item) => card.id === item.id)}
+        {products.length ? (
+          products.map((product) => (
+            <Card
+              key={product.id}
+              item={product}
+              handleItemSelect={handleItemSelect}
+              selectedItem={selectedItems.find(
+                (item) => product.id === item.id
+              )}
+            />
+          ))
+        ) : (
+          <Blocks
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="blocks-loading"
+            wrapperClass={stl.loaderWrapper}
           />
-        ))}
-        <button className={stl.submit} onClick={() => setShowModal(true)}>
+        )}
+        <MainBtn
+          disabled={selectedItems.length ? false : true}
+          onClick={() => setShowModal(true)}
+        >
           استمرار
-        </button>
+        </MainBtn>
       </div>
       <Modal show={showModal} close={closeModal}>
-        <SummaryPopup items={selectedItems} onSubmit={onModalSubmit} />
+        <SummaryPopup direct items={selectedItems} onSubmit={onModalSubmit} />
       </Modal>
     </Layout>
   );

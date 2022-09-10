@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap");
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Cairo", sans-serif;
 }
 
 body {
@@ -19,6 +22,7 @@ body {
   --gray: #a399b5;
   --text-gray: #707070;
   --text-black: #002251;
+  --text-red: #dc3545;
 
   --base: 4px;
 }
@@ -42,4 +46,5 @@ button {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  font-weight: bold;
 }

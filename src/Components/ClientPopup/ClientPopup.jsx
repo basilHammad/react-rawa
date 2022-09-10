@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 
 import InputGroup from "../InputGroup/InputGroup";
+import MainBtn from "../MainBtn/MainBtn";
 import SearchInput from "../SearchInput/SearchInput";
 import stl from "./ClientPopup.module.css";
 
@@ -248,6 +249,8 @@ const ClientPopup = ({ onSubmit }) => {
     setOptions(filteredNames);
     setName(value);
     setSelectedName("");
+
+    if (!value) setOptions(names);
   };
 
   const handleNameSelect = (name) => {
@@ -304,6 +307,7 @@ const ClientPopup = ({ onSubmit }) => {
 
       <InputGroup
         type="text"
+        id="name"
         label="الاسم"
         placeholder="ادخل الاسم"
         name="name"
@@ -314,6 +318,7 @@ const ClientPopup = ({ onSubmit }) => {
 
       <InputGroup
         type="tel"
+        id="mobile"
         label="رقم الجوال"
         placeholder="ادخل رقم الجوال"
         name="mobile"
@@ -324,6 +329,7 @@ const ClientPopup = ({ onSubmit }) => {
 
       <InputGroup
         type="text"
+        id="location"
         label="الموقع"
         placeholder="اختر الموقع"
         name="location"

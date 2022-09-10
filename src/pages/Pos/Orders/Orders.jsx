@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Card from "../../../Components/Card/Card";
 import ClientPopup from "../../../Components/ClientPopup/ClientPopup";
 import InputGroup from "../../../Components/InputGroup/InputGroup";
 import Layout from "../../../Components/Layout/Layout";
+import MainBtn from "../../../Components/MainBtn/MainBtn";
 import Modal from "../../../Components/Modal/Modal";
 import Navigation from "../../../Components/Navigation/Navigation";
 import SearchInput from "../../../Components/SearchInput/SearchInput";
 import SummaryPopup from "../../../Components/SummaryPopup/SummaryPopup";
+import { getProviderItems } from "../../../store/actions/posActions";
 
 import stl from "./Orders.module.css";
 
@@ -33,6 +36,9 @@ const Orders = () => {
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
+  const products = useSelector((state) => state.pos.items);
+  const dispatch = useDispatch();
+
   const closeSummaryModal = (e) => {
     if (e.target !== e.currentTarget) return;
     setShowSummaryModal(false);
@@ -43,9 +49,11 @@ const Orders = () => {
     setShowClientModal(false);
   };
 
-  const handleItemSelect = (card, flag) => {
-    const foundItem = selectedItems.find((item) => item.id === card.id);
-    const foundItemPrice = cards.find((item) => item.id === card.id).price;
+  const handleItemSelect = (product, flag) => {
+    const foundItem = selectedItems.find((item) => item.id === product.id);
+    const foundItemPrice = products.find(
+      (item) => item.id === product.id
+    ).price;
 
     if (foundItem) {
       const foundItemIndex = selectedItems.indexOf(foundItem);
@@ -71,7 +79,7 @@ const Orders = () => {
 
     if (flag === "-" && !foundItem) return;
 
-    setSelectedItems((pre) => [...pre, { ...card, qty: 1 }]);
+    setSelectedItems((pre) => [...pre, { ...product, qty: 1 }]);
   };
 
   const onClientModalSubmit = () => {
@@ -84,22 +92,28 @@ const Orders = () => {
     setSelectedItems([]);
   };
 
+  useEffect(() => {
+    dispatch(getProviderItems());
+  }, []);
+
   return (
     <Layout>
       <Navigation links={links} />
 
       <div className={stl.cardsWrapper}>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            item={card}
-            handleItemSelect={handleItemSelect}
-            selectedItem={selectedItems.find((item) => card.id === item.id)}
-          />
-        ))}
-        <button className={stl.submit} onClick={() => setShowClientModal(true)}>
-          استمرار
-        </button>
+        {products.length &&
+          products.map((product) => (
+            <Card
+              key={product.id}
+              item={product}
+              handleItemSelect={handleItemSelect}
+              selectedItem={selectedItems.find(
+                (item) => product.id === item.id
+              )}
+            />
+          ))}
+
+        <MainBtn onClick={() => setShowClientModal(true)}>استمرار</MainBtn>
       </div>
       <Modal show={showClientModal} close={closeClientModal}>
         <ClientPopup onSubmit={onClientModalSubmit} />

@@ -1,0 +1,47 @@
+.calendarGroup {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--base) * 3) 0;
+  gap: calc(var(--base) * 4);
+}
+
+.calendarWrapper {
+  width: 100%;
+  position: relative;
+  height: 40px;
+  box-shadow: 0px 0px 6px -1px var(--gray);
+  border-radius: calc(var(--base) * 2);
+  padding: calc(var(--base) * 2) calc(var(--base) * 4);
+  background-color: #fff;
+}
+
+.placeholder {
+  position: absolute;
+  right: calc(var(--base) * 4);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.icon {
+  position: absolute;
+  left: calc(var(--base) * 4);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.calendar {
+  position: absolute;
+  top: calc(100% + calc(var(--base)) * 2);
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 50;
+  border-radius: calc(var(--base) * 2);
+  border: none;
+  box-shadow: 0px 0px 6px -1px var(--gray);
+  display: none;
+}
+
+.calendar.show {
+  display: block;
+}

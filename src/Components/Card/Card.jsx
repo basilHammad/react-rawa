@@ -7,7 +7,7 @@ const Card = ({ item, handleItemSelect, selectedItem }) => {
   return (
     <div className={stl.card}>
       <div className={stl.imgWrapper}>
-        <img src={item.src} />
+        <img src={item.img} />
       </div>
 
       <span>{item.name}</span>

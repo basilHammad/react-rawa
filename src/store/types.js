@@ -1,0 +1,4 @@
+export const SET_IS_LOGGEDIN = "SET_IS_LOGGEDIN";
+export const SET_IS_ADMIN = "SET_IS_ADMIN";
+export const SET_IS_LOADING = "SET_IS_LOADING";
+export const SET_PROVIDER_ITEMS = "SET_PROVIDER_ITEMS";

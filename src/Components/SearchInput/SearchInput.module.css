@@ -2,6 +2,7 @@
   margin-bottom: calc(var(--base) * 4);
   margin-top: calc(var(--base) * 4);
   display: block;
+  font-weight: 600;
 }
 
 .wrapper {
