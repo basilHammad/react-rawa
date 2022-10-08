@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.wrapper > * {
+  flex: 1;
+}
+
+.wrapper > button {
+  background-color: var(--blue);
+  color: #fff;
+  align-self: flex-end;
+  margin-bottom: 12px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* flex: 0.5; */
+  min-width: 70px;
+  flex-shrink: 0;
+
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 1024px) {
+  .wrapper > * {
+    flex: 100%;
+  }
+}

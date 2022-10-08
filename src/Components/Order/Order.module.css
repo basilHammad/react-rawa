@@ -1,0 +1,55 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  margin-bottom: calc(var(--base) * 5);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0px 0px 2px var(--gray);
+}
+
+.details {
+  margin-right: 12px;
+  margin-left: auto;
+}
+
+.products {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 12px;
+  cursor: pointer;
+  background-color: #ffeac7;
+}
+
+.iconWrapper > svg {
+  color: var(--yellow);
+}
+
+.blue {
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.checked {
+  box-shadow: 0px 0px 2px var(--green);
+}
+
+/* .wrapper > input[type="checkbox"] {
+  visibility: hidden;
+} */
+
+label.wrapper {
+  cursor: pointer;
+}
+
+label.wrapper > * {
+  user-select: none;
+}

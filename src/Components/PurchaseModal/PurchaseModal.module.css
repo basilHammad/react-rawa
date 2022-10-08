@@ -1,0 +1,14 @@
+.purchaseModal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.purchaseModal > div {
+  overflow-y: auto;
+  max-height: 89%;
+  overflow-x: inherit;
+  padding: 0 calc(var(--base) * 3);
+}

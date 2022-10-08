@@ -9,20 +9,23 @@ import stl from "./Home.module.css";
 
 const Home = () => {
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+
     dispatch(setIsAdmin(false));
-  }, []);
+  }, [isLoggedin, navigate, dispatch]);
+
   return (
     <Layout>
       <div className={stl.wrapper}>
         <Link className={stl.mainLink} to="/pos/direct">
           المبيعات
         </Link>
-        <Link className={stl.mainLink} to="/manage/revenues">
+        <Link className={stl.mainLink} to="/manage">
           ادارة المحل
         </Link>
       </div>

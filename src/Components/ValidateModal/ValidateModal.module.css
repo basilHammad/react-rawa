@@ -1,0 +1,32 @@
+.validateModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.validateModal > div {
+  margin-top: auto;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.validateModal > p {
+  margin-top: auto;
+  font-size: calc(var(--base) * 4);
+  font-weight: bold;
+}
+
+.validateModal > div > button {
+  background-color: var(--text-red);
+  width: 100px;
+  height: 30px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.validateModal > div > button.cancel {
+  background-color: var(--blue);
+}

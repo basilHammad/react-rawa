@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  padding-top: calc(var(--base) * 10);
+  gap: calc(var(--base) * 6);
+  flex-wrap: wrap;
+}
+
+.link {
+  flex: 0 0 48%;
+}
+
+@media screen and (max-width: 1024px) {
+  .link {
+    flex-grow: 1;
+  }
+}

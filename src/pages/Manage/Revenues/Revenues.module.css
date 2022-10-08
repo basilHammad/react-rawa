@@ -1,5 +1,4 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: calc(var(--base) * 10);
+.noResults {
+  text-align: center;
+  margin-top: calc(var(--base) * 20);
 }

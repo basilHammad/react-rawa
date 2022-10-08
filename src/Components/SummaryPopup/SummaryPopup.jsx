@@ -1,26 +1,49 @@
-import { useCallback } from "react";
+import { useSelector } from "react-redux";
+import MainBtn from "../MainBtn/MainBtn";
+import SelectGroup from "../SelectGroup/SelectGroup";
+import Header from "./Header/Header";
 import stl from "./SummaryPopup.module.css";
 
-const SummaryPopup = ({ items, onSubmit, direct }) => {
+const PAYMENT_TYPES = [
+  { text: "كاش", value: 1, id: 1 },
+  { text: "كوبون", value: 2, id: 2 },
+  { text: "ذمم", value: 3, id: 3 },
+];
+
+const SummaryPopup = ({
+  items,
+  onSubmit,
+  direct,
+  clientName,
+  paymentType,
+  paymentTypeError,
+  onSelectChange,
+  billNum,
+  note,
+}) => {
   const totalPrice = items
     .map((item) => item.price)
-    .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+    .reduce((previousValue, currentValue) => +previousValue + +currentValue, 0);
+
+  const postLoading = useSelector((state) => state.common.isPostLoading);
 
   return (
     <div className={stl.summaryPopup}>
-      {!direct && (
-        <>
+      {/* <>
+        <div>
+          تاريخ الاستلام: <strong>20/20/2000</strong>
+        </div>
+        {clientName ? (
           <div>
-            رقم الطلب: <strong>1000</strong>
+            العميل: <strong>{clientName}</strong>
           </div>
-          <div>
-            تاريخ الاستلام: <strong>20/20/2000</strong>
-          </div>
-          <div>
-            العميل: <strong>محمد</strong>
-          </div>
-        </>
-      )}
+        ) : null}
+        <div>
+          رقم الفاتورة: <strong>{billNum}</strong>
+        </div>
+      </> */}
+
+      <Header billNum={billNum} date={new Date()} clientName={clientName} />
 
       <div className={stl.tabel}>
         <div className={`${stl.row} ${stl.header}`}>
@@ -38,13 +61,42 @@ const SummaryPopup = ({ items, onSubmit, direct }) => {
           </div>
         ))}
       </div>
+
       <div className={stl.submitSection}>
-        <div>
-          الصافي : <strong>{totalPrice}</strong>
+        {note ? (
+          <div className={stl.note}>
+            <span>ملاحظات :</span>
+            <p> {note}</p>
+          </div>
+        ) : (
+          ""
+        )}
+        <div className={stl.control}>
+          <div>
+            الصافي : <strong>{totalPrice}</strong>
+          </div>
+
+          {!direct && (
+            <SelectGroup
+              name="payment-type"
+              id="payment-type"
+              firstOption="اختر طريقة الدفع"
+              options={PAYMENT_TYPES}
+              value={paymentType}
+              onChange={(e) => onSelectChange(e.target.value)}
+              error={paymentTypeError}
+              className={stl.paymentType}
+            />
+          )}
         </div>
-        <button className={stl.submit} onClick={onSubmit}>
+
+        <MainBtn
+          className={stl.submit}
+          onClick={onSubmit}
+          loading={postLoading}
+        >
           اتمام
-        </button>
+        </MainBtn>
       </div>
     </div>
   );

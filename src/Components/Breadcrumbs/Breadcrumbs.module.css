@@ -1,0 +1,13 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--base) * 3);
+  padding: calc(var(--base) * 8) 0 calc(var(--base) * 2);
+}
+
+.wrapper > span > a {
+  color: var(--blue);
+}
+.wrapper > span:last-child > a {
+  color: var(--text-gray);
+}

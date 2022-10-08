@@ -1,0 +1,15 @@
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--base) * 10);
+}
+
+.byDate {
+  display: flex;
+  gap: calc(var(--base) * 3);
+}
+
+.byValue {
+  min-width: 40%;
+}

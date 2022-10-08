@@ -7,10 +7,13 @@ const Card = ({ item, handleItemSelect, selectedItem }) => {
   return (
     <div className={stl.card}>
       <div className={stl.imgWrapper}>
-        <img src={item.img} />
+        <img src={item.img} alt="" />
       </div>
 
-      <span>{item.name}</span>
+      <div className={stl.detailsWrapper}>
+        <span>{item.name}</span>
+        <span className={stl.price}>{item.price} دينار </span>
+      </div>
 
       <div className={stl.btnsWrapper}>
         <button

@@ -13,6 +13,9 @@ const SearchInput = ({
   selectedOption,
   removeSelection,
   label,
+  disabled,
+  placeholder,
+  error,
 }) => {
   const [showOptions, setShowOptions] = useState(false);
 
@@ -46,10 +49,13 @@ const SearchInput = ({
           name={name}
           value={value}
           onChange={onChange}
-          placeholder={"اسم العميل"}
+          placeholder={placeholder ? placeholder : "اسم العميل"}
           autoComplete="off"
           onFocus={() => setShowOptions(true)}
-          className={selectedOption ? stl.slected : ""}
+          className={`${selectedOption ? stl.slected : ""}${
+            error ? stl.error : ""
+          }`}
+          disabled={disabled}
         />
         {selectedOption ? (
           <MdRemoveCircleOutline
@@ -66,20 +72,21 @@ const SearchInput = ({
 
         {showOptions && (
           <div className={stl.optionsWrapper}>
-            {options.map((name) => (
+            {options.map((option) => (
               <span
-                key={name}
+                key={option.id}
                 onClick={() => {
-                  handleSelect(name);
+                  handleSelect(option);
                   setShowOptions(false);
                 }}
               >
-                {name}
+                {option.name}
               </span>
             ))}
           </div>
         )}
       </div>
+      {error && <span className={stl.error}>{error}</span>}
     </>
   );
 };

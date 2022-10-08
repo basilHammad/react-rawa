@@ -1,0 +1,8 @@
+.inputWrapper {
+  margin-bottom: 12px;
+}
+
+.error {
+  font-size: 14px;
+  color: var(--text-red);
+}

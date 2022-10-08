@@ -1,0 +1,26 @@
+.dateWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+  padding: 12px 0 30px;
+}
+
+.dateWrapper > * {
+  flex: auto;
+  padding: 0;
+}
+
+.dateWrapper > strong {
+  width: 100%;
+  font-size: 12px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.calender {
+  gap: 4px;
+}
+
+.calender > label {
+  font-size: 12px;
+}

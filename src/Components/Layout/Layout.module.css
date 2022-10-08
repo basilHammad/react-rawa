@@ -1,6 +1,12 @@
 .haeder {
   height: 50px;
   box-shadow: 0px 4px 32px #b8b8b83d;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: #fff;
 }
 
 .wrapper {

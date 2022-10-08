@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.wrapper > * {
+  flex: 48%;
+  flex-grow: 0;
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  .wrapper > * {
+    flex: auto;
+  }
+}

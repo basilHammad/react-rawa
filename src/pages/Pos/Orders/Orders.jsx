@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import Card from "../../../Components/Card/Card";
 import ClientPopup from "../../../Components/ClientPopup/ClientPopup";
-import InputGroup from "../../../Components/InputGroup/InputGroup";
 import Layout from "../../../Components/Layout/Layout";
+import Loader from "../../../Components/Loader/Loader";
 import MainBtn from "../../../Components/MainBtn/MainBtn";
 import Modal from "../../../Components/Modal/Modal";
 import Navigation from "../../../Components/Navigation/Navigation";
-import SearchInput from "../../../Components/SearchInput/SearchInput";
 import SummaryPopup from "../../../Components/SummaryPopup/SummaryPopup";
-import { getProviderItems } from "../../../store/actions/posActions";
+import { getClients, getCodes } from "../../../store/actions/commonActions";
+import {
+  createOrder,
+  getProviderItems,
+} from "../../../store/actions/posActions";
 
 import stl from "./Orders.module.css";
 
@@ -18,26 +23,38 @@ const links = [
   { text: "طلبات", path: "/pos/orders" },
 ];
 
-const cards = [
-  { id: 1, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 2, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 3, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 4, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 5, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 6, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 7, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 8, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 9, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-  { id: 10, src: "/assets/images/bottle.jpeg", name: "قارورة", price: 0.5 },
-];
+const deleveryNote = (days, from, to) => {
+  if (!days.length && !from && !to) return ``;
+  if (!days.length) return `الاستلام من الساعة ${from} الى الساعة ${to}`;
+  if (!days.length && !from) return `الاستلام قبل الساعة ${to}`;
+  if (!days.length && !to) return `الاستلام بعد الساعة ${to}`;
+  if (!from && !to) return `ايام الاستلام :${days.join(" - ")}`;
+
+  return `ايام الاستلام :${days.join(
+    " - "
+  )} من الساعة ${from} الى الساعة : ${to}`;
+};
 
 const Orders = () => {
+  const codes = useSelector((state) => state.common.codes);
+
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedDay, setSelectedDay] = useState([]);
+  const [fromHour, setFromHour] = useState("");
+  const [toHour, setToHour] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [clientId, setClientId] = useState("");
+  const [paymentType, setPaymentType] = useState("");
+  const [paymentTypeError, setPaymentTypeError] = useState("");
+  const [billNum, setBillNum] = useState("");
 
   const products = useSelector((state) => state.pos.items);
+  const loading = useSelector((state) => state.common.isLoading);
+  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const closeSummaryModal = (e) => {
     if (e.target !== e.currentTarget) return;
@@ -82,26 +99,55 @@ const Orders = () => {
     setSelectedItems((pre) => [...pre, { ...product, qty: 1 }]);
   };
 
-  const onClientModalSubmit = () => {
-    setShowClientModal(false);
-    setShowSummaryModal(true);
+  const onSummaryModalSubmit = () => {
+    if (!selectedItems.length) return;
+
+    if (!paymentType) {
+      setPaymentTypeError("يجب اختيار طرقة الدفع");
+      return;
+    }
+
+    dispatch(
+      createOrder(
+        selectedItems,
+        2,
+        () => {
+          setShowSummaryModal(false);
+          setSelectedItems([]);
+          setPaymentType("");
+          dispatch(getCodes());
+        },
+        deleveryNote(selectedDay, fromHour, toHour),
+        clientId,
+        paymentType
+      )
+    );
   };
 
-  const onSummaryModalSubmit = () => {
-    setShowSummaryModal(false);
-    setSelectedItems([]);
+  const handlePaymentTypeChange = (value) => {
+    setPaymentType(value);
+    setPaymentTypeError("");
   };
 
   useEffect(() => {
-    dispatch(getProviderItems());
-  }, []);
+    if (!isLoggedin) navigate("/login");
+
+    if (!products.length) dispatch(getProviderItems());
+    if (!Object.keys(codes).length) dispatch(getCodes());
+    dispatch(getClients(1, null, null, 10000));
+  }, [isLoggedin, dispatch, navigate]);
+
+  useEffect(() => {
+    if (!Object.keys(codes).length) return;
+    setBillNum(codes.tabular_order);
+  }, [codes]);
 
   return (
     <Layout>
       <Navigation links={links} />
 
       <div className={stl.cardsWrapper}>
-        {products.length &&
+        {!loading ? (
           products.map((product) => (
             <Card
               key={product.id}
@@ -111,15 +157,46 @@ const Orders = () => {
                 (item) => product.id === item.id
               )}
             />
-          ))}
+          ))
+        ) : (
+          <Loader />
+        )}
 
-        <MainBtn onClick={() => setShowClientModal(true)}>استمرار</MainBtn>
+        <MainBtn
+          disabled={selectedItems.length ? false : true}
+          onClick={() => setShowClientModal(true)}
+        >
+          استمرار
+        </MainBtn>
       </div>
       <Modal show={showClientModal} close={closeClientModal}>
-        <ClientPopup onSubmit={onClientModalSubmit} />
+        <ClientPopup
+          closeClientModal={() => setShowClientModal(false)}
+          showSummaryModal={() => setShowSummaryModal(true)}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+          fromHour={fromHour}
+          setFromHour={setFromHour}
+          toHour={toHour}
+          setToHour={setToHour}
+          clientName={clientName}
+          setClientName={setClientName}
+          clientId={clientId}
+          setClientId={setClientId}
+        />
       </Modal>
       <Modal show={showSummaryModal} close={closeSummaryModal}>
-        <SummaryPopup items={selectedItems} onSubmit={onSummaryModalSubmit} />
+        <SummaryPopup
+          items={selectedItems}
+          clientName={clientName}
+          clientId={clientId}
+          onSubmit={onSummaryModalSubmit}
+          paymentType={paymentType}
+          paymentTypeError={paymentTypeError}
+          onSelectChange={handlePaymentTypeChange}
+          billNum={billNum}
+          note={deleveryNote(selectedDay, fromHour, toHour)}
+        />
       </Modal>
     </Layout>
   );

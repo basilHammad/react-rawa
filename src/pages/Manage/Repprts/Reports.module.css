@@ -1,0 +1,20 @@
+.selectWrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.selectWrapper > * {
+  flex: auto;
+}
+
+.select {
+  gap: 4px;
+}
+
+.select > label {
+  font-size: 12px;
+}
+
+.header {
+  padding: calc(var(--base) * 8) 0 calc(var(--base) * 2);
+}

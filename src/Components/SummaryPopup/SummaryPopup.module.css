@@ -46,3 +46,20 @@
   color: #fff;
   margin-top: calc(var(--base) * 4);
 }
+
+.control {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentType {
+  min-width: 40%;
+}
+
+.note {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+}

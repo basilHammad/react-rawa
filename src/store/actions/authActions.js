@@ -1,7 +1,7 @@
 import * as types from "../types";
 
 import fetcher from "../../config/axios";
-import { setIsLoading } from "./commonActions";
+import { setIsLoading, setIsPostLoading } from "./commonActions";
 
 export const setIsloggedin = (val) => ({
   type: types.SET_IS_LOGGEDIN,
@@ -37,6 +37,13 @@ export const login =
         }
 
         localStorage.setItem("userToken", res.data.data.access_token);
+        localStorage.setItem("user", JSON.stringify(res.data.data));
+
+        dispatch({
+          type: types.SET_USER,
+          payload: res.data.data,
+        });
+
         dispatch(setIsloggedin(true));
         cb();
       }
@@ -47,11 +54,42 @@ export const login =
         if (error.response.status === 401) {
           setErrors((prev) => ({
             ...prev,
-            generalError: error.response.data.message,
+            generalError: "اسم المستخدم او كلمة السر غير صحيحين",
           }));
         }
       }
       dispatch(setIsLoading(false));
-      console.log("error", error);
+    }
+  };
+
+export const logout = (cb) => async (dispatch) => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("userToken");
+  dispatch(setIsloggedin(false));
+  cb();
+};
+
+export const editPassword =
+  (oldPass, newPass, confirmPass, setErrors, cb) => async (dispatch) => {
+    try {
+      dispatch(setIsPostLoading(true));
+      const data = JSON.stringify({
+        current_password: oldPass,
+        new_password: newPass,
+        new_confirm_password: confirmPass,
+      });
+      const res = await fetcher.post("/change-password", data);
+
+      if (res.status === 200) cb();
+
+      dispatch(setIsPostLoading(false));
+    } catch (error) {
+      if (error.response.data.errors.current_password[0]) {
+        setErrors((pre) => ({
+          ...pre,
+          oldPassword: error.response.data.errors.current_password[0],
+        }));
+      }
+      dispatch(setIsPostLoading(false));
     }
   };

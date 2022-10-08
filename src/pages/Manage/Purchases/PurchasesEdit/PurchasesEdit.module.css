@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--base) * 10) 0;
+}
+
+.add {
+  background-color: var(--yellow);
+  color: #fff;
+  width: 140px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  margin: calc(var(--base) * 6) 0;
+  margin-right: auto;
+  gap: var(--base);
+}
+
+.tableWrapper {
+  margin-bottom: 50px;
+}

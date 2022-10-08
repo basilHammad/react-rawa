@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoWrapper {
+  width: 90%;
+  margin: 50px auto 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid;
+  padding-bottom: 20px;
+}
+
+.logoWrapper > img {
+  width: 100px;
+}
+
+.logoWrapper > strong {
+  font-size: 22px;
+}
+
+.link {
+  height: 40px;
+  background-color: var(--blue);
+  width: 140px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  margin-top: 20px;
+}

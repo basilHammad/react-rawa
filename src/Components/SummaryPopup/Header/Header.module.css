@@ -1,0 +1,38 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid;
+  padding-bottom: 10px;
+}
+
+.header strong,
+.header div {
+  font-size: 12px;
+}
+
+.header .details {
+  display: flex;
+  gap: 12px;
+}
+
+.branding {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: calc(var(--base) * 2);
+  margin-left: 40px;
+  align-self: flex-start;
+}
+
+.branding > img {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 1024px) {
+  .header .details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

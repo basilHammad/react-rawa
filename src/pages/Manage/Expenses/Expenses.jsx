@@ -1,139 +1,94 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import CalendarGroup from "../../../Components/Calendar/CalendarGroup";
-import InputGroup from "../../../Components/InputGroup/InputGroup";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Layout from "../../../Components/Layout/Layout";
-import MainBtn from "../../../Components/MainBtn/MainBtn";
-import Navigation from "../../../Components/Navigation/Navigation";
-import SelectGroup from "../../../Components/SelectGroup/SelectGroup";
-import TextareaGroup from "../../../Components/TextareaGroup/TextareaGroup";
+import Loader from "../../../Components/Loader/Loader";
+import Pagination from "../../../Components/Pagination/Pagination";
+import {
+  deleteExpense,
+  getExpenses,
+} from "../../../store/actions/expensesActions";
 import Login from "../../Login/Login";
-
+import Filters from "../Components/Filters/Filters";
+import Header from "../Components/Header/Header";
+import Table from "../Components/Table/Table";
 import stl from "./Expenses.module.css";
 
-const links = [
-  { text: "الايرادات", path: "/manage/revenues" },
-  { text: "المصروفات", path: "/manage/expenses" },
-];
-
-const expense_type = [
-  { id: 1, text: "test", value: "1" },
-  { id: 2, text: "test", value: "2" },
-  { id: 3, text: "test", value: "3" },
-  { id: 4, text: "test", value: "4" },
-];
 const Expenses = () => {
-  const [values, setValues] = useState({
-    amount: "",
-    bondNo: "",
-    note: "",
-    beneficiary: "",
-    beneficiaryNum: "",
-    expenseType: "",
-    expense: "",
-    beneficiaryType: "",
-  });
-  const [date, setDate] = useState(new Date());
-
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+  const loading = useSelector((state) => state.common.isLoading);
+  const totalPages = useSelector((state) => state.expenses.totalPages);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setValues((pre) => ({ ...pre, [name]: value }));
+  const expenses = useSelector((state) => state.expenses.expenses);
+
+  const [filterBy, setFilterBy] = useState(null);
+  const [sortBy, setSortBy] = useState("");
+  const [page, setPage] = useState(1);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleFilterChange = (val) => {
+    setFilterBy(val);
   };
+
+  const handleSortChange = (val) => {
+    setSortBy(val);
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteExpense(id));
+  };
+
+  useEffect(() => {
+    if (!isLoggedin) navigate("/login");
+    dispatch(getExpenses(page));
+  }, [isLoggedin, navigate, page]);
+
+  useEffect(() => {
+    if (!filterBy && !sortBy) return;
+    dispatch(getExpenses(page, filterBy, sortBy));
+  }, [filterBy, sortBy]);
 
   return isAdmin ? (
     <Layout manage>
-      <Navigation links={links} />
-
       <div className={stl.wrapper}>
-        <SelectGroup
-          name="expense"
-          label="فئة المصروف"
-          id="expense"
-          firstOption="فئة المصروف"
-          options={expense_type}
-          value={values.expense}
-          onChange={handleInputChange}
+        <Header title="المصروفات" path="/manage/expenses/add" />
+        <Filters
+          selectedFilter={filterBy}
+          onRadioChange={handleFilterChange}
+          onSelectChange={handleSortChange}
+          selectedSort={sortBy}
         />
+        {loading ? (
+          <Loader />
+        ) : Object.keys(expenses).length && expenses?.rows[0]?.length ? (
+          <>
+            <Table
+              titles={expenses.keys}
+              data={expenses.rows[0]}
+              deleteItem={handleDelete}
+              path={"/manage/expenses/edit/"}
+            />
 
-        <SelectGroup
-          name="expenseType"
-          label="نوع المصروف"
-          id="expense-type"
-          firstOption="نوع المصروف"
-          options={expense_type}
-          value={values.expenseType}
-          onChange={handleInputChange}
-        />
-
-        <CalendarGroup label="التاريخ" value={date} onChange={setDate} />
-
-        <InputGroup
-          type="text"
-          id="amount"
-          label="القيمة"
-          placeholder="ادخل القيمة"
-          name="amount"
-          value={values.amount}
-          onChange={handleInputChange}
-        />
-
-        <InputGroup
-          type="text"
-          id="bond-no"
-          label="رقم السند"
-          placeholder="ادخل رقم السند"
-          name="bondNo"
-          value={values.bondNo}
-          onChange={handleInputChange}
-        />
-
-        <SelectGroup
-          name="beneficiaryType"
-          label="نوع المستفيد"
-          id="beneficiaryType"
-          firstOption="نوع المستفيد"
-          options={expense_type}
-          value={values.beneficiaryType}
-          onChange={handleInputChange}
-        />
-
-        <InputGroup
-          type="text"
-          id="beneficiary"
-          label="المستفيد"
-          placeholder="ادخل اسم المستفيد"
-          name="beneficiary"
-          value={values.beneficiary}
-          onChange={handleInputChange}
-        />
-
-        <InputGroup
-          type="tel"
-          id="beneficiary-num"
-          label="رقم جوال المستفيد"
-          placeholder="ادخل رقم المستفيد"
-          name="beneficiaryNum"
-          value={values.beneficiaryNum}
-          onChange={handleInputChange}
-        />
-
-        <TextareaGroup
-          id="note"
-          label="ملاحظات"
-          name="note"
-          placeholder="ملاحظاتك"
-          value={values.note}
-          onChange={handleInputChange}
-        />
-
-        <MainBtn onClick={() => {}}>استمرار</MainBtn>
+            {totalPages > 1 && (
+              <Pagination
+                totalPages={[...Array(totalPages)].map((_, i) => i + 1)}
+                currentPage={page}
+                loading={loading}
+                setCurrentPage={setPage}
+              />
+            )}
+          </>
+        ) : (
+          <h3 className={stl.noResults}>لا يوجد نتائج</h3>
+        )}
       </div>
     </Layout>
   ) : (
-    <Login manage />
+    <Login validateAdmin />
   );
 };
 

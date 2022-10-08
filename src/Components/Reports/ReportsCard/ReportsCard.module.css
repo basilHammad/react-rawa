@@ -1,0 +1,71 @@
+.card {
+  --width: 8px;
+  position: relative;
+  display: flex;
+  gap: calc(var(--base) * 2);
+  background-color: #fff;
+
+  padding: calc(var(--base) * 2);
+  padding-right: calc(var(--base) * 2 + var(--width));
+  border-radius: calc(var(--base) * 2);
+  margin-bottom: calc(var(--base) * 6);
+}
+
+.card::before {
+  content: "";
+  width: var(--width);
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: calc(var(--base) * 2);
+}
+
+.card.red::before {
+  background-color: var(--text-red);
+}
+
+.card.blue::before {
+  background-color: var(--blue);
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #e1dfe4;
+  width: 80px;
+  border-radius: 8px;
+  padding: 0 8px;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info div {
+  display: flex;
+  gap: 8px;
+}
+
+.column {
+  flex-direction: column;
+  gap: 0px;
+}
+
+.colored {
+  margin-right: auto;
+}
+
+.card.red .colored {
+  color: var(--text-red);
+}
+
+.card.blue .colored {
+  color: var(--blue);
+}

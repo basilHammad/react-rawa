@@ -1,6 +1,6 @@
 .wrapper {
   position: fixed;
-  top: 0;
+  top: 50px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -12,12 +12,17 @@
 }
 
 .modal {
-  height: 90vh;
+  height: 85vh;
   background-color: #fff;
   border-radius: calc(var(--base) * 4);
   position: relative;
   padding: calc(var(--base) * 5);
   overflow-y: auto;
+}
+
+.modal.validate {
+  height: 20vh;
+  max-width: 400px;
 }
 
 .modal .close {
@@ -26,4 +31,11 @@
   top: 20px;
   cursor: pointer;
   user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .close > svg {
+  pointer-events: none;
 }

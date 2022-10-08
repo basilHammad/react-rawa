@@ -1,9 +1,8 @@
 .card {
-  flex-grow: 1;
+  width: calc(100% / 3 - 14px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.75); */
   border: 1px solid #e7e7e7;
   border-radius: calc(var(--base) * 3);
   padding: calc(var(--base) * 2);
@@ -11,6 +10,7 @@
 }
 
 .imgWrapper {
+  width: 100%;
   aspect-ratio: 4/3;
   overflow: hidden;
 }
@@ -21,7 +21,7 @@
   object-fit: contain;
 }
 
-.card > span {
+.card .detailsWrapper > span {
   display: block;
   margin-top: calc(var(--base) * 4);
   color: var(--text-gray);
@@ -35,11 +35,13 @@
   align-items: center;
   margin-top: calc(var(--base) * 3);
   padding: 0 var(--base);
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .btn {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: 1px solid #fff;
   border-radius: 100%;
   background-color: #ffeac7;
@@ -48,4 +50,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.detailsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card .detailsWrapper .price {
+  margin-top: 0;
+  color: var(--blue);
+}
+
+@media (max-width: 1024px) {
+  .card {
+    width: calc(100% / 2 - 14px);
+  }
 }

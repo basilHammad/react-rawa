@@ -35,18 +35,3 @@
     transform: rotate(360deg);
   }
 }
-
-@media screen and (max-width: 1024px) {
-  .TrackingForm {
-    width: 100%;
-  }
-
-  .TrackingFormContainer {
-    width: 100% !important;
-  }
-
-  .TrackingForm > strong {
-    font-size: 16px;
-    line-height: 24px;
-  }
-}

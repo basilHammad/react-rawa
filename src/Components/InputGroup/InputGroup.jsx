@@ -10,6 +10,7 @@ const InputGroup = ({
   disabled,
   id,
   error,
+  min,
 }) => {
   return (
     <div className={`${stl.inputGroup} ${error ? stl.error : ""}`}>
@@ -21,6 +22,7 @@ const InputGroup = ({
         placeholder={placeholder}
         onChange={onChange}
         disabled={disabled}
+        min={min}
       />
       {error && <span>{error}</span>}
     </div>

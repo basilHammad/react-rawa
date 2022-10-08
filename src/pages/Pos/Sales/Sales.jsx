@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Blocks } from "react-loader-spinner";
 
 import Card from "../../../Components/Card/Card";
 import Layout from "../../../Components/Layout/Layout";
@@ -10,10 +9,14 @@ import Navigation from "../../../Components/Navigation/Navigation";
 import SummaryPopup from "../../../Components/SummaryPopup/SummaryPopup";
 import {
   getProviderItems,
-  submitDirectOrder,
+  createOrder,
 } from "../../../store/actions/posActions";
 
 import stl from "./Sales.module.css";
+import Loader from "../../../Components/Loader/Loader";
+import { setIsAdmin } from "../../../store/actions/authActions";
+import { useNavigate } from "react-router-dom";
+import { getCodes } from "../../../store/actions/commonActions";
 
 const links = [
   { text: "مباشر", path: "/pos/direct" },
@@ -21,11 +24,18 @@ const links = [
 ];
 
 const Sales = () => {
+  const codes = useSelector((state) => state.common.codes);
+
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [billNum, setBillNum] = useState("");
 
+  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const products = useSelector((state) => state.pos.items);
+  const loading = useSelector((state) => state.common.isLoading);
+  const postLoading = useSelector((state) => state.common.isPostLoading);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const closeModal = (e) => {
     if (e.target !== e.currentTarget) return;
@@ -66,25 +76,35 @@ const Sales = () => {
   };
 
   const onModalSubmit = () => {
-    // setShowModal(false);
-    // setSelectedItems([]);
     if (!selectedItems.length) return;
 
-    dispatch(submitDirectOrder(selectedItems));
+    dispatch(
+      createOrder(selectedItems, 1, () => {
+        setShowModal(false);
+        setSelectedItems([]);
+        dispatch(getCodes());
+      })
+    );
   };
 
   useEffect(() => {
-    dispatch(getProviderItems());
-  }, []);
+    if (!isLoggedin) navigate("/login");
+    dispatch(setIsAdmin(false));
+    if (!products.length) dispatch(getProviderItems());
+    if (!Object.keys(codes).length) dispatch(getCodes());
+  }, [isLoggedin, dispatch, navigate]);
 
-  console.log(products);
+  useEffect(() => {
+    if (!Object.keys(codes).length) return;
+    setBillNum(codes.direct_order);
+  }, [codes]);
 
   return (
     <Layout>
       <Navigation links={links} />
 
       <div className={stl.cardsWrapper}>
-        {products.length ? (
+        {!loading ? (
           products.map((product) => (
             <Card
               key={product.id}
@@ -96,13 +116,7 @@ const Sales = () => {
             />
           ))
         ) : (
-          <Blocks
-            visible={true}
-            height="80"
-            width="80"
-            ariaLabel="blocks-loading"
-            wrapperClass={stl.loaderWrapper}
-          />
+          <Loader />
         )}
         <MainBtn
           disabled={selectedItems.length ? false : true}
@@ -112,7 +126,13 @@ const Sales = () => {
         </MainBtn>
       </div>
       <Modal show={showModal} close={closeModal}>
-        <SummaryPopup direct items={selectedItems} onSubmit={onModalSubmit} />
+        <SummaryPopup
+          direct
+          items={selectedItems}
+          onSubmit={onModalSubmit}
+          postLoading={postLoading}
+          billNum={billNum}
+        />
       </Modal>
     </Layout>
   );

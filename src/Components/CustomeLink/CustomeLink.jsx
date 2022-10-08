@@ -1,14 +1,14 @@
 import { NavLink } from "react-router-dom";
 import stl from "./CustomeLink.module.css";
 
-const CustomeLink = ({ text, to }) => {
+const CustomeLink = ({ text, to, className }) => {
   return (
-    // <Link to={to} className={stl.link}>
-    //   {text}
-    // </Link>
-
     <NavLink
-      className={({ isActive }) => ` ${stl.link} ${isActive ? stl.active : ""}`}
+      className={({ isActive }) =>
+        ` ${stl.link} ${isActive ? stl.active : ""} ${
+          className ? className : ""
+        }`
+      }
       to={to}
     >
       {text}

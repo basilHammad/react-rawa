@@ -1,0 +1,12 @@
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70vh;
+}
+
+.loaderWrapper > svg {
+  width: 80px;
+  height: 80px;
+}

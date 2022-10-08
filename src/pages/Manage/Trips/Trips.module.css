@@ -1,0 +1,76 @@
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.radioGroup > label {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  position: relative;
+  padding-right: 32px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #484848;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  min-width: 40px;
+  text-align: center;
+  user-select: none;
+}
+
+.radioGroup > label > input {
+  visibility: hidden;
+  position: absolute;
+}
+
+.radioGroup > label > span {
+  position: absolute;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #154f9c;
+}
+
+.radioGroup > label > input[type="radio"]:checked + span {
+  border: 5px solid #154f9c;
+}
+
+.modalWrapper {
+  height: 100%;
+  position: relative;
+}
+
+.submitBtn {
+  position: absolute;
+  bottom: 20px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.wrapper > * {
+  flex: 48%;
+  flex-grow: 0;
+}
+
+.pagination {
+  width: 100%;
+  flex: auto;
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  .wrapper > * {
+    flex: auto;
+  }
+}

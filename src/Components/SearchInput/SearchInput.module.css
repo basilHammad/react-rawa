@@ -22,6 +22,9 @@
   border-radius: calc(var(--base) * 2);
   padding: calc(var(--base) * 2) calc(var(--base) * 4);
 }
+.wrapper > input.error {
+  box-shadow: 0px 0px 6px -1px var(--text-red);
+}
 
 .wrapper > input:focus {
   box-shadow: 0px 0px 6px -1px var(--blue);
@@ -78,8 +81,15 @@
 .optionsWrapper > span {
   display: block;
   padding: calc(var(--base) * 2) calc(var(--base) * 4);
+  cursor: pointer;
 }
 
 .optionsWrapper > span:hover {
   background-color: var(--blue);
+  color: #fff;
+}
+
+.error {
+  color: var(--text-red);
+  font-size: 12px;
 }

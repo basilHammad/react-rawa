@@ -4,4 +4,6 @@
   gap: calc(var(--base) * 3);
   margin-top: calc(var(--base) * 5);
   margin-bottom: calc(var(--base) * 4);
+  position: sticky;
+  top: 54px;
 }
