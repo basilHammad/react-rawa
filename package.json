@@ -1,5 +1,6 @@
 {
   "name": "rawa",
+  "homepage": "http://webrawa.alisuboh.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
