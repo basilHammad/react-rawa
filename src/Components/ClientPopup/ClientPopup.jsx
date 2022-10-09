@@ -202,8 +202,20 @@ const ClientPopup = ({
   const validateNewUser = () => {
     let errors = {};
     if (!fieldsValues.name.trim()) errors.name = "يجب اختيار الاسم";
-    if (!fieldsValues.mobile.trim()) errors.mobile = "يجب اختيار رقم الهاتف";
     if (!fieldsValues.location.trim()) errors.location = "يجب اختيار الموقع";
+    // if (!fieldsValues.mobile.trim()) errors.mobile = "يجب اختيار رقم الهاتف";
+
+    if (!fieldsValues.mobile.trim()) {
+      errors.mobile = "يجب اختيار رقم الهاتف";
+      return errors;
+    }
+
+    if (fieldsValues.mobile.trim().length !== 10) {
+      errors.mobile = "يجب ان يكون رقم الهاتف مكون من عشر خانات";
+      return errors;
+    }
+    if (!/^\d+$/.test(fieldsValues.mobile))
+      errors.mobile = "يجب ان يتكون رقم الهاتف من ارقام فقط";
 
     return errors;
   };
@@ -258,7 +270,7 @@ const ClientPopup = ({
         />
 
         <InputGroup
-          type="tel"
+          type="number"
           id="mobile"
           label="رقم الجوال"
           placeholder="ادخل رقم الجوال"

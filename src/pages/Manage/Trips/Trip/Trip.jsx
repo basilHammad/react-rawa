@@ -43,8 +43,8 @@ const Trip = () => {
                 products={item?.order_products}
                 num={i + 1}
                 latLng={{
-                  lat: item.address.location_lat,
-                  lng: item.address.location_lng,
+                  lat: item?.address?.location_lat,
+                  lng: item?.address?.location_lng,
                 }}
               />
             );

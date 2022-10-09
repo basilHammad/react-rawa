@@ -171,7 +171,7 @@ const ExpensesAdd = () => {
     if (!values.expenseCat) return;
     const expenseType = expensesCategory.find(
       (item) => item.id === +values.expenseCat
-    ).category;
+    )?.category;
 
     setExpenseType(expenseType);
   }, [values.expenseCat]);

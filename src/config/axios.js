@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 
 const fetcher = axios.create({
-  baseURL: BASE_URL,
+  baseURL: "http://rawa.alisuboh.com/api",
   headers: {
     "Content-Type": "application/json",
   },

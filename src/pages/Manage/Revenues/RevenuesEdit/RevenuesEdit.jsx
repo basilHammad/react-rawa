@@ -76,6 +76,10 @@ const RevenuesEdit = () => {
     if (name === "revenueCat") {
       setValues((pre) => ({ ...pre, revenueType: "" }));
     }
+
+    if (name === "revenueType") {
+      setErrors("");
+    }
   };
 
   const handleNameChange = (e) => {
@@ -238,7 +242,7 @@ const RevenuesEdit = () => {
           <CalendarGroup label="التاريخ" value={date} onChange={setDate} />
 
           <InputGroup
-            type="text"
+            type="number"
             id="amount"
             label="القيمة"
             placeholder="ادخل القيمة"
@@ -246,6 +250,7 @@ const RevenuesEdit = () => {
             value={values.amount}
             onChange={handleInputChange}
             error={errors.amount}
+            min={0}
           />
 
           <InputGroup

@@ -89,6 +89,8 @@ const ExpensesEdit = () => {
   const [options, setOptions] = useState([]);
   const [selectedName, setSelectedName] = useState("");
   const [clientId, setClientId] = useState("");
+  const [isBeneficiaryTypeClicked, setIsBeneficiaryTypeClicked] =
+    useState(false);
 
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
@@ -207,6 +209,11 @@ const ExpensesEdit = () => {
   }, [values.beneficiaryType]);
 
   useEffect(() => {
+    if (values.beneficiaryType && isBeneficiaryTypeClicked) {
+      setName("");
+      setSelectedName("");
+      setClientId("");
+    }
     if (!values.beneficiaryType || values.beneficiaryType === "4") return;
     if (values.beneficiaryType === "1") {
       setOptions(updatedSuppliers);
@@ -328,7 +335,10 @@ const ExpensesEdit = () => {
             firstOption="نوع المستفيد"
             options={BENEFICIARY_TYPES}
             value={values.beneficiaryType}
-            onChange={handleInputChange}
+            onChange={(e) => {
+              handleInputChange(e);
+              setIsBeneficiaryTypeClicked(true);
+            }}
             error={errors.beneficiaryType}
           />
 
