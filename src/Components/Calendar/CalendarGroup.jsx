@@ -5,7 +5,14 @@ import { MdOutlineEditCalendar } from "react-icons/md";
 import "react-calendar/dist/Calendar.css";
 import stl from "./CalendarGroup.module.css";
 
-const CalendarGroup = ({ label, onChange, value, minDate, className }) => {
+const CalendarGroup = ({
+  label,
+  onChange,
+  value,
+  minDate,
+  maxDate,
+  className,
+}) => {
   const [showCalender, setShowCalender] = useState(false);
 
   return (
@@ -21,6 +28,7 @@ const CalendarGroup = ({ label, onChange, value, minDate, className }) => {
         <MdOutlineEditCalendar size={22} color="#0d83f8" className={stl.icon} />
         <Calendar
           minDate={minDate}
+          maxDate={maxDate}
           onChange={onChange}
           value={value}
           className={`${stl.calendar} ${showCalender ? stl.show : ""}`}

@@ -65,8 +65,9 @@ export const login =
 export const logout = (cb) => async (dispatch) => {
   localStorage.removeItem("user");
   localStorage.removeItem("userToken");
-  dispatch(setIsloggedin(false));
-  cb();
+  await dispatch(setIsloggedin(false));
+  await cb();
+  window.location.reload();
 };
 
 export const editPassword =

@@ -15,7 +15,7 @@ const links = [
   { text: "مشتريات", path: "/manage/purchases" },
   { text: "الطلبات", path: "/manage/orders" },
   { text: "الرحلات", path: "/manage/trips" },
-  { text: "التقارير", path: "/manage/reports" },
+  { text: "كشف حساب", path: "/manage/reports" },
 ];
 
 const Manage = () => {

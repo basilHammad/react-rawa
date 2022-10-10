@@ -75,7 +75,7 @@ const PurchaseModal = ({
           placeholder="0"
         />
 
-        <InputGroup
+        {/* <InputGroup
           type="text"
           id="vat"
           label="الضريبة"
@@ -84,7 +84,7 @@ const PurchaseModal = ({
           onChange={handleInputsChange}
           disabled
           placeholder={0.16}
-        />
+        /> */}
       </div>
       <MainBtn loading={loading} onClick={editMode ? onEdit : onSubmit}>
         {editMode ? "تعديل" : "اضافة"}

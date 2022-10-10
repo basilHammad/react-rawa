@@ -1,4 +1,5 @@
 import CalendarGroup from "../../Calendar/CalendarGroup";
+import MainBtn from "../../MainBtn/MainBtn";
 import SelectGroup from "../../SelectGroup/SelectGroup";
 
 import stl from "./ReportsFilters.module.css";
@@ -9,6 +10,7 @@ const ReportsFilters = ({
   toDate,
   setFromDate,
   setToDate,
+  onClick,
 }) => {
   return (
     <div className={stl.wrapper}>
@@ -20,6 +22,7 @@ const ReportsFilters = ({
           value={fromDate}
           onChange={setFromDate}
           className={stl.calender}
+          // maxDate={new Date()}
         />
         <CalendarGroup
           label="الى"
@@ -27,7 +30,11 @@ const ReportsFilters = ({
           onChange={setToDate}
           minDate={fromDate}
           className={stl.calender}
+          // maxDate={new Date()}
         />
+        <MainBtn className={stl.btn} onClick={onClick}>
+          بحث
+        </MainBtn>
       </div>
     </div>
   );

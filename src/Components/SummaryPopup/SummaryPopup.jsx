@@ -25,24 +25,12 @@ const SummaryPopup = ({
     .map((item) => item.price)
     .reduce((previousValue, currentValue) => +previousValue + +currentValue, 0);
 
+  console.log(totalPrice);
+
   const postLoading = useSelector((state) => state.common.isPostLoading);
 
   return (
     <div className={stl.summaryPopup}>
-      {/* <>
-        <div>
-          تاريخ الاستلام: <strong>20/20/2000</strong>
-        </div>
-        {clientName ? (
-          <div>
-            العميل: <strong>{clientName}</strong>
-          </div>
-        ) : null}
-        <div>
-          رقم الفاتورة: <strong>{billNum}</strong>
-        </div>
-      </> */}
-
       <Header billNum={billNum} date={new Date()} clientName={clientName} />
 
       <div className={stl.tabel}>
@@ -52,14 +40,18 @@ const SummaryPopup = ({
           <div className={stl.cell}>الكمية</div>
           <div className={stl.cell}>السعر</div>
         </div>
-        {items.map((item, i) => (
-          <div className={stl.row} key={item.id}>
-            <div className={stl.cell}>{i + 1}</div>
-            <div className={stl.cell}>{item.name}</div>
-            <div className={stl.cell}>{item.qty}</div>
-            <div className={stl.cell}>{item.price}</div>
-          </div>
-        ))}
+        {items.map((item, i) => {
+          return (
+            <div className={stl.row} key={item.id}>
+              <div className={stl.cell}>{i + 1}</div>
+              <div className={stl.cell}>{item.name}</div>
+              <div className={stl.cell}>{item.qty}</div>
+              <div className={stl.cell}>
+                {Math.round((+item.price + Number.EPSILON) * 100) / 100}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div className={stl.submitSection}>
@@ -73,7 +65,10 @@ const SummaryPopup = ({
         )}
         <div className={stl.control}>
           <div>
-            الصافي : <strong>{totalPrice}</strong>
+            الصافي :{" "}
+            <strong>
+              {Math.round((+totalPrice + Number.EPSILON) * 100) / 100}
+            </strong>
           </div>
 
           {!direct && (

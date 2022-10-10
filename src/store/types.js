@@ -19,3 +19,6 @@ export const GET_TOTAL_PAGES = "GET_TOTAL_PAGES";
 export const GET_CODES = "GET_CODES";
 export const GET_ORDERS = "GET_ORDERS";
 export const GET_TRIPS = "GET_TRIPS";
+export const GET_ACCOUNT_STATEMENT = "GET_ACCOUNT_STATEMENT";
+export const GET_FINAL_BALANCE = "GET_FINAL_BALANCE";
+export const GET_OLD_BALANCE = "GET_OLD_BALANCE";

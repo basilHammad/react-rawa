@@ -334,15 +334,15 @@ const PurchasesAdd = () => {
                       previousValue + currentValue,
                     0
                   )}
-                vatTotal={billDetails
-                  .map((bill) => {
-                    return +bill.tax;
-                  })
-                  .reduce(
-                    (previousValue, currentValue) =>
-                      previousValue + currentValue,
-                    0
-                  )}
+                // vatTotal={billDetails
+                //   .map((bill) => {
+                //     return +bill.tax;
+                //   })
+                //   .reduce(
+                //     (previousValue, currentValue) =>
+                //       previousValue + currentValue,
+                //     0
+                //   )}
                 showTotals
               />
             </div>

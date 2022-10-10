@@ -11,3 +11,9 @@
 .wrapper > span:last-child > a {
   color: var(--text-gray);
 }
+
+@media (max-width: 1024px) {
+  .wrapper {
+    font-size: 14px;
+  }
+}

@@ -1,7 +1,8 @@
 import InputGroup from "../../../../Components/InputGroup/InputGroup";
+import SelectGroup from "../../../../Components/SelectGroup/SelectGroup";
 import stl from "./Search.module.css";
 
-const Search = ({ name, phone, onChange, onSubmit }) => {
+const Search = ({ name, phone, onChange, onSubmit, isEmp, options, type }) => {
   return (
     <form className={stl.wrapper} onSubmit={onSubmit}>
       <InputGroup
@@ -22,6 +23,17 @@ const Search = ({ name, phone, onChange, onSubmit }) => {
         value={phone}
         onChange={onChange}
       />
+      {isEmp && (
+        <SelectGroup
+          name="type"
+          id="type"
+          firstOption="الوظيفة"
+          options={options}
+          value={type}
+          onChange={onChange}
+          // label="من"
+        />
+      )}
       <button type="submit"> بحث</button>
     </form>
   );

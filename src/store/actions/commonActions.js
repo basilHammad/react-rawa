@@ -183,7 +183,7 @@ export const deleteSuppliers = (id, cb) => async (dispatch) => {
 };
 
 export const getEmployees =
-  (page = 1, byName, byNumber, perPage) =>
+  (page = 1, byName, byNumber, perPage, type) =>
   async (dispatch) => {
     dispatch(setIsLoading(true));
 
@@ -191,7 +191,9 @@ export const getEmployees =
       const res = await fetcher.get(
         `/employee?page=${page}${byName ? "&filter[full_name]=" + byName : ""}${
           byNumber ? "&filter[phone_number]=" + byNumber : ""
-        }${perPage ? "&perPage=" + perPage : ""}`
+        }${perPage ? "&perPage=" + perPage : ""}${
+          type ? "&filter[type]=" + type : ""
+        }`
       );
 
       if (res.data.data) {

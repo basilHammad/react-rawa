@@ -1,3 +1,4 @@
+import { type } from "@testing-library/user-event/dist/type";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -63,13 +64,22 @@ const Employees = () => {
   const [searchValues, setSearchValues] = useState({
     name: "",
     phone: "",
+    type: "",
   });
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
     dispatch(
       deleteEmployee(id, () =>
-        dispatch(getEmployees(page, searchValues.name, searchValues.phone))
+        dispatch(
+          getEmployees(
+            page,
+            searchValues.name,
+            searchValues.phone,
+            15,
+            setSearchValues.type
+          )
+        )
       )
     );
   };
@@ -153,7 +163,15 @@ const Employees = () => {
     }
     dispatch(
       EditEmployee(EditEmployeeId, values, () => {
-        dispatch(getEmployees(page, searchValues.name, searchValues.phone));
+        dispatch(
+          getEmployees(
+            page,
+            searchValues.name,
+            searchValues.phone,
+            15,
+            searchValues.type
+          )
+        );
         setShowModal(false);
         setValues({
           name: "",
@@ -185,14 +203,30 @@ const Employees = () => {
           note: "",
           employeeType: "",
         });
-        dispatch(getEmployees(page, searchValues.name, searchValues.phone));
+        dispatch(
+          getEmployees(
+            page,
+            searchValues.name,
+            searchValues.phone,
+            15,
+            searchValues.type
+          )
+        );
       })
     );
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(getEmployees(page, searchValues.name, searchValues.phone));
+    dispatch(
+      getEmployees(
+        page,
+        searchValues.name,
+        searchValues.phone,
+        15,
+        searchValues.type
+      )
+    );
   };
 
   // const handleEmployeeTypeChange = (val) => {
@@ -203,7 +237,15 @@ const Employees = () => {
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
 
-    dispatch(getEmployees(page, searchValues.name, searchValues.phone));
+    dispatch(
+      getEmployees(
+        page,
+        searchValues.name,
+        searchValues.phone,
+        15,
+        searchValues.type
+      )
+    );
   }, [isLoggedin, navigate, page]);
 
   return isAdmin ? (
@@ -220,6 +262,9 @@ const Employees = () => {
           phone={searchValues.phone}
           onChange={handleSearchValuesChange}
           onSubmit={handleSearch}
+          options={EMPLOYEES_TYPES}
+          type={searchValues.type}
+          isEmp
         />
         {loading ? (
           <Loader />

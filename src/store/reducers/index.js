@@ -8,6 +8,7 @@ import expensesReducer from "./expensesReducer";
 import purchasesReducer from "./purchasesReducer";
 import ordersReducer from "./ordersReducer";
 import tripsReducer from "./tripsReducer";
+import reportsReducer from "./reportsReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   purchases: purchasesReducer,
   orders: ordersReducer,
   trips: tripsReducer,
+  reports: reportsReducer,
 });

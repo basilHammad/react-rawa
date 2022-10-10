@@ -30,7 +30,7 @@ const ReportsCard = ({
         <div className={stl.column}>
           <span className={stl.colored}>
             {recordValue}
-            {color === "red" ? "-" : "+"}
+            {/* {color === "red" ? "-" : "+"} */}
           </span>
           <div>
             <span>الرصيد الحالي</span>

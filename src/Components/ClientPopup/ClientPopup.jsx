@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { getClients } from "../../store/actions/commonActions";
 import { createUser, updateUser } from "../../store/actions/posActions";
 import DaysSelect from "../DaysSelect/DaysSelect";
 
@@ -174,6 +175,7 @@ const ClientPopup = ({
           setClientId(id);
           closeClientModal();
           showSummaryModal();
+          dispatch(getClients(1, null, null, 10000));
         })
       );
       return;

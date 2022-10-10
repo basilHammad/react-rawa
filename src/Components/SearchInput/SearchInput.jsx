@@ -16,6 +16,7 @@ const SearchInput = ({
   disabled,
   placeholder,
   error,
+  className,
 }) => {
   const [showOptions, setShowOptions] = useState(false);
 
@@ -40,10 +41,12 @@ const SearchInput = ({
 
   return (
     <>
-      <label className={stl.label} htmlFor={name}>
-        {label}
-      </label>
-      <div className={stl.wrapper}>
+      {label && (
+        <label className={stl.label} htmlFor={name}>
+          {label}
+        </label>
+      )}
+      <div className={`${stl.wrapper} ${className ? className : ""}`}>
         <input
           type="text"
           name={name}

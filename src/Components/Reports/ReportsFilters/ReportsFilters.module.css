@@ -24,3 +24,12 @@
 .calender > label {
   font-size: 12px;
 }
+
+.btn {
+  position: unset;
+  height: 40px;
+  margin-top: 20px;
+  background-color: var(--yellow);
+  border-radius: 4px;
+  font-size: 18px;
+}
