@@ -22,7 +22,7 @@ const ReportsFilters = ({
           value={fromDate}
           onChange={setFromDate}
           className={stl.calender}
-          // maxDate={new Date()}
+          maxDate={new Date()}
         />
         <CalendarGroup
           label="الى"
@@ -30,7 +30,7 @@ const ReportsFilters = ({
           onChange={setToDate}
           minDate={fromDate}
           className={stl.calender}
-          // maxDate={new Date()}
+          maxDate={new Date()}
         />
         <MainBtn className={stl.btn} onClick={onClick}>
           بحث

@@ -16,7 +16,6 @@ const TripsReducer = (state = initialState, { type, payload }) => {
       };
 
     case types.GET_TOTAL_PAGES:
-      console.log("payload", payload);
       return {
         ...state,
         totalPages: payload,

@@ -68,11 +68,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 90px;
+    min-width: 150px;
     flex: unset;
     height: 60px;
     box-shadow: 0 2.5px 2px -2px #eeeceb;
-    word-break: break-all;
+    /* word-break: break-all; */
     /* width: fit-content; */
   }
 

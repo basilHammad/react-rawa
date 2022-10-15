@@ -20,22 +20,24 @@ const ReportsCard = ({
         <div className={stl.column}>
           <div>
             <span>{recordType}</span>
-            <span>{recordDate}</span>
+            {/* <span>{recordDate}</span> */}
           </div>
           <div>
-            <span>رقم السند-{recordNum}</span>
+            <span>رقم السند-{recordNum ? recordNum : " لا يوجد"}</span>
           </div>
         </div>
 
         <div className={stl.column}>
           <span className={stl.colored}>
-            {recordValue}
+            {recordValue} دينار
             {/* {color === "red" ? "-" : "+"} */}
           </span>
-          <div>
-            <span>الرصيد الحالي</span>
-            <span>{currentCredit}</span>
-          </div>
+          {currentCredit && (
+            <div>
+              <span>الرصيد الحالي</span>
+              <span>{currentCredit} دينار</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

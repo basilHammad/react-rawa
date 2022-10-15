@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Accordion from "../../Components/Accordion/Accordion";
 import Breadcrumbs from "../../Components/Breadcrumbs/Breadcrumbs";
 
 import CustomeLink from "../../Components/CustomeLink/CustomeLink";
@@ -15,12 +17,20 @@ const links = [
   { text: "مشتريات", path: "/manage/purchases" },
   { text: "الطلبات", path: "/manage/orders" },
   { text: "الرحلات", path: "/manage/trips" },
-  { text: "كشف حساب", path: "/manage/reports" },
+];
+
+const accordionLinks = [
+  { text: "كشف حساب", path: "/manage/account-statement" },
+  { text: "تقرير الايرادات", path: "/manage/revenue-report" },
+  { text: "تقرير المصاريق", path: "/manage/expense-report" },
+  { text: "تقرير المشتريات", path: "/manage/purchase-report" },
 ];
 
 const Manage = () => {
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+
+  const [showReports, setShowReports] = useState(false);
 
   const navigate = useNavigate();
 
@@ -40,6 +50,16 @@ const Manage = () => {
             className={stl.link}
           />
         ))}
+        <Accordion showChildren={showReports} toggleChildren={setShowReports}>
+          {accordionLinks.map((link, i) => (
+            <CustomeLink
+              key={i}
+              text={link.text}
+              to={link.path}
+              className={stl.accordionLink}
+            />
+          ))}
+        </Accordion>
       </div>
     </Layout>
   ) : (

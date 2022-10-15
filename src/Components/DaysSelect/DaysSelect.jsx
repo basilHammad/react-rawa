@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { MdOutlineClose } from "react-icons/md";
+
 import Checkbox from "../Checkbox/Checkbox";
 import stl from "./DaysSelect.module.css";
 
@@ -30,17 +32,27 @@ const DaysSelect = ({ selectedDay, setSelectedDay, handleDayChange }) => {
             : "اختير اليوم"}
         </span>
         {showDays && (
-          <div className={stl.daysWrapper}>
-            {DAYS.map((day) => (
-              <Checkbox
-                key={day.id}
-                value={day.name}
-                label={day.name}
-                onChange={handleDayChange}
-                checked={selectedDay.includes(day.name)}
-              />
-            ))}
-          </div>
+          <>
+            <div className={stl.bigWrapper}>
+              <div className={stl.daysWrapper}>
+                <div className={stl.iconWrapper}>
+                  <MdOutlineClose
+                    size={22}
+                    onClick={() => setShowDays(false)}
+                  />
+                </div>
+                {DAYS.map((day) => (
+                  <Checkbox
+                    key={day.id}
+                    value={day.name}
+                    label={day.name}
+                    onChange={handleDayChange}
+                    checked={selectedDay.includes(day.name)}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
         )}
       </div>
     </>

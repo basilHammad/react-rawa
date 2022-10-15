@@ -7,26 +7,6 @@
   flex: 50%;
 }
 
-.selectWrapper > span {
-  display: none;
-}
-
-.select {
-  gap: 4px;
-}
-
-.select > label {
-  font-size: 12px;
-}
-
-.header {
-  padding: calc(var(--base) * 8) 0 calc(var(--base) * 2);
-}
-
-.selectGroup {
-  padding: 0;
-}
-
 .titleBox {
   width: 100%;
   display: flex;
@@ -39,6 +19,15 @@
   font-weight: bold;
 }
 
+.year {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  color: var(--green);
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
 .green {
   color: var(--green);
 }
@@ -47,11 +36,9 @@
   color: var(--text-red);
 }
 
-.year {
+.header > h2 {
   display: flex;
-  justify-content: center;
-  align-content: center;
-  color: var(--green);
-  font-weight: bold;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }

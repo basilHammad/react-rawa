@@ -121,6 +121,7 @@ const Sales = () => {
         <MainBtn
           disabled={selectedItems.length ? false : true}
           onClick={() => setShowModal(true)}
+          className={stl.mainBtn}
         >
           استمرار
         </MainBtn>

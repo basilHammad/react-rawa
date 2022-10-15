@@ -109,7 +109,7 @@ const Trips = () => {
           )}
         </div>
       )}
-      <Modal show={showModal} close={closeModal}>
+      <Modal show={showModal} close={closeModal} className={stl.modal}>
         <div className={stl.modalWrapper}>
           <strong>السائقين: </strong>
           <div className={stl.radioGroup}>
@@ -128,14 +128,14 @@ const Trips = () => {
                 </label>
               );
             })}
+            <MainBtn
+              loading={postLoading}
+              onClick={handleAssignDriver}
+              className={stl.submitBtn}
+            >
+              ربط
+            </MainBtn>
           </div>
-          <MainBtn
-            loading={postLoading}
-            onClick={handleAssignDriver}
-            className={stl.submitBtn}
-          >
-            ربط
-          </MainBtn>
         </div>
       </Modal>
     </Layout>

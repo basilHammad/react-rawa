@@ -13,6 +13,7 @@
 .header .details {
   display: flex;
   gap: 12px;
+  margin-left: 40px;
 }
 
 .branding {
@@ -20,7 +21,6 @@
   justify-content: space-between;
   align-items: center;
   gap: calc(var(--base) * 2);
-  margin-left: 40px;
   align-self: flex-start;
 }
 

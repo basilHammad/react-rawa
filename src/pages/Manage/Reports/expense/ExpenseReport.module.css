@@ -1,0 +1,44 @@
+.selectWrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.selectWrapper > * {
+  flex: 50%;
+}
+
+.titleBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: #fff;
+  padding: 0 20px;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.year {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  color: var(--green);
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.green {
+  color: var(--green);
+}
+
+.red {
+  color: var(--text-red);
+}
+
+.header > h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

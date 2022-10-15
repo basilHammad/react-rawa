@@ -1,5 +1,5 @@
 .card {
-  width: calc(100% / 3 - 14px);
+  width: calc(100% / 4 - 16px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@
 
 .imgWrapper {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/6;
   overflow: hidden;
 }
 
@@ -63,8 +63,14 @@
   color: var(--blue);
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
   .card {
-    width: calc(100% / 2 - 14px);
+    width: calc(100% / 4 - 16px);
+  }
+} */
+
+@media (max-width: 720px) {
+  .card {
+    width: 100%;
   }
 }

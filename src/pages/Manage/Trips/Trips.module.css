@@ -44,8 +44,9 @@
 }
 
 .submitBtn {
-  position: absolute;
-  bottom: 20px;
+  /* position: absolute; */
+  position: unset;
+  margin-top: auto;
 }
 
 .wrapper {
@@ -62,6 +63,11 @@
 .pagination {
   width: 100%;
   flex: auto;
+}
+
+.modal {
+  height: 50vh;
+  min-height: 50vh;
 }
 
 @media (max-width: 1024px) {

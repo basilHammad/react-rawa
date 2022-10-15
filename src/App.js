@@ -24,7 +24,10 @@ import Trips from "./pages/Manage/Trips/Trips";
 import Map from "./pages/Map/Map";
 import Trip from "./pages/Manage/Trips/Trip/Trip";
 import TripAdd from "./pages/Manage/Trips/AddTrip/AddTrip";
-import Reports from "./pages/Manage/Repprts/Reports";
+import AccountStatement from "./pages/Manage/Reports/AccountStatement/AccountStatement";
+import RevenueReport from "./pages/Manage/Reports/Revenue/RevenueReport";
+import ExpenseReport from "./pages/Manage/Reports/expense/ExpenseReport";
+import PurchaseReport from "./pages/Manage/Reports/Purchase/PurchaseReport";
 
 function App() {
   return (
@@ -52,7 +55,13 @@ function App() {
         <Route path="/manage/suppliers" element={<Suppliers />} />
         <Route path="/manage/clients" element={<Clients />} />
         <Route path="/manage/employees" element={<Employees />} />
-        <Route path="/manage/reports" element={<Reports />} />
+        <Route
+          path="/manage/account-statement"
+          element={<AccountStatement />}
+        />
+        <Route path="/manage/revenue-report" element={<RevenueReport />} />
+        <Route path="/manage/expense-report" element={<ExpenseReport />} />
+        <Route path="/manage/purchase-report" element={<PurchaseReport />} />
         <Route path="/manage/map/:lat/:lng" element={<Map />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

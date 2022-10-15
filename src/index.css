@@ -29,6 +29,11 @@ body {
   --base: 4px;
 }
 
+.react-calendar__navigation button:disabled,
+.react-calendar__navigation button[disabled] {
+  display: none;
+}
+
 .container {
   width: 90%;
   max-width: 1200px;

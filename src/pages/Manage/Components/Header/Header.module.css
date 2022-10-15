@@ -9,6 +9,10 @@
   color: #002251;
 }
 
+.wrapper > h2 > svg {
+  cursor: pointer;
+}
+
 .link {
   background-color: var(--yellow);
   width: 140px;

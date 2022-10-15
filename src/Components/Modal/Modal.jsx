@@ -5,10 +5,14 @@ import { MdClose } from "react-icons/md";
 
 import stl from "./Modal.module.css";
 
-const Modal = ({ children, show, close, validate }) => {
+const Modal = ({ children, show, close, validate, className }) => {
   const modal = show && (
-    <div className={`${stl.wrapper} `} onClick={close}>
-      <div className={`container ${stl.modal} ${validate ? stl.validate : ""}`}>
+    <div className={`${stl.wrapper}  `} onClick={close}>
+      <div
+        className={`container ${stl.modal} ${validate ? stl.validate : ""} ${
+          className ? className : ""
+        }`}
+      >
         {children}
         <button onClick={close} className={stl.close}>
           <MdClose size={24} />

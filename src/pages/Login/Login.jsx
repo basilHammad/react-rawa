@@ -88,7 +88,7 @@ const Login = ({ validateAdmin }) => {
 
   return (
     <Layout hideHeader={validateAdmin ? false : true}>
-      <div className={stl.login}>
+      <div className={`${stl.login} ${validateAdmin ? stl.validateAdmin : ""}`}>
         {!validateAdmin && (
           <div className={stl.logoWrapper}>
             <img src="/assets/images/logo.svg" alt="" />

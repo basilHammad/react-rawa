@@ -165,6 +165,7 @@ const Orders = () => {
         <MainBtn
           disabled={selectedItems.length ? false : true}
           onClick={() => setShowClientModal(true)}
+          className={stl.mainBtn}
         >
           استمرار
         </MainBtn>

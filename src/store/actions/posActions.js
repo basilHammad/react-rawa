@@ -40,8 +40,6 @@ export const createOrder =
 
       const res = await fetcher.post("/customer-order", JSON.stringify(data));
 
-      console.log(res);
-
       if (res.data.success) cb();
       dispatch(setIsPostLoading(false));
     } catch (error) {

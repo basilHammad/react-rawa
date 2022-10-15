@@ -5,6 +5,10 @@ const Header = ({ billNum, date, clientName }) => {
   const user = useSelector((state) => state.auth.user);
   return (
     <div className={stl.header}>
+      <div className={stl.branding}>
+        <strong>{user.name} </strong>
+        <img src={user.avatar} alt="" />
+      </div>
       <div className={stl.details}>
         <div>
           التاريخ:
@@ -20,11 +24,6 @@ const Header = ({ billNum, date, clientName }) => {
             العميل: <strong>{clientName}</strong>
           </div>
         )}
-      </div>
-
-      <div className={stl.branding}>
-        <strong>{user.name} </strong>
-        <img src={user.avatar} alt="" />
       </div>
     </div>
   );

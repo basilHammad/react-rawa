@@ -5,12 +5,22 @@
   flex-wrap: wrap;
 }
 
-.link {
+.wrapper > * {
   flex: 0 0 48%;
 }
 
+.accordionLink {
+  border-radius: 0;
+  height: 40px;
+  box-shadow: unset;
+}
+
+.accordionLink:hover {
+  background-color: #ebeaeb;
+}
+
 @media screen and (max-width: 1024px) {
-  .link {
+  .wrapper > * {
     flex-grow: 1;
   }
 }

@@ -1,12 +1,14 @@
 .wrapper {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
 }
 
 .wrapper > * {
-  flex: 48%;
-  flex-grow: 0;
+  /* flex: 48%;
+  flex-grow: 0; */
+  flex: auto;
 }
 
 @media (max-width: 1024px) {

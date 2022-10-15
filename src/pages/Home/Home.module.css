@@ -8,12 +8,13 @@
 .mainLink {
   background-color: var(--yellow);
   flex-grow: 1;
-  height: 50vh;
+  height: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: calc(var(--base) * 4);
   font-size: 1.5rem;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 1024px) {
@@ -22,6 +23,6 @@
   }
 
   .mainLink {
-    height: 20vh;
+    height: 10vh;
   }
 }

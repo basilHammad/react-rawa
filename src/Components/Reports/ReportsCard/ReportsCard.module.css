@@ -46,11 +46,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 calc(var(--base) * 3);
 }
 
 .info div {
   display: flex;
   gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .column {

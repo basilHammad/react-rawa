@@ -20,20 +20,33 @@
   font-size: 14px;
 }
 
-.daysWrapper {
+.bigWrapper {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(100% + var(--base) * 4);
+  z-index: 1000;
+  background-color: #fff;
+  border-radius: calc(var(--base) * 2);
+  box-shadow: 0px 0px 6px -1px var(--gray);
+  padding: calc(var(--base) * 4);
+}
+
+.daysWrapper {
+  /* position: relative; */
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--base) * 3);
   justify-content: center;
-  border-radius: calc(var(--base) * 2);
-  box-shadow: 0px 0px 6px -1px var(--gray);
-  padding: calc(var(--base) * 4);
-  z-index: 10;
-  background-color: #fff;
+}
+
+.iconWrapper {
+  flex: 100% !important;
+  width: 100%;
+}
+
+.iconWrapper > svg {
+  cursor: pointer;
 }
 
 .daysWrapper > * {

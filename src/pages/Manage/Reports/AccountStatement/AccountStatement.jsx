@@ -2,24 +2,24 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Layout from "../../../Components/Layout/Layout";
-import Login from "../../Login/Login";
-import ReportsFilters from "../../../Components/Reports/ReportsFilters/ReportsFilters";
-import ReportsCard from "../../../Components/Reports/ReportsCard/ReportsCard";
-import Header from "../Components/Header/Header";
-import * as types from "../../../store/types";
+import Layout from "../../../../Components/Layout/Layout";
+import Login from "../../../Login/Login";
+import ReportsFilters from "../../../../Components/Reports/ReportsFilters/ReportsFilters";
+import ReportsCard from "../../../../Components/Reports/ReportsCard/ReportsCard";
+import Header from "../../Components/Header/Header";
+import * as types from "../../../../store/types";
 
-import stl from "./Reports.module.css";
-import SelectGroup from "../../../Components/SelectGroup/SelectGroup";
-import { getRevenueCategory } from "../../../store/actions/revenuesActions";
-import SearchInput from "../../../Components/SearchInput/SearchInput";
+import SelectGroup from "../../../../Components/SelectGroup/SelectGroup";
+import SearchInput from "../../../../Components/SearchInput/SearchInput";
 import {
   getClients,
   getEmployees,
   getSuppliers,
-} from "../../../store/actions/expensesActions";
-import { getAccountStatements } from "../../../store/actions/reportsActions";
-import Loader from "../../../Components/Loader/Loader";
+} from "../../../../store/actions/expensesActions";
+import { getAccountStatements } from "../../../../store/actions/reportsActions";
+import Loader from "../../../../Components/Loader/Loader";
+
+import stl from "./AccountStatement.module.css";
 
 const BENEFICIARY_TYPES = [
   { id: 1, text: "مورد", value: "1" },
@@ -27,7 +27,7 @@ const BENEFICIARY_TYPES = [
   { id: 3, text: "موظف", value: "3" },
 ];
 
-const Reports = () => {
+const AccountStatement = () => {
   const clients = useSelector((state) => state.common.clients);
   const suppliers = useSelector((state) => state.expenses.suppliers);
   const employees = useSelector((state) => state.expenses.employees);
@@ -78,6 +78,7 @@ const Reports = () => {
   const [selectedName, setSelectedName] = useState("");
   const [clientId, setClientId] = useState("");
   const [name, setName] = useState("");
+  const [isSearched, setIsSearched] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -141,7 +142,8 @@ const Reports = () => {
         values.beneficiaryType,
         clientId,
         fromDate.toDateString(),
-        toDate.toDateString()
+        toDate.toDateString(),
+        () => setIsSearched(true)
       )
     );
   };
@@ -153,9 +155,9 @@ const Reports = () => {
     body.style.backgroundColor = "#fbfcfd";
   }, [isLoggedIn, navigate]);
 
-  useEffect(() => {
-    setToDate(fromDate);
-  }, [fromDate]);
+  // useEffect(() => {
+  //   setToDate(fromDate);
+  // }, [fromDate]);
 
   useEffect(() => {
     if (values.beneficiaryType === "1") {
@@ -197,14 +199,19 @@ const Reports = () => {
   useEffect(() => {
     return () => {
       dispatch({ type: types.GET_ACCOUNT_STATEMENT, payload: [] });
+      setIsSearched(false);
     };
   }, []);
 
-  console.log("finalbalance", typeof finalBalance);
-
   return isAdmin ? (
     <Layout hideBeardcrumb manage>
-      <Header hideButton title="كشف حساب" className={stl.header} />
+      <Header
+        hideButton
+        title="كشف حساب"
+        className={stl.header}
+        showBack
+        navigate={() => navigate("/manage")}
+      />
       <ReportsFilters
         fromDate={fromDate}
         setFromDate={setFromDate}
@@ -243,9 +250,9 @@ const Reports = () => {
       </ReportsFilters>
       {loading ? (
         <Loader />
-      ) : !Object.entries(data).length ? (
-        ""
-      ) : (
+      ) : !Object.entries(data).length && isSearched ? (
+        <h2>لا يوجد نتائج</h2>
+      ) : Object.entries(data).length ? (
         <>
           <div className={stl.titleBox}>
             <span>الرصيد المدور</span>
@@ -283,11 +290,11 @@ const Reports = () => {
             </strong>
           </div>
         </>
-      )}
+      ) : null}
     </Layout>
   ) : (
     <Login validateAdmin />
   );
 };
 
-export default Reports;
+export default AccountStatement;

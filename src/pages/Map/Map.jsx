@@ -12,8 +12,6 @@ const Map = () => {
     googleMapsApiKey: key,
   });
 
-  console.log(params.lat);
-
   const center = useMemo(() => ({ lat: +params.lat, lng: +params.lng }), []);
 
   return isLoaded ? (

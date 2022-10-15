@@ -24,8 +24,6 @@ const Orders = () => {
 
   const [page, setPage] = useState(1);
 
-  console.log(orders);
-
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
 

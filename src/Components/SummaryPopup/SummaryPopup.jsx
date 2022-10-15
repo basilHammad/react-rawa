@@ -25,8 +25,6 @@ const SummaryPopup = ({
     .map((item) => item.price)
     .reduce((previousValue, currentValue) => +previousValue + +currentValue, 0);
 
-  console.log(totalPrice);
-
   const postLoading = useSelector((state) => state.common.isPostLoading);
 
   return (
@@ -64,7 +62,7 @@ const SummaryPopup = ({
           ""
         )}
         <div className={stl.control}>
-          <div>
+          <div className={stl.totalPrice}>
             الصافي :{" "}
             <strong>
               {Math.round((+totalPrice + Number.EPSILON) * 100) / 100}
