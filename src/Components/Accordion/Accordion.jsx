@@ -9,8 +9,10 @@ const Accordion = ({ children, showChildren, toggleChildren }) => {
         className={`${stl.accordionHead} ${showChildren ? stl.show : ""}`}
         onClick={() => toggleChildren((pre) => !pre)}
       >
-        <span>التقارير</span>
-        <MdExpandMore />
+        <div className={stl.headWrapper}>
+          <img src="/assets/images/clipboard.svg" />
+          <span>التقارير</span>
+        </div>
       </div>
       {showChildren && <div className={stl.accordionBody}>{children}</div>}
     </div>

@@ -49,8 +49,6 @@ export const getRevenueReport =
 
       const res = await fetcher.post("/revenueReport", data);
 
-      console.log(res);
-
       if (res.data.data) {
         dispatch({
           type: types.GET_REVENUE_REPORT,

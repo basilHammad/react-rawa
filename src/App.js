@@ -28,6 +28,7 @@ import AccountStatement from "./pages/Manage/Reports/AccountStatement/AccountSta
 import RevenueReport from "./pages/Manage/Reports/Revenue/RevenueReport";
 import ExpenseReport from "./pages/Manage/Reports/expense/ExpenseReport";
 import PurchaseReport from "./pages/Manage/Reports/Purchase/PurchaseReport";
+import EditOrder from "./pages/Manage/Orders/EditOrder/EditOrder";
 
 function App() {
   return (
@@ -39,9 +40,10 @@ function App() {
         <Route path="/pos/orders" element={<Orders />} />
         <Route path="/manage" element={<Manage />} />
         <Route path="/manage/orders" element={<OrdersList />} />
+        <Route path="/manage/orders/edit/:id" element={<EditOrder />} />
         <Route path="/manage/trips" element={<Trips />} />
         <Route path="/manage/trip/:id" element={<Trip />} />
-        <Route path="/manage/trip/add" element={<TripAdd />} />
+        <Route path="/manage/trips/add" element={<TripAdd />} />
         <Route path="/manage/revenues" element={<Revenues />} />
         <Route path="/manage/revenues/add" element={<RevenuesAdd />} />
         <Route path="/manage/revenues/edit/:id" element={<RevenuesEdit />} />
@@ -51,7 +53,7 @@ function App() {
         <Route path="/manage/purchases" element={<Purchases />} />
         <Route path="/manage/purchases/add" element={<PurchasesAdd />} />
         <Route path="/manage/purchases/edit/:id" element={<PurchasesEdit />} />
-        <Route path="/edit-password" element={<EditPassword />} />
+        <Route path="/manage/edit-password" element={<EditPassword />} />
         <Route path="/manage/suppliers" element={<Suppliers />} />
         <Route path="/manage/clients" element={<Clients />} />
         <Route path="/manage/employees" element={<Employees />} />

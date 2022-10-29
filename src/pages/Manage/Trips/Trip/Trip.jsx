@@ -31,6 +31,9 @@ const Trip = () => {
       <Header
         hideButton
         title={trips.find((trip) => trip.id == params.id)?.trip_name}
+        showBack
+        navigate={() => navigate("/manage/trips")}
+        className={stl.header}
       />
       <div className={stl.wrapper}>
         {trips

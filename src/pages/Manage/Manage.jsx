@@ -12,15 +12,43 @@ import Login from "../Login/Login";
 import stl from "./Manage.module.css";
 
 const links = [
-  { text: "ايرادات", path: "/manage/revenues" },
-  { text: "مصروفات", path: "/manage/expenses" },
-  { text: "مشتريات", path: "/manage/purchases" },
-  { text: "الطلبات", path: "/manage/orders" },
-  { text: "الرحلات", path: "/manage/trips" },
+  {
+    text: "ايرادات",
+    path: "/manage/revenues",
+    icon: "/assets/images/rev.svg",
+    color: "green",
+  },
+  {
+    text: "مصروفات",
+    path: "/manage/expenses",
+    icon: "/assets/images/exp.svg",
+    color: "yellow",
+  },
+  {
+    text: "مشتريات",
+    path: "/manage/purchases",
+    icon: "/assets/images/pur.svg",
+    color: "blue",
+  },
+  {
+    text: "الطلبات",
+    path: "/manage/orders",
+    icon: "/assets/images/box.svg",
+    color: "pink",
+  },
+  {
+    text: "الرحلات",
+    path: "/manage/trips",
+    icon: "/assets/images/truck.svg",
+    color: "lightBlue",
+  },
 ];
 
 const accordionLinks = [
-  { text: "كشف حساب", path: "/manage/account-statement" },
+  {
+    text: "كشف حساب",
+    path: "/manage/account-statement",
+  },
   { text: "تقرير الايرادات", path: "/manage/revenue-report" },
   { text: "تقرير المصاريق", path: "/manage/expense-report" },
   { text: "تقرير المشتريات", path: "/manage/purchase-report" },
@@ -47,7 +75,8 @@ const Manage = () => {
             key={i}
             text={link.text}
             to={link.path}
-            className={stl.link}
+            className={`${stl.link} ${stl[link.color]}`}
+            icon={link.icon}
           />
         ))}
         <Accordion showChildren={showReports} toggleChildren={setShowReports}>
@@ -57,6 +86,7 @@ const Manage = () => {
               text={link.text}
               to={link.path}
               className={stl.accordionLink}
+              icon={link.icon}
             />
           ))}
         </Accordion>

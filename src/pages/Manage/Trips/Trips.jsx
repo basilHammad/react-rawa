@@ -79,7 +79,7 @@ const Trips = () => {
 
   return isAdmin ? (
     <Layout manage>
-      <Header path="/manage/trip/add" title="الرحلات" />
+      <Header path="/manage/trips/add" title="الرحلات" />
       {loading ? (
         <Loader />
       ) : (
@@ -93,8 +93,10 @@ const Trips = () => {
                 date={trip.trip_delivery_date}
                 orders={trip?.orders_ids}
                 driverName={trip.driver_name}
+                driverId={trip?.driver_id}
                 tripId={trip.id}
                 showModal={handleOpenModal}
+                setDriverId={setSelectedDriverId}
               />
             );
           })}
@@ -113,21 +115,23 @@ const Trips = () => {
         <div className={stl.modalWrapper}>
           <strong>السائقين: </strong>
           <div className={stl.radioGroup}>
-            {drivers.map((driver, i) => {
-              return (
-                <label key={i}>
-                  <input
-                    type="radio"
-                    name="driver"
-                    value={driver.id}
-                    onChange={handleDriverChange}
-                    checked={driver.id == selectedDriverId}
-                  />
-                  <span></span>
-                  {driver.full_name}
-                </label>
-              );
-            })}
+            <div className={stl.radioGroupWrapper}>
+              {drivers.map((driver, i) => {
+                return (
+                  <label key={i}>
+                    <input
+                      type="radio"
+                      name="driver"
+                      value={driver.id}
+                      onChange={handleDriverChange}
+                      checked={driver.id == selectedDriverId}
+                    />
+                    <span></span>
+                    {driver.full_name}
+                  </label>
+                );
+              })}
+            </div>
             <MainBtn
               loading={postLoading}
               onClick={handleAssignDriver}

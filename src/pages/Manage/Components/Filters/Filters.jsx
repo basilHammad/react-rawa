@@ -3,10 +3,10 @@ import SelectGroup from "../../../../Components/SelectGroup/SelectGroup";
 import stl from "./Filters.module.css";
 
 const options = [
-  { id: 1, text: "الاحدث", value: "-transaction_date" },
-  { id: 2, text: "الاقدم", value: "transaction_date" },
-  { id: 3, text: "الاعلى قيمة", value: "-total_price" },
-  { id: 4, text: "الاقل قيمة", value: "total_price" },
+  { id: 1, text: "ترتيب حسب: الاحدث", value: "-transaction_date" },
+  { id: 2, text: "ترتيب حسب: الاقدم", value: "transaction_date" },
+  { id: 3, text: "ترتيب حسب: الاعلى قيمة", value: "-total_price" },
+  { id: 4, text: "ترتيب حسب: الاقل قيمة", value: "total_price" },
 ];
 const Filters = ({
   onRadioChange,
@@ -17,6 +17,15 @@ const Filters = ({
   return (
     <div className={stl.filters}>
       <div className={stl.byDate}>
+        <Radio
+          name="all"
+          value=""
+          onChange={(e) => {
+            onRadioChange(e.target.value);
+          }}
+          checked={selectedFilter === "" ? true : false}
+          label="الكل"
+        />
         <Radio
           name="by-date"
           value="1"
@@ -49,7 +58,7 @@ const Filters = ({
         <SelectGroup
           name="by-value"
           id="by-value"
-          firstOption="الترتيب حسب"
+          firstOption="ترتيب حسب: الكل"
           options={options}
           value={selectedSort}
           onChange={(e) => onSelectChange(e.target.value)}

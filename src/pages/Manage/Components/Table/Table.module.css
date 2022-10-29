@@ -76,6 +76,10 @@
     /* width: fit-content; */
   }
 
+  .cell:first-child {
+    min-width: 50px;
+  }
+
   .row.header .cell {
     height: 50px;
     background-color: #f6d398;
@@ -109,6 +113,7 @@
 
   .control .iconWrapper:first-child {
     height: 50px;
+    min-height: 50px;
     background-color: var(--blue);
   }
 }

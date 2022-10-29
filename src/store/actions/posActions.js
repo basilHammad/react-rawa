@@ -20,7 +20,8 @@ export const getProviderItems = () => async (dispatch) => {
 };
 
 export const createOrder =
-  (selectedItems, type, cb, note, id, paymentType) => async (dispatch) => {
+  (selectedItems, type, cb, note, id, paymentType, days, from, to) =>
+  async (dispatch) => {
     dispatch(setIsPostLoading(true));
     try {
       const updatedSelectedItems = selectedItems.map((item) => ({
@@ -28,12 +29,27 @@ export const createOrder =
         qty: item.qty,
       }));
 
+      if ((from || to) && !days.length) {
+        days = [
+          "الاحد",
+          "الاثنين",
+          "الثلاثاء",
+          "الجمعة",
+          "الخميس",
+          "الاربعاء",
+          "السبت",
+        ];
+      }
+
       const data = {
         order_products: updatedSelectedItems,
         app_source: 1,
         type: type,
         note: note ? note : "",
         payment_type: paymentType,
+        days: days,
+        from: from,
+        to: to,
       };
 
       if (id) data.customer_id = id;

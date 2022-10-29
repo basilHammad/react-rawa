@@ -14,7 +14,7 @@ const Order = ({
   checked,
 }) => {
   return !selectable ? (
-    <div className={stl.wrapper}>
+    <Link to={`/manage/orders/edit/${orderId}`} className={stl.wrapper}>
       <span className={stl.num}>{num}</span>
       <div className={stl.details}>
         <strong className={stl.title}>{name}</strong>
@@ -37,7 +37,7 @@ const Order = ({
           <MdLocationOn size={22} />
         </Link>
       ) : null}
-    </div>
+    </Link>
   ) : (
     <label className={`${stl.wrapper} ${checked ? stl.checked : ""}`}>
       <span className={stl.num}>{num}</span>

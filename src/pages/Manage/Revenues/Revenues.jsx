@@ -24,7 +24,7 @@ const Revenues = () => {
   const revenues = useSelector((state) => state.revenues.revenues);
   const totalPages = useSelector((state) => state.revenues.totalPages);
 
-  const [filterBy, setFilterBy] = useState(null);
+  const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [page, setPage] = useState(1);
 
@@ -44,13 +44,13 @@ const Revenues = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
-    dispatch(getRevenues(page));
+    // dispatch(getRevenues(page));
   }, [isLoggedin, navigate, page]);
 
   useEffect(() => {
-    if (!filterBy && !sortBy) return;
+    // if (!filterBy && !sortBy) return;
     dispatch(getRevenues(page, filterBy, sortBy));
-  }, [filterBy, sortBy]);
+  }, [filterBy, sortBy, page]);
 
   return isAdmin ? (
     <Layout manage>

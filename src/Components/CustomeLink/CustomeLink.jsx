@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import stl from "./CustomeLink.module.css";
 
-const CustomeLink = ({ text, to, className }) => {
+const CustomeLink = ({ text, to, className, icon }) => {
   return (
     <NavLink
       className={({ isActive }) =>
@@ -11,7 +11,10 @@ const CustomeLink = ({ text, to, className }) => {
       }
       to={to}
     >
-      {text}
+      <div>
+        {icon && <img src={icon} />}
+        {text}
+      </div>
     </NavLink>
   );
 };

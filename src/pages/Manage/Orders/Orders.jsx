@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../../Components/Layout/Layout";
 import Login from "../../Login/Login";
 import Header from "../Components/Header/Header";
-import { getOrders } from "../../../store/actions/ordersActions";
+import { getOrder, getOrders } from "../../../store/actions/ordersActions";
 
 import stl from "./Orders.module.css";
 import Order from "../../../Components/Order/Order";
@@ -31,6 +31,7 @@ const Orders = () => {
     body.style.backgroundColor = "#fbfcfd";
 
     dispatch(getOrders(page));
+    // dispatch(getOrder());
   }, [isLoggedIn, navigate, page]);
 
   return isAdmin ? (
@@ -44,12 +45,13 @@ const Orders = () => {
             return (
               <Order
                 key={order.id}
+                orderId={order.id}
                 name={order?.name}
                 products={order?.order_products}
                 num={i + 1}
                 latLng={{
-                  lat: order?.address?.location_lat,
-                  lng: order?.address?.location_lng,
+                  lat: order?.customer?.location_lat,
+                  lng: order?.customer?.location_lng,
                 }}
               />
             );

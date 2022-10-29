@@ -11,8 +11,6 @@ const Breadcrumbs = () => {
       {breadcrumbs.map(({ match, breadcrumb }, i) => {
         let pathNameAr;
 
-        // console.log("breadcrumb.key", breadcrumb.key);
-
         if (breadcrumb.key === "/") pathNameAr = "الرئيسية";
         if (breadcrumb.key === "/manage") pathNameAr = "ادارة المحل";
         if (breadcrumb.key === "/pos/direct") pathNameAr = "مباشر";
@@ -41,11 +39,19 @@ const Breadcrumbs = () => {
         if (breadcrumb.key === "/manage/suppliers") pathNameAr = "الموردين";
         if (breadcrumb.key === "/manage/orders") pathNameAr = "الطلبات";
         if (breadcrumb.key === "/manage/trips") pathNameAr = "الرحلات";
-        ///
+        if (breadcrumb.key === "/manage/trips/add") pathNameAr = "اضافة رحلة";
+        if (breadcrumb.key === "/manage/edit-password")
+          pathNameAr = "تعديل كلمة السر";
+        if (breadcrumb.key.includes("/manage/orders/edit"))
+          pathNameAr = "تعديل طلب";
+
+        /* */
+
         if (breadcrumb.key === "/pos") return;
         if (breadcrumb.key === "/manage/revenues/edit") return;
         if (breadcrumb.key === "/manage/expenses/edit") return;
         if (breadcrumb.key === "/manage/purchases/edit") return;
+        if (breadcrumb.key === "/manage/orders/edit") return;
 
         return (
           <span key={match.pathname}>

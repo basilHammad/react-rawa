@@ -1,9 +1,10 @@
 .radioGroup {
   display: flex;
   flex-direction: column;
+  height: 90%;
 }
 
-.radioGroup > label {
+.radioGroupWrapper > label {
   display: flex;
   align-items: center;
   /* justify-content: center; */
@@ -20,12 +21,12 @@
   user-select: none;
 }
 
-.radioGroup > label > input {
+.radioGroupWrapper > label > input {
   visibility: hidden;
   position: absolute;
 }
 
-.radioGroup > label > span {
+.radioGroupWrapper > label > span {
   position: absolute;
   right: 0;
   width: 20px;
@@ -34,13 +35,14 @@
   border: 1px solid #154f9c;
 }
 
-.radioGroup > label > input[type="radio"]:checked + span {
+.radioGroupWrapper > label > input[type="radio"]:checked + span {
   border: 5px solid #154f9c;
 }
 
 .modalWrapper {
   height: 100%;
   position: relative;
+  /* background-color: red; */
 }
 
 .submitBtn {

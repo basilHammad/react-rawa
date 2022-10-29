@@ -177,7 +177,7 @@ const ExpenseReport = () => {
                     <ReportsCard
                       key={i}
                       color={+item?.total_price > 0 ? "blue" : "red"}
-                      date={item?.transaction_date}
+                      date={item?.date_view}
                       recordType={item.description}
                       recordDate="20/20/2020"
                       recordNum={item?.bond_no}

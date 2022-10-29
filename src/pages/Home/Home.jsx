@@ -22,11 +22,18 @@ const Home = () => {
   return (
     <Layout>
       <div className={stl.wrapper}>
+        <h3>اختر الخدمة</h3>
         <Link className={stl.mainLink} to="/pos/direct">
-          المبيعات
+          <div>
+            <img src="/assets/images/shop.svg" alt="" />
+            المبيعات
+          </div>
         </Link>
         <Link className={stl.mainLink} to="/manage">
-          ادارة المحل
+          <div>
+            <img src="/assets/images/manage.svg" alt="" />
+            ادارة المحل
+          </div>
         </Link>
       </div>
     </Layout>

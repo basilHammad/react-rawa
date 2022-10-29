@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import stl from "./Trip.module.css";
 
-const Trip = ({ name, total, date, orders, driverName, tripId, showModal }) => {
+const Trip = ({
+  name,
+  total,
+  date,
+  orders,
+  driverName,
+  tripId,
+  showModal,
+  driverId,
+  setDriverId,
+}) => {
   const newDate = date ? new Date(date) : null;
 
   return (
@@ -32,8 +42,11 @@ const Trip = ({ name, total, date, orders, driverName, tripId, showModal }) => {
           مشاهدة
         </Link>
         <button
-          onClick={() => showModal(tripId)}
-          disabled={driverName ? true : false}
+          onClick={() => {
+            showModal(tripId);
+            setDriverId(driverId);
+          }}
+          // disabled={driverName ? true : false}
         >
           ربط
         </button>

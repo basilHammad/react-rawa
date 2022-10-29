@@ -9,6 +9,13 @@
   flex-grow: 0;
 }
 
+.header > h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 @media (max-width: 1024px) {
   .wrapper {
     flex-wrap: nowrap;

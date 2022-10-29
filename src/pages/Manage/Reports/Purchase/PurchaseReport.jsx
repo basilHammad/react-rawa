@@ -78,10 +78,10 @@ const PurchaseReport = () => {
         <h2>لا يوجد نتائج</h2>
       ) : Object.entries(data).length ? (
         <>
-          <div className={stl.titleBox}>
+          {/* <div className={stl.titleBox}>
             <span>الرصيد المدور</span>
             <strong>{oldBalance} دينار</strong>
-          </div>
+          </div> */}
           {Object.entries(data).map((item, i) => {
             const year = item[0];
             const data = item[1];
@@ -94,7 +94,7 @@ const PurchaseReport = () => {
                     <ReportsCard
                       key={i}
                       color={+item?.total_price > 0 ? "blue" : "red"}
-                      date={item?.transaction_date}
+                      date={item?.date_view}
                       recordType={item.description}
                       recordDate="20/20/2020"
                       recordNum={item?.bond_no}

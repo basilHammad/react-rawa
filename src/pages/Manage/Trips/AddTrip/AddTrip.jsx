@@ -73,7 +73,7 @@ const AddTrip = () => {
   }, [isLoggedIn, navigate, page]);
 
   return isAdmin ? (
-    <Layout manage hideBeardcrumb>
+    <Layout manage>
       <Header
         isModal
         title="اضافة رحلة"

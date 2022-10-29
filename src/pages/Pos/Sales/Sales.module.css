@@ -2,7 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--base) * 5);
-  margin-bottom: calc(var(--base) * 5);
+  /* margin-bottom: calc(var(--base) * 5); */
+  margin-bottom: 100px;
 }
 
 .submit {

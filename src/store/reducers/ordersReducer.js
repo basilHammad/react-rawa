@@ -3,6 +3,7 @@ import * as types from "../types";
 const initialState = {
   orders: [],
   totalPages: "",
+  orderDetails: {},
 };
 
 const ordersReducer = (state = initialState, { type, payload }) => {
@@ -16,6 +17,11 @@ const ordersReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         totalPages: payload,
+      };
+    case types.ORDER_DETAILS:
+      return {
+        ...state,
+        orderDetails: payload,
       };
 
     default:

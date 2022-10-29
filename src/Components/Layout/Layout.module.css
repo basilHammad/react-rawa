@@ -111,6 +111,19 @@
   gap: calc(var(--base) * 3);
   height: 50px;
   padding: 0 calc(var(--base) * 4);
+  border-bottom: 1px solid #e1dde7;
+}
+
+.menuContent ul > li img {
+  width: 22px;
+}
+
+.menuContent ul > li > a,
+.menuContent ul > li > button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
 }
 
 .menuContent ul > li > * {

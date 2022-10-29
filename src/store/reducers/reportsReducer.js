@@ -61,7 +61,6 @@ const reportsReducer = (state = initialState, { type, payload }) => {
       };
 
     case types.GET_EXPENSE_REPORT:
-      console.log("GET_EXPENSE_REPORT");
       return {
         ...state,
         expenseReport: payload,

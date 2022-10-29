@@ -23,7 +23,7 @@ const Expenses = () => {
 
   const expenses = useSelector((state) => state.expenses.expenses);
 
-  const [filterBy, setFilterBy] = useState(null);
+  const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [page, setPage] = useState(1);
 
@@ -44,13 +44,13 @@ const Expenses = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
-    dispatch(getExpenses(page));
+    // dispatch(getExpenses(page));
   }, [isLoggedin, navigate, page]);
 
   useEffect(() => {
-    if (!filterBy && !sortBy) return;
+    // if (!filterBy && !sortBy) return;
     dispatch(getExpenses(page, filterBy, sortBy));
-  }, [filterBy, sortBy]);
+  }, [filterBy, sortBy, page]);
 
   return isAdmin ? (
     <Layout manage>

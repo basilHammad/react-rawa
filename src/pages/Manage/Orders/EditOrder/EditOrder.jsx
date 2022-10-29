@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import Card from "../../../Components/Card/Card";
-import ClientPopup from "../../../Components/ClientPopup/ClientPopup";
-import Layout from "../../../Components/Layout/Layout";
-import Loader from "../../../Components/Loader/Loader";
-import MainBtn from "../../../Components/MainBtn/MainBtn";
-import Modal from "../../../Components/Modal/Modal";
-import Navigation from "../../../Components/Navigation/Navigation";
-import SummaryPopup from "../../../Components/SummaryPopup/SummaryPopup";
-import { getClients, getCodes } from "../../../store/actions/commonActions";
-import {
-  createOrder,
-  getProviderItems,
-} from "../../../store/actions/posActions";
+import Card from "../../../../Components/Card/Card";
+import ClientPopup from "../../../../Components/ClientPopup/ClientPopup";
+import Layout from "../../../../Components/Layout/Layout";
+import Loader from "../../../../Components/Loader/Loader";
+import MainBtn from "../../../../Components/MainBtn/MainBtn";
+import Modal from "../../../../Components/Modal/Modal";
+import Login from "../../../Login/Login";
+import SummaryPopup from "../../../../Components/SummaryPopup/SummaryPopup";
+import { getClients, getCodes } from "../../../../store/actions/commonActions";
+import { editOrder, getOrder } from "../../../../store/actions/ordersActions";
+import { getProviderItems } from "../../../../store/actions/posActions";
 
-import stl from "./Orders.module.css";
-
-const links = [
-  { text: "مباشر", path: "/pos/direct" },
-  { text: "طلبات", path: "/pos/orders" },
-];
+import stl from "./EditOrders.module.css";
 
 const deleveryNote = (days, from, to) => {
   if (!days.length && !from && !to) return ``;
@@ -29,14 +22,18 @@ const deleveryNote = (days, from, to) => {
   if (!days.length && !from) return `الاستلام قبل الساعة ${to}`;
   if (!days.length && !to) return `الاستلام بعد الساعة ${to}`;
   if (!from && !to) return `ايام الاستلام :${days.join(" - ")}`;
+  if (!from && !to && days.length === 6) return `يوميا`;
 
-  return `ايام الاستلام :${days.join(
-    " - "
-  )} من الساعة ${from} الى الساعة : ${to}`;
+  return `يوميا من الساعة ${from} الى الساعة : ${to}`;
 };
 
-const Orders = () => {
+const EditOrder = () => {
   const codes = useSelector((state) => state.common.codes);
+  const order = useSelector((state) => state.orders.orderDetails);
+  const products = useSelector((state) => state.pos.items);
+  const loading = useSelector((state) => state.common.isLoading);
+  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
 
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
@@ -50,11 +47,9 @@ const Orders = () => {
   const [paymentTypeError, setPaymentTypeError] = useState("");
   const [billNum, setBillNum] = useState("");
 
-  const products = useSelector((state) => state.pos.items);
-  const loading = useSelector((state) => state.common.isLoading);
-  const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
 
   const closeSummaryModal = (e) => {
     if (e.target !== e.currentTarget) return;
@@ -108,14 +103,15 @@ const Orders = () => {
     }
 
     dispatch(
-      createOrder(
+      editOrder(
+        params.id,
         selectedItems,
         2,
         () => {
           setShowSummaryModal(false);
           setSelectedItems([]);
           setPaymentType("");
-          dispatch(getCodes());
+          navigate("/manage/orders");
         },
         deleveryNote(selectedDay, fromHour, toHour),
         clientId,
@@ -134,10 +130,12 @@ const Orders = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+    if (!params.id) navigate("/manage/orders");
 
     if (!products.length) dispatch(getProviderItems());
     if (!Object.keys(codes).length) dispatch(getCodes());
     dispatch(getClients(1, null, null, 10000));
+    dispatch(getOrder(params.id));
   }, [isLoggedin, dispatch, navigate]);
 
   useEffect(() => {
@@ -145,10 +143,31 @@ const Orders = () => {
     setBillNum(codes.tabular_order);
   }, [codes]);
 
-  return (
-    <Layout>
-      <Navigation links={links} />
+  useEffect(() => {
+    if (!Object.keys(order).length || !products.length) return;
+    const selectedItems = order.order_products.map((product) => {
+      return {
+        discount: product.discount,
+        id: product.provider_product_id,
+        img: "",
+        measurement: "",
+        name: product.product_name,
+        price: product.price,
+        qty: product.qty,
+      };
+    });
+    setSelectedItems(selectedItems);
+    setClientName(order?.full_name);
+    setClientId(order?.customer_id);
+    setPaymentType(order?.payment_type);
+    setBillNum(order?.code);
+    setSelectedDay(order?.days);
+    setFromHour(order?.from);
+    setToHour(order?.to);
+  }, [order, products]);
 
+  return isAdmin ? (
+    <Layout manage>
       <div className={stl.cardsWrapper}>
         {!loading ? (
           products.map((product) => (
@@ -156,9 +175,9 @@ const Orders = () => {
               key={product.id}
               item={product}
               handleItemSelect={handleItemSelect}
-              selectedItem={selectedItems.find(
-                (item) => product.id === item.id
-              )}
+              selectedItem={selectedItems.find((item) => {
+                return product.id === item.id;
+              })}
             />
           ))
         ) : (
@@ -203,7 +222,9 @@ const Orders = () => {
         />
       </Modal>
     </Layout>
+  ) : (
+    <Login validateAdmin />
   );
 };
 
-export default Orders;
+export default EditOrder;

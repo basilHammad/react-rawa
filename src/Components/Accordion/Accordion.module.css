@@ -7,7 +7,7 @@
   box-shadow: 0px 3px 6px #00000029;
   flex-grow: 1;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   border-radius: calc(var(--base) * 2);
   color: var(--text-gray);
@@ -15,6 +15,29 @@
   padding: 0 20px;
   margin-bottom: calc(var(--base) * 2);
   cursor: pointer;
+  position: relative;
+}
+
+.accordionHead::before {
+  content: "";
+  width: 6px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background-color: #00fab8;
+}
+
+.headWrapper {
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headWrapper > img {
+  width: 26px;
 }
 
 .accordionBody {

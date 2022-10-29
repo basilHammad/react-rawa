@@ -29,7 +29,7 @@ const Layout = ({ children, hideHeader, manage, hideBeardcrumb }) => {
     "/",
     "/pos/direct",
     "/pos/orders",
-    "/edit-password",
+    // "/edit-password",
     "/login",
   ];
 
@@ -79,24 +79,32 @@ const Layout = ({ children, hideHeader, manage, hideBeardcrumb }) => {
 
               <ul>
                 <li>
-                  <MdModeEditOutline size={22} />
-                  <Link to="/edit-password">تعديل كلمة السر</Link>
+                  <Link to="/manage/edit-password">
+                    <img src="/assets/images/global.svg" />
+                    تعديل كلمة السر
+                  </Link>
                 </li>
                 <li>
-                  <MdPlaylistAdd size={22} />
-                  <Link to="/manage/suppliers">الموردين</Link>
+                  <Link to="/manage/suppliers">
+                    <img src="/assets/images/suplayers.svg" />
+                    الموردين
+                  </Link>
                 </li>
                 <li>
-                  <MdPlaylistAdd size={22} />
+                  <img src="/assets/images/people.svg" />
                   <Link to="/manage/clients">العملاء</Link>
                 </li>
                 <li>
-                  <MdPlaylistAdd size={22} />
-                  <Link to="/manage/employees">الموظفين</Link>
+                  <Link to="/manage/employees">
+                    <img src="/assets/images/employees.svg" />
+                    الموظفين
+                  </Link>
                 </li>
                 <li>
-                  <MdOutlineLogout size={22} />
-                  <button onClick={handleLogout}>تسجيل الخروج</button>
+                  <button onClick={handleLogout}>
+                    <img src="/assets/images/logout.svg" />
+                    تسجيل الخروج
+                  </button>
                 </li>
               </ul>
             </div>

@@ -68,6 +68,7 @@ const ClientPopup = ({
   setClientName,
   clientId,
   setClientId,
+  clientName,
 }) => {
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const clients = useSelector((state) => state.common.clients);
@@ -78,9 +79,11 @@ const ClientPopup = ({
     location: client.address_description,
   }));
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(clientName ? clientName : "");
   const [options, setOptions] = useState(updatedClients);
-  const [selectedName, setSelectedName] = useState("");
+  const [selectedName, setSelectedName] = useState(
+    clientName ? clientName : ""
+  );
   const [canEditFields, setCanEditFields] = useState(false);
   const [fieldsValues, setFieldsValues] = useState({
     name: "",

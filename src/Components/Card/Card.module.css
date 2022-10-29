@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   border: 1px solid #e7e7e7;
   border-radius: calc(var(--base) * 3);
   padding: calc(var(--base) * 2);
@@ -25,6 +26,7 @@
   display: block;
   margin-top: calc(var(--base) * 4);
   color: var(--text-gray);
+  text-align: center;
 }
 
 .btnsWrapper {

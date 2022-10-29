@@ -25,7 +25,7 @@ const Purchases = () => {
 
   const dispatch = useDispatch();
 
-  const [filterBy, setFilterBy] = useState(null);
+  const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [page, setPage] = useState(1);
 
@@ -45,13 +45,13 @@ const Purchases = () => {
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
 
-    dispatch(getPurchases(page));
+    // dispatch(getPurchases(page));
   }, [isLoggedin, navigate, page]);
 
   useEffect(() => {
-    if (!filterBy && !sortBy) return;
+    // if (!filterBy && !sortBy) return;
     dispatch(getPurchases(page, filterBy, sortBy));
-  }, [filterBy, sortBy]);
+  }, [filterBy, sortBy, page]);
 
   return isAdmin ? (
     <Layout manage>

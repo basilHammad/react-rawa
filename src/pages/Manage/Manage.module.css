@@ -6,7 +6,55 @@
 }
 
 .wrapper > * {
-  flex: 0 0 48%;
+  flex: 48%;
+}
+
+.link {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.link::before {
+  content: "";
+  width: 6px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+}
+
+.link.yellow::before {
+  background-color: #e3a000;
+}
+
+.link.green::before {
+  background-color: #00bc3a;
+}
+
+.link.blue::before {
+  background-color: #1a4fb7;
+}
+
+.link.pink::before {
+  background-color: #f500a9;
+}
+
+.link.lightBlue::before {
+  background-color: #00c7f7;
+}
+
+.link > div {
+  min-width: 100px;
+}
+
+.link img {
+  width: 26px;
 }
 
 .accordionLink {
