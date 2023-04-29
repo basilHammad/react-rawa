@@ -1,0 +1,22 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wrapper > * {
+  margin-bottom: 20px;
+}
+
+.btn {
+  position: unset;
+  margin-top: auto;
+}
+
+.error {
+  width: 100%;
+  margin-top: -15px;
+  padding-right: 15px;
+  font-size: 14px;
+  color: var(--text-red);
+}

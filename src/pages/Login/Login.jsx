@@ -11,7 +11,7 @@ import { login } from "../../store/actions/authActions";
 import stl from "./Login.module.css";
 
 const Login = ({ validateAdmin }) => {
-  const [values, setValues] = useState({ userName: "", password: "123123" });
+  const [values, setValues] = useState({ userName: "", password: "" });
   const [errors, setErrors] = useState({
     userName: "",
     password: "",
@@ -20,6 +20,7 @@ const Login = ({ validateAdmin }) => {
 
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const loading = useSelector((state) => state.auth.isLoading);
+  const postLoading = useSelector((state) => state.common.isPostLoading);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,40 +34,14 @@ const Login = ({ validateAdmin }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!user.username && validateAdmin) {
-      dispatch(setIsAdmin(false));
-      dispatch(setIsloggedin(false));
-      localStorage.removeItem("userToken");
-      localStorage.removeItem("user");
 
-      return;
-    }
-
-    const errors = validate(
-      validateAdmin ? user.username : values.userName,
-      values.password
-    );
+    const errors = validate(values.userName, values.password);
 
     if (Object.keys(errors).length) {
       setErrors((pre) => ({ ...pre, ...errors }));
       return;
     }
 
-    if (validateAdmin) {
-      dispatch(
-        login(
-          user.username,
-          values.password,
-          () => {
-            navigate(location.pathname);
-            dispatch(setIsAdmin(true));
-          },
-          setErrors
-        )
-      );
-
-      return;
-    }
     dispatch(
       login(values.userName, values.password, () => navigate("/"), setErrors)
     );
@@ -129,7 +104,7 @@ const Login = ({ validateAdmin }) => {
           <MainBtn
             onClick={handleLogin}
             className={stl.submit}
-            loading={loading}
+            loading={postLoading}
           >
             {validateAdmin ? "استمرار" : "تسجيل الدخول"}
           </MainBtn>

@@ -26,6 +26,8 @@ const EditPassword = () => {
 
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -38,6 +40,11 @@ const EditPassword = () => {
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
   }, [isLoggedin, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("change-password")) navigate("/unauthorized");
+  }, [permissions]);
 
   const validate = () => {
     const errors = {};
@@ -96,7 +103,7 @@ const EditPassword = () => {
     };
   }, []);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         {success ? (
@@ -150,8 +157,6 @@ const EditPassword = () => {
         )}
       </div>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

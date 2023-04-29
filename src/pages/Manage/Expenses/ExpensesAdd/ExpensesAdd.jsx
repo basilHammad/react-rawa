@@ -39,6 +39,7 @@ const ExpensesAdd = () => {
   const suppliers = useSelector((state) => state.expenses.suppliers);
   const employees = useSelector((state) => state.expenses.employees);
   const postLoading = useSelector((state) => state.common.isPostLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const updatedClients = clients.map((client) => ({
     name: client.user_name,
@@ -164,8 +165,14 @@ const ExpensesAdd = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+
     dispatch(getExpensesCategory());
   }, [isLoggedin, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("add-expenses")) navigate("/unauthorized");
+  }, [permissions]);
 
   useEffect(() => {
     if (!values.expenseCat) return;
@@ -215,7 +222,7 @@ const ExpensesAdd = () => {
     }
   }, [values.beneficiaryType, suppliers, clients, employees]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         <h2>اضافة مصروف جديد</h2>
@@ -339,8 +346,6 @@ const ExpensesAdd = () => {
         </MainBtn>
       </div>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

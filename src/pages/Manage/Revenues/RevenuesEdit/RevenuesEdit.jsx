@@ -41,6 +41,7 @@ const RevenuesEdit = () => {
 
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const loading = useSelector((state) => state.auth.isLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const [date, setDate] = useState(new Date());
   const [values, setValues] = useState({
@@ -145,13 +146,17 @@ const RevenuesEdit = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
-
     dispatch(getClients(1, null, null, 10000));
     dispatch(getRevenueCategory());
 
     if (!params.id) return;
     dispatch(getRevenueById(params.id));
   }, [isLoggedin, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions.includes("edit-revenues")) navigate("/unauthorized");
+  }, [permissions]);
 
   useEffect(() => {
     setOptions(updatedClients);
@@ -187,7 +192,7 @@ const RevenuesEdit = () => {
     if (name || selectedName) setErrors((pre) => ({ ...pre, name: "" }));
   }, [name, selectedName]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       {loading ? (
         <Loader />
@@ -278,8 +283,6 @@ const RevenuesEdit = () => {
         </div>
       )}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

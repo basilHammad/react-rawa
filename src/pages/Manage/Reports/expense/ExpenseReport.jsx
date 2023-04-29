@@ -105,7 +105,7 @@ const ExpenseReport = () => {
     };
   }, []);
 
-  return isAdmin ? (
+  return (
     <Layout hideBeardcrumb manage>
       <Header
         hideButton
@@ -199,8 +199,6 @@ const ExpenseReport = () => {
         </>
       ) : null}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

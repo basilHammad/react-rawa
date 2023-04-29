@@ -29,8 +29,26 @@ import RevenueReport from "./pages/Manage/Reports/Revenue/RevenueReport";
 import ExpenseReport from "./pages/Manage/Reports/expense/ExpenseReport";
 import PurchaseReport from "./pages/Manage/Reports/Purchase/PurchaseReport";
 import EditOrder from "./pages/Manage/Orders/EditOrder/EditOrder";
+import ScheduledTrips from "./pages/Manage/ScheduledTrips/ScheduledTrips";
+import ScheduledTrip from "./pages/Manage/ScheduledTrip/ScheduledTrip";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getUserPermission } from "./store/actions/authActions";
+import Unauthorized from "./pages/Unauthorized/Unauthorized";
+import Products from "./pages/Manage/Products/Products";
+import AddProduct from "./pages/Manage/Products/AddProduct/AddProduct";
+import EditProduct from "./pages/Manage/Products/EditProduct/EditProduct";
 
 function App() {
+  const dispatch = useDispatch();
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
+  useEffect(() => {
+    if (permissions) return;
+    dispatch(getUserPermission());
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -42,6 +60,8 @@ function App() {
         <Route path="/manage/orders" element={<OrdersList />} />
         <Route path="/manage/orders/edit/:id" element={<EditOrder />} />
         <Route path="/manage/trips" element={<Trips />} />
+        <Route path="/manage/scheduledTrips" element={<ScheduledTrips />} />
+        <Route path="/manage/scheduledTrip/:id" element={<ScheduledTrip />} />
         <Route path="/manage/trip/:id" element={<Trip />} />
         <Route path="/manage/trips/add" element={<TripAdd />} />
         <Route path="/manage/revenues" element={<Revenues />} />
@@ -57,6 +77,10 @@ function App() {
         <Route path="/manage/suppliers" element={<Suppliers />} />
         <Route path="/manage/clients" element={<Clients />} />
         <Route path="/manage/employees" element={<Employees />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/manage/products" element={<Products />} />
+        <Route path="/manage/products/add" element={<AddProduct />} />
+        <Route path="/manage/products/edit/:id" element={<EditProduct />} />
         <Route
           path="/manage/account-statement"
           element={<AccountStatement />}
@@ -74,10 +98,6 @@ function App() {
 export default App;
 
 /**
- * [*] created orders from pos dose not show in orders listing
- * [*] last created trip should come first
- * [*] fix orders style bug
- * [*] trip_delivery_date
- * [] pills number should not reset on delete
- * [] add search by type on employees
+ * fixed bugs
+ * 4
  */

@@ -31,6 +31,7 @@ const Suppliers = () => {
   const suppliers = useSelector((state) => state.common.suppliers);
   const totalPages = useSelector((state) => state.common.suppliersTotalPages);
   const postLoading = useSelector((state) => state.common.isPostLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const dispatch = useDispatch();
 
@@ -172,7 +173,12 @@ const Suppliers = () => {
     dispatch(getSuppliers(page, searchValues.name, searchValues.phone));
   }, [isLoggedin, navigate, page]);
 
-  return isAdmin ? (
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-suppliers")) navigate("/unauthorized");
+  }, [permissions]);
+
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         <Header
@@ -180,6 +186,7 @@ const Suppliers = () => {
           path="/manage/Purchases/add"
           isModal
           onClick={() => setShowModal(true)}
+          hideButton={!permissions?.includes("add-suppliers")}
         />
         <Search
           name={searchValues.name}
@@ -203,6 +210,8 @@ const Suppliers = () => {
               path={"/manage/purchases/edit/"}
               handleModalEdit={handleModalEdit}
               modalEdit
+              canDelete={permissions?.includes("delete-suppliers")}
+              canEdit={permissions?.includes("edit-suppliers")}
             />
             {totalPages > 1 && (
               <Pagination
@@ -268,8 +277,6 @@ const Suppliers = () => {
         </MainBtn>
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

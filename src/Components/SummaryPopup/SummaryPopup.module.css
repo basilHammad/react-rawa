@@ -23,6 +23,10 @@
   font-weight: bold;
 }
 
+.header.row .cell {
+  color: black;
+}
+
 .row {
   display: flex;
   justify-content: space-between;

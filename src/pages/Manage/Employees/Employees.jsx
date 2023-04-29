@@ -40,6 +40,7 @@ const Employees = () => {
   const totalPages = useSelector((state) => state.common.employeesTotalPages);
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const user = useSelector((state) => state.auth.user);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const dispatch = useDispatch();
 
@@ -248,7 +249,12 @@ const Employees = () => {
     );
   }, [isLoggedin, navigate, page]);
 
-  return isAdmin ? (
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-employees")) navigate("/unauthorized");
+  }, [permissions]);
+
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         <Header
@@ -256,6 +262,7 @@ const Employees = () => {
           path="/manage/Purchases/add"
           isModal
           onClick={() => setShowModal(true)}
+          hideButton={!permissions?.includes("add-employees")}
         />
         <Search
           name={searchValues.name}
@@ -290,6 +297,8 @@ const Employees = () => {
               path={"/manage/purchases/edit/"}
               handleModalEdit={handleModalEdit}
               modalEdit
+              canDelete={permissions?.includes("delete-employees")}
+              canEdit={permissions?.includes("edit-employees")}
             />
             {totalPages > 1 && (
               <Pagination
@@ -367,8 +376,6 @@ const Employees = () => {
         </MainBtn>
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

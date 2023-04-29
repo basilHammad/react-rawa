@@ -22,6 +22,8 @@ const Table = ({
   discountTotal,
   totalTotal,
   vatTotal,
+  canEdit,
+  canDelete,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [isValidated, setIsValidated] = useState(false);
@@ -53,31 +55,37 @@ const Table = ({
 
   return (
     <>
-      <div className={stl.bgWrapper}>
+      <div className={`${stl.bgWrapper} ${!canEdit ? stl.noControls : ""}`}>
         <div className={stl.table}>
           <div className={`${stl.row} ${stl.header}`}>
-            <div className={`${stl.cell} m-show`}></div>
+            {canDelete && (
+              <div className={`${stl.cell} ${stl.delete} m-show`}></div>
+            )}
             {titles.map((title, i) => (
               <div key={i} className={stl.cell}>
                 {title}
               </div>
             ))}
-            <div className={`${stl.cell} ${stl.control} m-hide`}>
-              <div className={stl.controlsWrapper}>
-                <MdSettings size={22} className={stl.settingsIcon} />
+            {(canDelete || canEdit) && (
+              <div className={`${stl.cell} ${stl.control}  m-hide`}>
+                <div className={stl.controlsWrapper}>
+                  <MdSettings size={22} className={stl.settingsIcon} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {data.map((row, i) => {
             return (
               <div key={i} className={stl.row}>
-                <div className={`${stl.cell} m-show`}>
-                  <MdDangerous
-                    onClick={() => handleDelete(row.id)}
-                    size={22}
-                    color="#dc3545"
-                  />
-                </div>
+                {canDelete && (
+                  <div className={`${stl.cell} ${stl.delete} m-show`}>
+                    <MdDangerous
+                      onClick={() => handleDelete(row.id)}
+                      size={22}
+                      color="#dc3545"
+                    />
+                  </div>
+                )}
                 {Object.entries(row).map((cell, i) => {
                   const key = cell[0];
                   const value = cell[1];
@@ -99,6 +107,14 @@ const Table = ({
                     );
                   }
 
+                  if (key === "icon") {
+                    return (
+                      <div key={i} className={stl.cell}>
+                        <img className={stl.icon} src={value} alt="" />
+                      </div>
+                    );
+                  }
+
                   return (
                     <div key={i} className={stl.cell}>
                       {value ? value : "-"}
@@ -106,45 +122,54 @@ const Table = ({
                   );
                 })}
 
-                <div className={`${stl.cell} ${stl.control} m-hide`}>
-                  <div className={stl.controlsWrapper}>
-                    {!purchase ? (
-                      <>
-                        {!modalEdit ? (
-                          <Link to={path + row.id} className={stl.iconWrapper}>
-                            <MdModeEditOutline size={22} color="#0d83f8" />
-                          </Link>
-                        ) : (
+                {(canDelete || canEdit) && (
+                  <div className={`${stl.cell} ${stl.control} m-hide`}>
+                    <div className={stl.controlsWrapper}>
+                      {!purchase ? (
+                        <>
+                          {!canEdit ? null : !modalEdit ? (
+                            <Link
+                              to={path + row.id}
+                              className={stl.iconWrapper}
+                            >
+                              <MdModeEditOutline size={22} color="#0d83f8" />
+                            </Link>
+                          ) : (
+                            <button
+                              onClick={() => handleModalEdit(row.id)}
+                              className={stl.iconWrapper}
+                            >
+                              <MdModeEditOutline size={22} color="#0d83f8" />
+                            </button>
+                          )}
+                          {canDelete && (
+                            <MdDangerous
+                              onClick={() => handleDelete(row.id)}
+                              size={22}
+                              color="#dc3545"
+                            />
+                          )}
+                        </>
+                      ) : (
+                        <>
                           <button
-                            onClick={() => handleModalEdit(row.id)}
+                            onClick={() => editPurchase(row.id)}
                             className={stl.iconWrapper}
                           >
                             <MdModeEditOutline size={22} color="#0d83f8" />
                           </button>
-                        )}
-                        <MdDangerous
-                          onClick={() => handleDelete(row.id)}
-                          size={22}
-                          color="#dc3545"
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          onClick={() => editPurchase(row.id)}
-                          className={stl.iconWrapper}
-                        >
-                          <MdModeEditOutline size={22} color="#0d83f8" />
-                        </button>
-                        <MdDangerous
-                          onClick={() => handleDelete(row.id)}
-                          size={22}
-                          color="#dc3545"
-                        />
-                      </>
-                    )}
+                          {canDelete && (
+                            <MdDangerous
+                              onClick={() => handleDelete(row.id)}
+                              size={22}
+                              color="#dc3545"
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             );
           })}
@@ -171,35 +196,41 @@ const Table = ({
               <div className={`${stl.cell} ${stl.control} m-hide`}>-</div>
             </div>
           )}
-          <div className={`${stl.control} m-show`}>
-            <div className={stl.iconWrapper}>
-              <MdSettings size={22} color="#fff" className={stl.settingsIcon} />
+          {canEdit && (
+            <div className={`${stl.control} m-show`}>
+              <div className={stl.iconWrapper}>
+                <MdSettings
+                  size={22}
+                  color="#fff"
+                  className={stl.settingsIcon}
+                />
+              </div>
+              {data.map((item, i) => {
+                return !purchase && !modalEdit ? (
+                  <Link to={path + item.id} className={stl.iconWrapper} key={i}>
+                    <MdModeEditOutline size={22} color="#0d83f8" />
+                  </Link>
+                ) : !modalEdit ? (
+                  <button
+                    onClick={() => editPurchase(item.id)}
+                    className={stl.iconWrapper}
+                    key={i}
+                  >
+                    <MdModeEditOutline size={22} color="#0d83f8" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleModalEdit(item.id)}
+                    className={stl.iconWrapper}
+                    key={i}
+                  >
+                    <MdModeEditOutline size={22} color="#0d83f8" />
+                  </button>
+                );
+              })}
+              {showTotals && <div className={stl.iconWrapper}></div>}
             </div>
-            {data.map((item, i) => {
-              return !purchase && !modalEdit ? (
-                <Link to={path + item.id} className={stl.iconWrapper} key={i}>
-                  <MdModeEditOutline size={22} color="#0d83f8" />
-                </Link>
-              ) : !modalEdit ? (
-                <button
-                  onClick={() => editPurchase(item.id)}
-                  className={stl.iconWrapper}
-                  key={i}
-                >
-                  <MdModeEditOutline size={22} color="#0d83f8" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleModalEdit(item.id)}
-                  className={stl.iconWrapper}
-                  key={i}
-                >
-                  <MdModeEditOutline size={22} color="#0d83f8" />
-                </button>
-              );
-            })}
-            {showTotals && <div className={stl.iconWrapper}></div>}
-          </div>
+          )}
         </div>
       </div>
       <Modal show={showModal} close={() => setShowModal(false)} validate>

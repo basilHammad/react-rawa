@@ -39,11 +39,14 @@
   padding: 0 var(--base);
   font-size: 20px;
   font-weight: bold;
+  border-radius: 5000px;
+  /* height: 40px; */
+  padding: 5px 15px;
 }
 
 .btn {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: 1px solid #fff;
   border-radius: 100%;
   background-color: #ffeac7;

@@ -72,14 +72,9 @@ const AddTrip = () => {
     dispatch(getOrders(page, true));
   }, [isLoggedIn, navigate, page]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
-      <Header
-        isModal
-        title="اضافة رحلة"
-        btnText="اضافة"
-        onClick={handleSubmit}
-      />
+      <Header isModal title="اضافة رحلة" btnText="حفظ" onClick={handleSubmit} />
       <div className={stl.inputWrapper}>
         {errors.orders && <span className={stl.error}>{errors.orders}</span>}
         <InputGroup
@@ -109,6 +104,7 @@ const AddTrip = () => {
         orders.map((order, i) => {
           return (
             <Order
+              item={order}
               key={order.id}
               name={order?.name}
               products={order?.order_products}
@@ -133,8 +129,6 @@ const AddTrip = () => {
         />
       )}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

@@ -6,6 +6,11 @@
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0px 0px 2px var(--gray);
+  flex-wrap: wrap;
+}
+
+.wrapper.selectable {
+  flex-wrap: nowrap;
 }
 
 .details {
@@ -19,7 +24,7 @@
   flex-wrap: wrap;
 }
 
-.iconWrapper {
+/* .iconWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,7 +32,7 @@
   padding: 12px;
   cursor: pointer;
   background-color: #ffeac7;
-}
+} */
 
 .iconWrapper > svg {
   color: var(--yellow);
@@ -52,4 +57,22 @@ label.wrapper {
 
 label.wrapper > * {
   user-select: none;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 8px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 1024px) {
+  .wrapper:last-of-type {
+    margin-bottom: 50px;
+  }
 }

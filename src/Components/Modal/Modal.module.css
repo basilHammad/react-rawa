@@ -16,7 +16,7 @@
   background-color: #fff;
   border-radius: calc(var(--base) * 4);
   position: relative;
-  padding: calc(var(--base) * 5);
+  padding: calc(var(--base) * 6);
   overflow-y: auto;
 }
 
@@ -27,7 +27,7 @@
 
 .modal .close {
   position: absolute;
-  left: 20px;
+  right: 20px;
   top: 20px;
   cursor: pointer;
   user-select: none;

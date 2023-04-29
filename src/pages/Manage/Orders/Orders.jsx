@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import Layout from "../../../Components/Layout/Layout";
-import Login from "../../Login/Login";
 import Header from "../Components/Header/Header";
 import { getOrder, getOrders } from "../../../store/actions/ordersActions";
 
@@ -13,11 +12,11 @@ import Pagination from "../../../Components/Pagination/Pagination";
 import Loader from "../../../Components/Loader/Loader";
 
 const Orders = () => {
-  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
   const orders = useSelector((state) => state.orders.orders);
   const totalPages = useSelector((state) => state.orders.totalPages);
   const loading = useSelector((state) => state.common.isLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +33,12 @@ const Orders = () => {
     // dispatch(getOrder());
   }, [isLoggedIn, navigate, page]);
 
-  return isAdmin ? (
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-orders")) navigate("/unauthorized");
+  }, [permissions]);
+
+  return (
     <Layout manage>
       <Header hideButton title="الطلبات" />
       {loading ? (
@@ -44,9 +48,12 @@ const Orders = () => {
           {orders.map((order, i) => {
             return (
               <Order
+                item={order}
+                status={order.status}
+                editable={permissions?.includes("edit-orders")}
                 key={order.id}
                 orderId={order.id}
-                name={order?.name}
+                name={order?.name ? order?.name : order?.customer?.name}
                 products={order?.order_products}
                 num={i + 1}
                 latLng={{
@@ -68,8 +75,6 @@ const Orders = () => {
         />
       )}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

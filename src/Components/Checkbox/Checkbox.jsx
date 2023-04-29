@@ -1,8 +1,19 @@
 import stl from "./Checkbox.module.css";
 
-const Checkbox = ({ value, onChange, label, checked }) => {
+const Checkbox = ({
+  value,
+  onChange,
+  label,
+  checked,
+  checkedColor,
+  className,
+}) => {
   return (
-    <label className={stl.wrapper}>
+    <label
+      className={`${stl.wrapper} ${checkedColor === "green" ? stl.green : ""} ${
+        className ? className : ""
+      }`}
+    >
       <input
         type="checkbox"
         value={value}

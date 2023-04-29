@@ -19,7 +19,7 @@ import SearchInput from "../../../../Components/SearchInput/SearchInput";
 import { getSuppliers } from "../../../../store/actions/expensesActions";
 import { getCodes } from "../../../../store/actions/commonActions";
 
-const TITLES = ["الشرح", "الكمية", "سعر الوحدة", "الخصم", "المجموع", "الضريبة"];
+const TITLES = ["الشرح", "الكمية", "سعر الوحدة", "الخصم", "الضريبة", "المجموع"];
 const VAT = 0.16;
 
 const PurchasesAdd = () => {
@@ -57,8 +57,12 @@ const PurchasesAdd = () => {
 
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  console.log(billDetails);
 
   const handleNameChange = (e) => {
     const { value } = e.target;
@@ -88,7 +92,11 @@ const PurchasesAdd = () => {
 
   const handleInputsChange = (e) => {
     const { name, value } = e.target;
-    setValues((pre) => ({ ...pre, [name]: value }));
+
+    setValues((pre) => ({
+      ...pre,
+      [name]: value,
+    }));
     setErrors((pre) => ({ ...pre, [name]: "" }));
   };
 
@@ -148,8 +156,8 @@ const PurchasesAdd = () => {
         quantity: values.quantity,
         unit_price: values.unitPrice,
         discount: values.discount,
-        total_price: values.total,
         tax: values.vat,
+        total_price: values.total,
         id: id,
       },
     ]);
@@ -254,10 +262,16 @@ const PurchasesAdd = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+
     if (!suppliers.length) dispatch(getSuppliers(10000));
 
     if (!Object.keys(codes).length) dispatch(getCodes());
   }, [isLoggedin, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("add-purchases")) navigate("/unauthorized");
+  }, [permissions]);
 
   useEffect(() => {
     setOptions(updatedSuppliers);
@@ -268,7 +282,9 @@ const PurchasesAdd = () => {
     setValues((pre) => ({ ...pre, billNum: codes.purchase }));
   }, [codes]);
 
-  return isAdmin ? (
+  console.log(billDetails);
+
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         <h2>اضافة حركة مشتريات</h2>
@@ -344,6 +360,8 @@ const PurchasesAdd = () => {
                 //     0
                 //   )}
                 showTotals
+                canDelete
+                canEdit
               />
             </div>
           </>
@@ -362,8 +380,6 @@ const PurchasesAdd = () => {
         />
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

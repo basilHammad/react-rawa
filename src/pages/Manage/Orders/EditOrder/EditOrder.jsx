@@ -10,7 +10,11 @@ import MainBtn from "../../../../Components/MainBtn/MainBtn";
 import Modal from "../../../../Components/Modal/Modal";
 import Login from "../../../Login/Login";
 import SummaryPopup from "../../../../Components/SummaryPopup/SummaryPopup";
-import { getClients, getCodes } from "../../../../store/actions/commonActions";
+import {
+  getCities,
+  getClients,
+  getCodes,
+} from "../../../../store/actions/commonActions";
 import { editOrder, getOrder } from "../../../../store/actions/ordersActions";
 import { getProviderItems } from "../../../../store/actions/posActions";
 
@@ -34,6 +38,8 @@ const EditOrder = () => {
   const loading = useSelector((state) => state.common.isLoading);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const cities = useSelector((state) => state.common.cities);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showClientModal, setShowClientModal] = useState(false);
@@ -46,6 +52,7 @@ const EditOrder = () => {
   const [paymentType, setPaymentType] = useState("");
   const [paymentTypeError, setPaymentTypeError] = useState("");
   const [billNum, setBillNum] = useState("");
+  const [isScheduled, setIsScheduled] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -130,13 +137,20 @@ const EditOrder = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+
     if (!params.id) navigate("/manage/orders");
 
     if (!products.length) dispatch(getProviderItems());
     if (!Object.keys(codes).length) dispatch(getCodes());
     dispatch(getClients(1, null, null, 10000));
     dispatch(getOrder(params.id));
+    dispatch(getCities());
   }, [isLoggedin, dispatch, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("edit-orders")) navigate("/unauthorized");
+  }, [permissions]);
 
   useEffect(() => {
     if (!Object.keys(codes).length) return;
@@ -166,7 +180,9 @@ const EditOrder = () => {
     setToHour(order?.to);
   }, [order, products]);
 
-  return isAdmin ? (
+  console.log(order);
+
+  return (
     <Layout manage>
       <div className={stl.cardsWrapper}>
         {!loading ? (
@@ -206,6 +222,10 @@ const EditOrder = () => {
           setClientName={setClientName}
           clientId={clientId}
           setClientId={setClientId}
+          cities={cities}
+          isScheduled={isScheduled}
+          setIsScheduled={setIsScheduled}
+          order={order}
         />
       </Modal>
       <Modal show={showSummaryModal} close={closeSummaryModal}>
@@ -222,8 +242,6 @@ const EditOrder = () => {
         />
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

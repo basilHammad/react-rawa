@@ -30,6 +30,7 @@ const RevenueReport = () => {
 
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
@@ -89,6 +90,11 @@ const RevenueReport = () => {
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-report")) navigate("/unauthorized");
+  }, [permissions]);
+
+  useEffect(() => {
     if (!values.revenueCat) return;
     const revenuetypes = revenueCategory.find(
       (item) => item.id === +values.revenueCat
@@ -103,7 +109,7 @@ const RevenueReport = () => {
     };
   }, []);
 
-  return isAdmin ? (
+  return (
     <Layout hideBeardcrumb manage>
       <Header
         hideButton
@@ -197,8 +203,6 @@ const RevenueReport = () => {
         </>
       ) : null}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

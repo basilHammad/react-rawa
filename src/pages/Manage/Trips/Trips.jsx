@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 import Layout from "../../../Components/Layout/Layout";
 import Header from "../Components/Header/Header";
+import Radio from "../../../Components/Radio/Radio";
 
 import Login from "../../Login/Login";
 import {
@@ -27,6 +29,9 @@ const Trips = () => {
   const drivers = useSelector((state) => state.trips.drivers);
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const loading = useSelector((state) => state.common.isLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
+  const canAdd = permissions?.includes("add-trips");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,6 +40,7 @@ const Trips = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDriverId, setSelectedDriverId] = useState(null);
   const [selectedTripId, setSelectedTripId] = useState(null);
+  const [showAllTrips, setShowAllTrips] = useState(false);
 
   const closeModal = (e) => {
     if (e.target !== e.currentTarget) return;
@@ -68,18 +74,51 @@ const Trips = () => {
     );
   };
 
+  const isToday = (date) => {
+    const today = moment().format("d/M/Y");
+
+    return moment(date).format("d/M/Y") === today;
+  };
+
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
 
     const body = document.querySelector("body");
     body.style.backgroundColor = "#fbfcfd";
+  }, [isLoggedIn]);
 
-    dispatch(getTrips(page));
-  }, [isLoggedIn, navigate, page]);
+  useEffect(() => {
+    dispatch(getTrips(page, showAllTrips));
+  }, [showAllTrips, page]);
 
-  return isAdmin ? (
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-trips")) navigate("/unauthorized");
+  }, [permissions]);
+
+  return (
     <Layout manage>
-      <Header path="/manage/trips/add" title="الرحلات" />
+      <Header path="/manage/trips/add" title="الرحلات" hideButton={!canAdd} />
+      <div className={stl.filters}>
+        <Radio
+          name="all"
+          value=""
+          onChange={(e) => {
+            setShowAllTrips(false);
+          }}
+          checked={!showAllTrips}
+          label="اليوم"
+        />
+        <Radio
+          name="by-date"
+          value={true}
+          onChange={(e) => {
+            setShowAllTrips(true);
+          }}
+          checked={showAllTrips}
+          label="الكل"
+        />
+      </div>
       {loading ? (
         <Loader />
       ) : (
@@ -97,6 +136,9 @@ const Trips = () => {
                 tripId={trip.id}
                 showModal={handleOpenModal}
                 setDriverId={setSelectedDriverId}
+                isToday={isToday(trip.created_at)}
+                status={trip.status}
+                canEdit={permissions?.includes("edit-trips")}
               />
             );
           })}
@@ -127,7 +169,10 @@ const Trips = () => {
                       checked={driver.id == selectedDriverId}
                     />
                     <span></span>
-                    {driver.full_name}
+                    {driver.full_name}{" "}
+                    <strong style={{ marginRight: 15 }}>
+                      ({driver.mobile_number})
+                    </strong>
                   </label>
                 );
               })}
@@ -143,8 +188,6 @@ const Trips = () => {
         </div>
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

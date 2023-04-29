@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 import stl from "./Trip.module.css";
 
+const TRIP_STATUS = {
+  1: "قيد الانتظار",
+  2: "قيد التسليم",
+  3: "مكتملة",
+  0: "ملغية",
+};
+
 const Trip = ({
   name,
   total,
@@ -11,11 +18,15 @@ const Trip = ({
   showModal,
   driverId,
   setDriverId,
+  isToday,
+  status,
+  canEdit,
 }) => {
   const newDate = date ? new Date(date) : null;
 
   return (
     <div className={stl.wrapper}>
+      {/* {status} */}
       <strong className={stl.title}>{name}</strong>
       <div className={stl.flexBetween}>
         <span>
@@ -37,8 +48,15 @@ const Trip = ({
           المجموع : <span className={stl.green}>{total}</span>
         </span>
       </div>
+      <span>
+        الحالة : <span>{TRIP_STATUS[status]}</span>
+      </span>
       <div className={stl.controls}>
-        <Link className={stl.blueBtn} to={`/manage/trip/${tripId}`}>
+        <Link
+          className={stl.blueBtn}
+          to={`/manage/trip/${tripId}`}
+          state={{ isToday: isToday }}
+        >
           مشاهدة
         </Link>
         <button
@@ -46,7 +64,7 @@ const Trip = ({
             showModal(tripId);
             setDriverId(driverId);
           }}
-          // disabled={driverName ? true : false}
+          disabled={!isToday || !canEdit}
         >
           ربط
         </button>

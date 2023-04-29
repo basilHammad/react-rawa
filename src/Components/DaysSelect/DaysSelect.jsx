@@ -26,7 +26,7 @@ const DaysSelect = ({ selectedDay, setSelectedDay, handleDayChange }) => {
     <>
       <label className={stl.label}>اليوم</label>
       <div className={stl.wrapper} onClick={handleShowDays}>
-        <span className={stl.placeholder}>
+        <span className={`${stl.placeholder}`}>
           {selectedDay.length
             ? selectedDay.map((day) => `${day} `)
             : "اختير اليوم"}

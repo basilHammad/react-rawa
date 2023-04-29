@@ -88,7 +88,7 @@ const SummaryPopup = ({
           onClick={onSubmit}
           loading={postLoading}
         >
-          اتمام
+          حفظ
         </MainBtn>
       </div>
     </div>

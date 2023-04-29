@@ -1,0 +1,33 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper > * {
+  margin-bottom: 20px;
+}
+
+.daysWrapper {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.daysWrapper > * {
+  flex: 1;
+}
+
+.btn {
+  position: unset;
+  margin-top: auto;
+}
+
+.error {
+  width: 100%;
+  margin-top: 15px;
+  padding-right: 15px;
+  font-size: 14px;
+  color: var(--text-red);
+}

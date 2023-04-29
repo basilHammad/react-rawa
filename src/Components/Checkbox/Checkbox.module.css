@@ -28,3 +28,8 @@
   border-color: #fe561c;
   background-color: rgba(254, 86, 28, 0.1);
 }
+
+.wrapper.green > input[type="checkbox"]:checked + span {
+  border-color: var(--green);
+  background-color: #0dc1361a;
+}

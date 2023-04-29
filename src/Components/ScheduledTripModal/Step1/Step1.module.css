@@ -1,0 +1,14 @@
+.from {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.from > * {
+  margin-bottom: 20px;
+}
+
+.btn {
+  position: unset;
+  margin-top: auto;
+}

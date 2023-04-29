@@ -9,7 +9,6 @@ import {
   deleteExpense,
   getExpenses,
 } from "../../../store/actions/expensesActions";
-import Login from "../../Login/Login";
 import Filters from "../Components/Filters/Filters";
 import Header from "../Components/Header/Header";
 import Table from "../Components/Table/Table";
@@ -20,8 +19,10 @@ const Expenses = () => {
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const loading = useSelector((state) => state.common.isLoading);
   const totalPages = useSelector((state) => state.expenses.totalPages);
-
   const expenses = useSelector((state) => state.expenses.expenses);
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
+  const canAdd = permissions?.includes("add-expenses");
 
   const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -48,14 +49,23 @@ const Expenses = () => {
   }, [isLoggedin, navigate, page]);
 
   useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-expenses")) navigate("/unauthorized");
+  }, [permissions]);
+
+  useEffect(() => {
     // if (!filterBy && !sortBy) return;
     dispatch(getExpenses(page, filterBy, sortBy));
   }, [filterBy, sortBy, page]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
-        <Header title="المصروفات" path="/manage/expenses/add" />
+        <Header
+          title="المصروفات"
+          path="/manage/expenses/add"
+          hideButton={!canAdd}
+        />
         <Filters
           selectedFilter={filterBy}
           onRadioChange={handleFilterChange}
@@ -71,6 +81,8 @@ const Expenses = () => {
               data={expenses.rows[0]}
               deleteItem={handleDelete}
               path={"/manage/expenses/edit/"}
+              canDelete={permissions?.includes("delete-expenses")}
+              canEdit={permissions?.includes("edit-expenses")}
             />
 
             {totalPages > 1 && (
@@ -87,8 +99,6 @@ const Expenses = () => {
         )}
       </div>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

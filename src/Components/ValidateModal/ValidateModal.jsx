@@ -1,11 +1,13 @@
 import stl from "./ValidateModal.module.css";
 
-const ValidateModal = ({ handleValidate, closeModal }) => {
+const ValidateModal = ({ handleValidate, closeModal, isButtonDisabled }) => {
   return (
     <div className={stl.validateModal}>
       <p>هل انت متاكد</p>
       <div>
-        <button onClick={() => handleValidate()}>نعم</button>
+        <button disabled={isButtonDisabled} onClick={() => handleValidate()}>
+          نعم
+        </button>
         <button onClick={closeModal} className={stl.cancel}>
           الغاء
         </button>

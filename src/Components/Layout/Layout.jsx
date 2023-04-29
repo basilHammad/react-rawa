@@ -12,7 +12,7 @@ import {
 // import { MdOutlineLogout } from "react-icons/md";
 
 import stl from "./Layout.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/authActions";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
@@ -20,6 +20,28 @@ import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
 const Layout = ({ children, hideHeader, manage, hideBeardcrumb }) => {
   const [showAside, setShowAside] = useState(false);
   const user = useSelector((state) => state.auth.user);
+  const permissions = useSelector((state) => state.auth.permissions);
+
+  const [canPos, setCanPos] = useState(false);
+  const [canManage, setCanManage] = useState(false);
+
+  useEffect(() => {
+    setCanPos(permissions?.includes("pos"));
+    setCanManage(
+      permissions?.includes(
+        "view-orders",
+        "view-trips",
+        "view-scheduledTrips",
+        "view-revenues",
+        "view-expenses",
+        "view-purchases",
+        "view-suppliers",
+        "view-clients",
+        "view-employees",
+        "view-report"
+      )
+    );
+  }, [permissions]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -57,13 +79,7 @@ const Layout = ({ children, hideHeader, manage, hideBeardcrumb }) => {
                 </div>
               )}
 
-              {manage && (
-                <MdDehaze
-                  className={stl.burger}
-                  size={22}
-                  onClick={toggleMenu}
-                />
-              )}
+              <MdDehaze className={stl.burger} size={22} onClick={toggleMenu} />
             </div>
           </header>
 
@@ -78,28 +94,52 @@ const Layout = ({ children, hideHeader, manage, hideBeardcrumb }) => {
               </div>
 
               <ul>
-                <li>
-                  <Link to="/manage/edit-password">
-                    <img src="/assets/images/global.svg" />
-                    تعديل كلمة السر
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/manage/suppliers">
-                    <img src="/assets/images/suplayers.svg" />
-                    الموردين
-                  </Link>
-                </li>
-                <li>
-                  <img src="/assets/images/people.svg" />
-                  <Link to="/manage/clients">العملاء</Link>
-                </li>
-                <li>
-                  <Link to="/manage/employees">
-                    <img src="/assets/images/employees.svg" />
-                    الموظفين
-                  </Link>
-                </li>
+                {permissions?.includes("change-password") && (
+                  <li>
+                    <Link to="/manage/edit-password">
+                      <img src="/assets/images/global.svg" />
+                      تعديل كلمة السر
+                    </Link>
+                  </li>
+                )}
+                {permissions?.includes("view-suppliers") && (
+                  <li>
+                    <Link to="/manage/suppliers">
+                      <img src="/assets/images/suplayers.svg" />
+                      الموردين
+                    </Link>
+                  </li>
+                )}
+                {permissions?.includes("view-clients") && (
+                  <li>
+                    <img src="/assets/images/people.svg" />
+                    <Link to="/manage/clients">العملاء</Link>
+                  </li>
+                )}
+                {permissions?.includes("view-employees") && (
+                  <li>
+                    <Link to="/manage/employees">
+                      <img src="/assets/images/employees.svg" />
+                      الموظفين
+                    </Link>
+                  </li>
+                )}
+                {canManage && (
+                  <li>
+                    <Link to="/manage">
+                      {/* <img src="/assets/images/employees.svg" /> */}
+                      ادارة المحل
+                    </Link>
+                  </li>
+                )}
+                {canPos && (
+                  <li>
+                    <Link to="/pos/direct">
+                      {/* <img src="/assets/images/employees.svg" /> */}
+                      المبيعات
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <button onClick={handleLogout}>
                     <img src="/assets/images/logout.svg" />

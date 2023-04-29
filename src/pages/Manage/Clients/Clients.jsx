@@ -8,11 +8,13 @@ import Loader from "../../../Components/Loader/Loader";
 import MainBtn from "../../../Components/MainBtn/MainBtn";
 import Modal from "../../../Components/Modal/Modal";
 import Pagination from "../../../Components/Pagination/Pagination";
+import SelectGroup from "../../../Components/SelectGroup/SelectGroup";
 import TextareaGroup from "../../../Components/TextareaGroup/TextareaGroup";
 import {
   addClient,
   deleteClient,
   editClient,
+  getCities,
   getClients,
 } from "../../../store/actions/commonActions";
 import Login from "../../Login/Login";
@@ -22,7 +24,7 @@ import Table from "../Components/Table/Table";
 
 import stl from "./Clients.module.css";
 
-const TITLES = ["الاسم", "رقم الهاتف", "العنوان"];
+const TITLES = ["الاسم", "رقم الهاتف", "المدينة", "المنطقة", "العنوان"];
 
 const Clients = () => {
   const isAdmin = useSelector((state) => state.auth.isAdmin);
@@ -31,6 +33,8 @@ const Clients = () => {
   const clients = useSelector((state) => state.common.clients);
   const totalPages = useSelector((state) => state.common.clientsTotalPages);
   const postLoading = useSelector((state) => state.common.isPostLoading);
+  const cities = useSelector((state) => state.common.cities);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const dispatch = useDispatch();
 
@@ -40,12 +44,16 @@ const Clients = () => {
     mobile: "",
     address: "",
     note: "",
+    cityId: "",
+    areaId: "",
   });
   const [errors, setErrors] = useState({
     name: "",
     mobile: "",
     address: "",
     note: "",
+    cityId: "",
+    areaId: "",
   });
   const [showModal, setShowModal] = useState(false);
   const [editClientId, seteditClientId] = useState(null);
@@ -54,6 +62,7 @@ const Clients = () => {
     name: "",
     phone: "",
   });
+  const [areasOptions, setAreasOptions] = useState([]);
 
   const navigate = useNavigate();
 
@@ -73,6 +82,8 @@ const Clients = () => {
       mobile: "",
       address: "",
       note: "",
+      cityId: "",
+      areaId: "",
     });
 
     seteditClientId(null);
@@ -98,6 +109,8 @@ const Clients = () => {
       mobile: foundModal.phone,
       address: foundModal.address_description,
       note: foundModal.description,
+      cityId: foundModal.city_id ? foundModal.city_id : "",
+      areaId: foundModal.area_id ? foundModal.area_id : "",
     });
     setShowModal(true);
     seteditClientId(id);
@@ -107,6 +120,9 @@ const Clients = () => {
   const validate = () => {
     const errors = {};
     if (!values.name.trim()) errors.name = "يجب اختيار الاسم";
+
+    if (!values.cityId) errors.cityId = "يجب اختيار المدينة";
+    if (!values.areaId) errors.areaId = "يجب اختيار منطقة واحدة على الاقل";
 
     if (!values.mobile.trim()) {
       errors.mobile = "يجب اختيار رقم الهاتف";
@@ -138,6 +154,8 @@ const Clients = () => {
           mobile: "",
           address: "",
           note: "",
+          cityId: "",
+          areaId: "",
         });
 
         seteditClientId(null);
@@ -169,6 +187,8 @@ const Clients = () => {
           mobile: "",
           address: "",
           note: "",
+          cityId: "",
+          areaId: "",
         });
         dispatch(getClients(page, searchValues.name, searchValues.phone));
       })
@@ -184,9 +204,23 @@ const Clients = () => {
     if (!isLoggedin) navigate("/login");
 
     dispatch(getClients(page, searchValues.name, searchValues.phone));
+    dispatch(getCities());
   }, [isLoggedin, navigate, page]);
 
-  return isAdmin ? (
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-clients")) navigate("/unauthorized");
+  }, [permissions]);
+
+  useEffect(() => {
+    if (!values.cityId) return;
+
+    const selectedCity = cities.find((city) => city.id == values.cityId);
+
+    setAreasOptions(selectedCity?.areas);
+  }, [values.cityId]);
+
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         <Header
@@ -194,6 +228,7 @@ const Clients = () => {
           path="/manage/Purchases/add"
           isModal
           onClick={() => setShowModal(true)}
+          hideButton={!permissions?.includes("add-clients")}
         />
         <Search
           name={searchValues.name}
@@ -210,6 +245,8 @@ const Clients = () => {
               data={clients.map((supplier) => ({
                 name: supplier.name,
                 phone: supplier.phone,
+                city: supplier.city,
+                area: supplier.area,
                 address: supplier.address_description,
                 id: supplier.id,
               }))}
@@ -217,6 +254,8 @@ const Clients = () => {
               path={"/manage/purchases/edit/"}
               handleModalEdit={handleModalEdit}
               modalEdit
+              canDelete={permissions?.includes("delete-clients")}
+              canEdit={permissions?.includes("edit-clients")}
             />
             {totalPages > 1 && (
               <Pagination
@@ -253,6 +292,35 @@ const Clients = () => {
             onChange={handleFieldsChange}
             error={errors.mobile}
           />
+          <SelectGroup
+            name="cityId"
+            id="city"
+            firstOption="اختر المدينة"
+            options={cities?.map((city) => ({
+              text: city.name,
+              value: city.id,
+              id: city.id,
+            }))}
+            value={values.cityId}
+            onChange={handleFieldsChange}
+            label="المدينة"
+            error={errors.cityId}
+          />
+
+          <SelectGroup
+            name="areaId"
+            id="area"
+            firstOption="اختر المنطقة"
+            options={areasOptions?.map((city) => ({
+              text: city.name,
+              value: city.id,
+              id: city.id,
+            }))}
+            value={values.areaId}
+            onChange={handleFieldsChange}
+            label="المنطقة"
+            error={errors.areaId}
+          />
           <InputGroup
             type="text"
             id="address"
@@ -282,8 +350,6 @@ const Clients = () => {
         </MainBtn>
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

@@ -61,4 +61,38 @@
   margin-top: calc(var(--base) * 4);
   /* position: sticky;
   bottom: 20px; */
+  position: unset;
+}
+
+.multiLabel {
+  margin-bottom: calc(var(--base) * 4);
+  font-weight: 600;
+  display: block;
+}
+
+.error {
+  color: var(--text-red);
+  margin-top: -8px;
+  font-size: 12px;
+}
+
+.checkboxWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: calc(var(--base) * 4);
+}
+
+.checkboxWrapper > label:not(.checkbox) {
+  margin-bottom: calc(var(--base) * 4);
+  font-weight: 600;
+  display: block;
+}
+
+.checkbox {
+  width: fit-content;
+}
+
+.label {
+  margin: 12px 0;
+  display: block;
 }

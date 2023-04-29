@@ -10,7 +10,6 @@ import {
   deleteRevenue,
   getRevenues,
 } from "../../../store/actions/revenuesActions";
-import Login from "../../Login/Login";
 import Filters from "../Components/Filters/Filters";
 import Header from "../Components/Header/Header";
 import Table from "../Components/Table/Table";
@@ -18,11 +17,13 @@ import Table from "../Components/Table/Table";
 import stl from "./Revenues.module.css";
 
 const Revenues = () => {
-  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const loading = useSelector((state) => state.common.isLoading);
   const revenues = useSelector((state) => state.revenues.revenues);
   const totalPages = useSelector((state) => state.revenues.totalPages);
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
+  const canAdd = permissions?.includes("add-revenues");
 
   const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -44,18 +45,27 @@ const Revenues = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
-    // dispatch(getRevenues(page));
-  }, [isLoggedin, navigate, page]);
+  }, []);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (permissions && !permissions?.includes("view-revenues"))
+      navigate("/unauthorized");
+  }, [permissions]);
 
   useEffect(() => {
     // if (!filterBy && !sortBy) return;
     dispatch(getRevenues(page, filterBy, sortBy));
   }, [filterBy, sortBy, page]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
-        <Header title="الإرادات" path="/manage/revenues/add" />
+        <Header
+          title="الإرادات"
+          path="/manage/revenues/add"
+          hideButton={!canAdd}
+        />
         <Filters
           selectedFilter={filterBy}
           onRadioChange={handleFilterChange}
@@ -71,6 +81,8 @@ const Revenues = () => {
               data={revenues.rows[0]}
               deleteItem={handleDelete}
               path={"/manage/revenues/edit/"}
+              canDelete={permissions?.includes("delete-revenues")}
+              canEdit={permissions.includes("edit-revenues")}
             />
             {totalPages > 1 && (
               <Pagination
@@ -86,8 +98,6 @@ const Revenues = () => {
         )}
       </div>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

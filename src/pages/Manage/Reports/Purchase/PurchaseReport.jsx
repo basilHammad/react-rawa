@@ -26,6 +26,7 @@ const PurchaseReport = () => {
 
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
@@ -44,6 +45,7 @@ const PurchaseReport = () => {
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
+    if (!permissions?.includes("view-report")) navigate("/unauthorized");
 
     const body = document.querySelector("body");
     body.style.backgroundColor = "#fbfcfd";
@@ -55,7 +57,7 @@ const PurchaseReport = () => {
     };
   }, []);
 
-  return isAdmin ? (
+  return (
     <Layout hideBeardcrumb manage>
       <Header
         hideButton
@@ -116,8 +118,6 @@ const PurchaseReport = () => {
         </>
       ) : null}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

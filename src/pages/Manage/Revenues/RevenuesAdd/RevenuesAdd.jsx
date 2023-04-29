@@ -38,6 +38,7 @@ const RevenuesAdd = () => {
     mobile: client.mobile_number,
     location: client.address_description,
   }));
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const [date, setDate] = useState(new Date());
   const [values, setValues] = useState({
@@ -144,6 +145,8 @@ const RevenuesAdd = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+    if (!permissions.includes("add-revenues")) navigate("/unauthorized");
+
     dispatch(getClients(1, null, null, 10000));
     dispatch(getRevenueCategory());
   }, [isLoggedin, navigate]);
@@ -164,7 +167,7 @@ const RevenuesAdd = () => {
     if (name || selectedName) setErrors((pre) => ({ ...pre, name: "" }));
   }, [name, selectedName]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
         <h2>اضافة ايراد جديد</h2>
@@ -252,8 +255,6 @@ const RevenuesAdd = () => {
         </MainBtn>
       </div>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

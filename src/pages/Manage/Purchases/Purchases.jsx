@@ -9,7 +9,6 @@ import {
   deletePurchase,
   getPurchases,
 } from "../../../store/actions/purchasesActions";
-import Login from "../../Login/Login";
 import Filters from "../Components/Filters/Filters";
 import Header from "../Components/Header/Header";
 import Table from "../Components/Table/Table";
@@ -22,6 +21,9 @@ const Purchases = () => {
   const loading = useSelector((state) => state.common.isLoading);
   const purchases = useSelector((state) => state.purchases.purchases);
   const totalPages = useSelector((state) => state.purchases.totalPages);
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
+  const canAdd = permissions?.includes("add-purchases");
 
   const dispatch = useDispatch();
 
@@ -49,14 +51,23 @@ const Purchases = () => {
   }, [isLoggedin, navigate, page]);
 
   useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("view-purchases")) navigate("/unauthorized");
+  }, [permissions]);
+
+  useEffect(() => {
     // if (!filterBy && !sortBy) return;
     dispatch(getPurchases(page, filterBy, sortBy));
   }, [filterBy, sortBy, page]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       <div className={stl.wrapper}>
-        <Header title="المشتريات" path="/manage/Purchases/add" />
+        <Header
+          title="المشتريات"
+          path="/manage/Purchases/add"
+          hideButton={!canAdd}
+        />
         <Filters
           selectedFilter={filterBy}
           onRadioChange={handleFilterChange}
@@ -72,6 +83,8 @@ const Purchases = () => {
               data={purchases.rows[0]}
               deleteItem={handleDelete}
               path={"/manage/purchases/edit/"}
+              canDelete={permissions?.includes("delete-purchases")}
+              canEdit={permissions?.includes("edit-purchases")}
             />
             {totalPages > 1 && (
               <Pagination
@@ -87,8 +100,6 @@ const Purchases = () => {
         )}
       </div>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

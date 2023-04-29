@@ -45,6 +45,12 @@
   gap: calc(var(--base) * 3);
 }
 
+.icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 @media screen and (max-width: 1024px) {
   .table {
     overflow-x: auto;
@@ -76,7 +82,7 @@
     /* width: fit-content; */
   }
 
-  .cell:first-child {
+  .cell.delete:first-child {
     min-width: 50px;
   }
 
@@ -88,6 +94,10 @@
   .bgWrapper {
     position: relative;
     padding-left: 58px;
+  }
+
+  .bgWrapper.noControls {
+    padding-left: 0;
   }
 
   .control {

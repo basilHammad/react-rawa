@@ -16,6 +16,43 @@
   width: 100%;
 }
 
+.btnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: calc(var(--base) * 5);
+}
+
+.btnWrapper > button {
+  background-color: var(--yellow);
+  width: 140px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  padding: 0 calc(var(--base) * 2);
+  border-radius: var(--base);
+}
+
+.link {
+  background-color: var(--yellow);
+  width: 140px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  padding: 0 calc(var(--base) * 2);
+  border-radius: var(--base);
+}
+
+.link > span {
+  flex-grow: 1;
+  text-align: center;
+}
+
 @media (max-width: 1024px) {
   .wrapper {
     flex-wrap: nowrap;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdModeEditOutline } from "react-icons/md";
 import { MdKeyboardBackspace } from "react-icons/md";
 
 import stl from "./Header.module.css";
@@ -14,6 +14,8 @@ const Header = ({
   className,
   showBack,
   navigate,
+  showSecondBtn,
+  secondBtnOnClick,
 }) => {
   return (
     <div className={`${stl.wrapper} ${className ? className : ""}`}>
@@ -28,10 +30,18 @@ const Header = ({
             <span>جديد</span>
           </Link>
         ) : (
-          <button className={stl.link} onClick={onClick}>
-            <MdAdd size={22} />
-            <span>{btnText ? btnText : "جديد"}</span>
-          </button>
+          <div className={stl.btnWrapper}>
+            {showSecondBtn && (
+              <button className={stl.link} onClick={secondBtnOnClick}>
+                <MdModeEditOutline size={22} />
+                <span> تعديل</span>
+              </button>
+            )}
+            <button className={stl.link} onClick={onClick}>
+              <MdAdd size={22} />
+              <span>{btnText ? btnText : "جديد"}</span>
+            </button>
+          </div>
         )
       ) : null}
     </div>

@@ -10,7 +10,11 @@ import MainBtn from "../../../Components/MainBtn/MainBtn";
 import Modal from "../../../Components/Modal/Modal";
 import Navigation from "../../../Components/Navigation/Navigation";
 import SummaryPopup from "../../../Components/SummaryPopup/SummaryPopup";
-import { getClients, getCodes } from "../../../store/actions/commonActions";
+import {
+  getCities,
+  getClients,
+  getCodes,
+} from "../../../store/actions/commonActions";
 import {
   createOrder,
   getProviderItems,
@@ -49,10 +53,13 @@ const Orders = () => {
   const [paymentType, setPaymentType] = useState("");
   const [paymentTypeError, setPaymentTypeError] = useState("");
   const [billNum, setBillNum] = useState("");
+  const [isScheduled, setIsScheduled] = useState(false);
 
   const products = useSelector((state) => state.pos.items);
   const loading = useSelector((state) => state.common.isLoading);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
+  const cities = useSelector((state) => state.common.cities);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -116,13 +123,16 @@ const Orders = () => {
           setSelectedItems([]);
           setPaymentType("");
           dispatch(getCodes());
+          setClientName("");
+          setClientId("");
         },
         deleveryNote(selectedDay, fromHour, toHour),
         clientId,
         paymentType,
         selectedDay,
         fromHour,
-        toHour
+        toHour,
+        isScheduled
       )
     );
   };
@@ -138,6 +148,7 @@ const Orders = () => {
     if (!products.length) dispatch(getProviderItems());
     if (!Object.keys(codes).length) dispatch(getCodes());
     dispatch(getClients(1, null, null, 10000));
+    dispatch(getCities());
   }, [isLoggedin, dispatch, navigate]);
 
   useEffect(() => {
@@ -187,6 +198,9 @@ const Orders = () => {
           setClientName={setClientName}
           clientId={clientId}
           setClientId={setClientId}
+          cities={cities}
+          isScheduled={isScheduled}
+          setIsScheduled={setIsScheduled}
         />
       </Modal>
       <Modal show={showSummaryModal} close={closeSummaryModal}>

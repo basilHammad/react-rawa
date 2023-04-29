@@ -1,0 +1,67 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 16px;
+  /* padding-bottom: 0; */
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blue {
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.gray {
+  color: var(--gray);
+}
+
+.green {
+  color: var(--green);
+  font-weight: bold;
+}
+
+.controls {
+  /* background-color: red; */
+  display: flex;
+  margin: 0 -16px;
+  padding-top: 12px;
+}
+
+.controls > * {
+  flex: 1;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+/* 
+.blueBtn {
+  background-color: var(--blue);
+  color: #fff;
+} */
+
+/* .controls > button {
+  background-color: var(--green);
+} */
+
+.controls > * {
+  border-top: 1px solid #e3e3e4;
+  border-radius: 0;
+}
+
+.controls > button {
+  border-right: 1px solid #e3e3e4;
+}
+
+.controls > button:disabled {
+  background-color: transparent;
+  color: var(--gray);
+}

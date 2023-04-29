@@ -20,7 +20,18 @@ export const getProviderItems = () => async (dispatch) => {
 };
 
 export const createOrder =
-  (selectedItems, type, cb, note, id, paymentType, days, from, to) =>
+  (
+    selectedItems,
+    type,
+    cb,
+    note,
+    id,
+    paymentType,
+    days,
+    from,
+    to,
+    isScheduled
+  ) =>
   async (dispatch) => {
     dispatch(setIsPostLoading(true));
     try {
@@ -50,6 +61,7 @@ export const createOrder =
         days: days,
         from: from,
         to: to,
+        scheduled: isScheduled,
       };
 
       if (id) data.customer_id = id;
@@ -64,7 +76,7 @@ export const createOrder =
     }
   };
 
-export const createUser = (values, cb) => async (dispatch) => {
+export const createUser = (values, cityId, areaId, cb) => async (dispatch) => {
   dispatch(setIsPostLoading(true));
 
   try {
@@ -73,6 +85,8 @@ export const createUser = (values, cb) => async (dispatch) => {
       user_name: values.name,
       mobile_number: values.mobile,
       address_description: values.location,
+      city_id: cityId,
+      area_id: areaId,
     });
     const res = await fetcher.post("customer", data);
 
@@ -86,25 +100,28 @@ export const createUser = (values, cb) => async (dispatch) => {
   }
 };
 
-export const updateUser = (values, id, cb) => async (dispatch) => {
-  dispatch(setIsPostLoading(true));
+export const updateUser =
+  (values, id, cityId, areaId, cb) => async (dispatch) => {
+    dispatch(setIsPostLoading(true));
 
-  try {
-    const data = JSON.stringify({
-      name: values.name,
-      user_name: values.name,
-      mobile_number: values.mobile,
-      address_description: values.location,
-    });
+    try {
+      const data = JSON.stringify({
+        name: values.name,
+        user_name: values.name,
+        mobile_number: values.mobile,
+        address_description: values.location,
+        city_id: cityId,
+        area_id: areaId,
+      });
 
-    const res = await fetcher.put(`customer/${id}`, data);
+      const res = await fetcher.put(`customer/${id}`, data);
 
-    if (res.data.data) {
-      dispatch(getClients());
-      cb();
+      if (res.data.data) {
+        dispatch(getClients());
+        cb();
+      }
+      dispatch(setIsPostLoading(false));
+    } catch (error) {
+      dispatch(setIsPostLoading(false));
     }
-    dispatch(setIsPostLoading(false));
-  } catch (error) {
-    dispatch(setIsPostLoading(false));
-  }
-};
+  };

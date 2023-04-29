@@ -18,13 +18,14 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
+  pointer-events: none;
 }
 
 .bigWrapper {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100% + var(--base) * 4);
+  top: 0;
   z-index: 1000;
   background-color: #fff;
   border-radius: calc(var(--base) * 2);
@@ -51,4 +52,8 @@
 
 .daysWrapper > * {
   flex: 0 0 30%;
+}
+
+.noEvents {
+  pointer-events: none;
 }

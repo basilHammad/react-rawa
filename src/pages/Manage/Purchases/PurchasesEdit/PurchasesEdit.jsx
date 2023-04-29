@@ -35,6 +35,7 @@ const PurchasesEdit = () => {
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const codes = useSelector((state) => state.common.codes);
   const loading = useSelector((state) => state.common.isLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const updatedSuppliers = suppliers.map((supplier) => ({
     name: supplier.name,
@@ -65,7 +66,6 @@ const PurchasesEdit = () => {
   const [clientId, setClientId] = useState("");
   const [selectedName, setSelectedName] = useState("");
 
-  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -230,6 +230,7 @@ const PurchasesEdit = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+
     if (!params.id) {
       navigate("/manage/purchases");
       return;
@@ -240,6 +241,11 @@ const PurchasesEdit = () => {
     if (!suppliers.length) dispatch(getSuppliers(10000));
     // if (!Object.keys(codes).length) dispatch(getCodes());
   }, [isLoggedin, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("edit-purchases")) navigate("/unauthorized");
+  }, [permissions]);
 
   // useEffect(() => {
   //   setOptions(updatedSuppliers);
@@ -266,7 +272,7 @@ const PurchasesEdit = () => {
     setName(purchase.supplier_name);
   }, [purchase]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       {loading ? (
         <Loader />
@@ -367,8 +373,6 @@ const PurchasesEdit = () => {
         />
       </Modal>
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

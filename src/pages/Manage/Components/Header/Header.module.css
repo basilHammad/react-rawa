@@ -30,3 +30,9 @@
   flex-grow: 1;
   text-align: center;
 }
+
+.btnWrapper {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--base) * 2);
+}

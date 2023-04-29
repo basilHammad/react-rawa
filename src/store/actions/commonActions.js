@@ -12,14 +12,14 @@ export const setIsPostLoading = (val) => ({
 });
 
 export const getClients =
-  (page = 1, byName, byNumber, perPage) =>
+  (page = 1, byName, byNumber, perPage, tripId) =>
   async (dispatch) => {
     dispatch(setIsLoading(true));
     try {
       const res = await fetcher.get(
         `/customer?page=${page}${byName ? "&filter[name]=" + byName : ""}${
           byNumber ? "&filter[mobile_number]=" + byNumber : ""
-        }${perPage ? "&perPage=" + perPage : ""}`
+        }${perPage ? "&perPage=" + perPage : ""}${tripId ? "&tripId=" : ""}`
       );
       if (res.data.data) {
         dispatch({
@@ -51,6 +51,8 @@ export const addClient = (values, cb) => async (dispatch) => {
       mobile_number: values.mobile,
       address_description: values.address,
       description: values.note,
+      city_id: values.cityId,
+      area_id: values.areaId,
       // type: "1",
     });
     const res = await fetcher.post("/customer", data);
@@ -71,6 +73,8 @@ export const editClient = (id, values, cb) => async (dispatch) => {
       user_name: values.name,
       mobile_number: values.mobile,
       address_description: values.address,
+      city_id: values.cityId,
+      area_id: values.areaId,
       // description: values.note,
       // type: "1",
     });
@@ -283,4 +287,22 @@ export const getCodes = () => async (dispatch) => {
       });
     }
   } catch (error) {}
+};
+
+export const getCities = () => async (dispatch) => {
+  dispatch(setIsLoading(true));
+  try {
+    const res = await fetcher.get(`/city?perPage=10000`);
+
+    if (res.data.data) {
+      dispatch({
+        type: types.GET_CITIES,
+        payload: res.data.data,
+      });
+    }
+
+    dispatch(setIsLoading(false));
+  } catch (error) {
+    dispatch(setIsLoading(false));
+  }
 };

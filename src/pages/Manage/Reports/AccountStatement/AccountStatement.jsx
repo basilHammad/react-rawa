@@ -39,6 +39,7 @@ const AccountStatement = () => {
   const oldBalance = useSelector(
     (state) => state.reports.accountStatementOldBalance
   );
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const updatedClients = clients.map((client) => ({
     name: client.user_name,
@@ -150,6 +151,7 @@ const AccountStatement = () => {
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
+    if (!permissions?.includes("view-report")) navigate("/unauthorized");
 
     const body = document.querySelector("body");
     body.style.backgroundColor = "#fbfcfd";
@@ -203,7 +205,7 @@ const AccountStatement = () => {
     };
   }, []);
 
-  return isAdmin ? (
+  return (
     <Layout hideBeardcrumb manage>
       <Header
         hideButton
@@ -241,7 +243,7 @@ const AccountStatement = () => {
             selectedOption={selectedName}
             removeSelection={handleRemoveSelection}
             // label="اسم المستفيد"
-            disabled={!options.length ? true : false}
+            // disabled={!options.length ? true : false}
             placeholder={"الاسم"}
             error={errors.beneficiary}
             className={stl.searchInput}
@@ -292,8 +294,6 @@ const AccountStatement = () => {
         </>
       ) : null}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

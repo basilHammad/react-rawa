@@ -10,6 +10,7 @@ const initialState = {
   clientsTotalPages: "",
   employeesTotalPages: "",
   codes: {},
+  cities: [],
 };
 
 const commonReducer = (state = initialState, { type, payload }) => {
@@ -52,6 +53,11 @@ const commonReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         codes: payload,
+      };
+    case types.GET_CITIES:
+      return {
+        ...state,
+        cities: payload,
       };
 
     default:

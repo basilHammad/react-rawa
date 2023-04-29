@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getClients } from "../../store/actions/commonActions";
 import { createUser, updateUser } from "../../store/actions/posActions";
 import DaysSelect from "../DaysSelect/DaysSelect";
+import Select from "react-select";
 
 import InputGroup from "../InputGroup/InputGroup";
 import MainBtn from "../MainBtn/MainBtn";
 import SearchInput from "../SearchInput/SearchInput";
 import SelectGroup from "../SelectGroup/SelectGroup";
 import stl from "./ClientPopup.module.css";
+import Checkbox from "../Checkbox/Checkbox";
 
 const hours = [
   { text: "00:00", value: "00:00", id: 1 },
@@ -69,6 +71,10 @@ const ClientPopup = ({
   clientId,
   setClientId,
   clientName,
+  cities,
+  isScheduled,
+  setIsScheduled,
+  order,
 }) => {
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const clients = useSelector((state) => state.common.clients);
@@ -77,6 +83,10 @@ const ClientPopup = ({
     id: client.id,
     mobile: client.mobile_number,
     location: client.address_description,
+    cityId: client.city_id,
+    areaId: client.area_id,
+    areaName: client.area,
+    cityName: client.city,
   }));
 
   const [name, setName] = useState(clientName ? clientName : "");
@@ -89,13 +99,20 @@ const ClientPopup = ({
     name: "",
     mobile: "",
     location: "",
+    cityId: "",
+    areaId: "",
   });
   const [fieldsErrors, setFieldsErrors] = useState({
     name: "",
     mobile: "",
     location: "",
+    cityId: "",
+    areaId: "",
   });
   const [toHourOptions, setToHourOptions] = useState(hours);
+  const [areasOptions, setAreasOptions] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedArea, setSelectedArea] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -120,13 +137,20 @@ const ClientPopup = ({
       name: option.name,
       mobile: option.mobile,
       location: option.location ? option.location : "",
+      cityId: option.cityId ? option.cityId : "",
+      areaId: option.areaId ? option.areaId : "",
     });
     setFieldsErrors({
       name: "",
       mobile: "",
       location: "",
+      cityId: "",
+      areaId: "",
     });
     setClientName(option.name);
+
+    setSelectedCity({ label: option.cityName, value: option.cityId });
+    setSelectedArea({ label: option.areaName, value: option.areaId });
   };
 
   const handleRemoveSelection = () => {
@@ -137,15 +161,22 @@ const ClientPopup = ({
       name: "",
       mobile: "",
       location: "",
+      cityId: "",
+      areaId: "",
     });
     setFieldsErrors({
       name: "",
       mobile: "",
       location: "",
+      cityId: "",
+      areaId: "",
     });
 
     setClientName("");
     setOptions(updatedClients);
+
+    setSelectedCity(null);
+    setSelectedArea(null);
   };
 
   const handleFieldsChange = (e) => {
@@ -173,13 +204,18 @@ const ClientPopup = ({
         return;
       }
       dispatch(
-        createUser(fieldsValues, (name, id) => {
-          setClientName(name);
-          setClientId(id);
-          closeClientModal();
-          showSummaryModal();
-          dispatch(getClients(1, null, null, 10000));
-        })
+        createUser(
+          fieldsValues,
+          selectedCity.value,
+          selectedArea.value,
+          (name, id) => {
+            setClientName(name);
+            setClientId(id);
+            closeClientModal();
+            showSummaryModal();
+            dispatch(getClients(1, null, null, 10000));
+          }
+        )
       );
       return;
     }
@@ -192,10 +228,16 @@ const ClientPopup = ({
         return;
       }
       dispatch(
-        updateUser(fieldsValues, clientId, () => {
-          closeClientModal();
-          showSummaryModal();
-        })
+        updateUser(
+          fieldsValues,
+          clientId,
+          selectedCity.value,
+          selectedArea.value,
+          () => {
+            closeClientModal();
+            showSummaryModal();
+          }
+        )
       );
       return;
     }
@@ -208,7 +250,8 @@ const ClientPopup = ({
     let errors = {};
     if (!fieldsValues.name.trim()) errors.name = "يجب اختيار الاسم";
     if (!fieldsValues.location.trim()) errors.location = "يجب اختيار الموقع";
-    // if (!fieldsValues.mobile.trim()) errors.mobile = "يجب اختيار رقم الهاتف";
+    if (!selectedCity) errors.cityId = "يجب اختيار المدينة";
+    if (!selectedArea) errors.areaId = "يجب اختيار منطقة واحدة على الاقل";
 
     if (!fieldsValues.mobile.trim()) {
       errors.mobile = "يجب اختيار رقم الهاتف";
@@ -229,6 +272,28 @@ const ClientPopup = ({
     const toHoursOptions = getToHours(fromHour, hours);
     setToHourOptions(toHoursOptions);
   }, [fromHour]);
+
+  useEffect(() => {
+    if (!selectedCity) return;
+
+    const city = cities.find((city) => city.id === selectedCity.value);
+
+    setAreasOptions(city?.areas);
+  }, [selectedCity]);
+
+  useEffect(() => {
+    if (!order) return;
+
+    const client = updatedClients.find(
+      (client) => client.id == order.customer_id
+    );
+
+    handleNameSelect(client);
+    setSelectedCity({ label: client.cityName, value: client.cityId });
+    setSelectedArea({ label: client.areaName, value: client.areaId });
+  }, [order]);
+
+  console.log(fieldsValues);
 
   return (
     <div className={stl.wrapper}>
@@ -286,11 +351,65 @@ const ClientPopup = ({
           error={fieldsErrors.mobile}
         />
 
+        {/* <SelectGroup
+          name="cityId"
+          id="city"
+          firstOption="اختر المدينة"
+          options={cities?.map((city) => ({
+            text: city.name,
+            value: city.id,
+            id: city.id,
+          }))}
+          value={fieldsValues.cityId}
+          onChange={handleFieldsChange}
+          label="المدينة"
+          disabled={!canEditFields && selectedName}
+          error={fieldsErrors.cityId}
+        /> */}
+
+        <label className={stl.label}>المدينة</label>
+        <Select
+          onChange={(val) => {
+            setSelectedCity(val);
+            setSelectedArea(null);
+            setFieldsErrors((pre) => ({ ...pre, cityId: "" }));
+          }}
+          options={cities?.map((city) => ({
+            value: city.id,
+            label: city.name,
+          }))}
+          placeholder="اختر المدينة"
+          value={selectedCity}
+          isDisabled={!canEditFields && selectedName}
+        />
+        {fieldsErrors.cityId && (
+          <span className={stl.error}>{fieldsErrors.cityId}</span>
+        )}
+
+        <label className={stl.label}>المنطقة</label>
+
+        <Select
+          onChange={(val) => {
+            setSelectedArea(val);
+            setFieldsErrors((pre) => ({ ...pre, areaId: "" }));
+          }}
+          options={areasOptions?.map((city) => ({
+            value: city.id,
+            label: city.name,
+          }))}
+          placeholder="اختر المنطقة"
+          value={selectedArea}
+          isDisabled={!canEditFields && selectedName}
+        />
+        {fieldsErrors.areaId && (
+          <span className={stl.error}>{fieldsErrors.areaId}</span>
+        )}
+
         <InputGroup
           type="text"
           id="location"
-          label="الموقع"
-          placeholder="اختر الموقع"
+          label="العنوان"
+          placeholder="اختر العنوان"
           name="location"
           value={fieldsValues.location}
           onChange={handleFieldsChange}
@@ -303,6 +422,17 @@ const ClientPopup = ({
         </div>
 
         <div>
+          <div className={stl.checkboxWrapper}>
+            <label>هل تريد جدولة الطلب</label>
+            <Checkbox
+              value={isScheduled}
+              label={"جدولة الطلب"}
+              onChange={() => setIsScheduled((pre) => !pre)}
+              checked={isScheduled}
+              checkedColor="green"
+              className={stl.checkbox}
+            />
+          </div>
           <DaysSelect
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}

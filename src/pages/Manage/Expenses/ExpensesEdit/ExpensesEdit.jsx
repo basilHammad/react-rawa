@@ -44,6 +44,7 @@ const ExpensesEdit = () => {
   const expense = useSelector((state) => state.expenses.expense);
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const loading = useSelector((state) => state.auth.isLoading);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const updatedClients = clients.map((client) => ({
     name: client.user_name,
@@ -178,10 +179,16 @@ const ExpensesEdit = () => {
 
   useEffect(() => {
     if (!isLoggedin) navigate("/login");
+
     dispatch(getExpensesCategory());
     if (!params.id) return;
     dispatch(getExpenseById(params.id));
   }, [isLoggedin, navigate]);
+
+  useEffect(() => {
+    if (!permissions) return;
+    if (!permissions?.includes("edit-expenses")) navigate("/unauthorized");
+  }, [permissions]);
 
   useEffect(() => {
     if (!values.expenseCat && !expensesCategory.length) return;
@@ -265,7 +272,7 @@ const ExpensesEdit = () => {
     }
   }, [expense]);
 
-  return isAdmin ? (
+  return (
     <Layout manage>
       {loading ? (
         <Loader />
@@ -396,8 +403,6 @@ const ExpensesEdit = () => {
         </div>
       )}
     </Layout>
-  ) : (
-    <Login validateAdmin />
   );
 };
 

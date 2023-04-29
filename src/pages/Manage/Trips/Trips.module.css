@@ -72,6 +72,16 @@
   min-height: 50vh;
 }
 
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.filters > * {
+  width: 50px;
+}
+
 @media (max-width: 1024px) {
   .wrapper {
     flex-wrap: nowrap;

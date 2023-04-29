@@ -9,6 +9,7 @@ import purchasesReducer from "./purchasesReducer";
 import ordersReducer from "./ordersReducer";
 import tripsReducer from "./tripsReducer";
 import reportsReducer from "./reportsReducer";
+import productsReducer from "./productsReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   orders: ordersReducer,
   trips: tripsReducer,
   reports: reportsReducer,
+  products: productsReducer,
 });

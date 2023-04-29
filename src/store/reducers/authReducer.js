@@ -8,6 +8,7 @@ const initialState = {
   isAdmin: false,
   isLoading: false,
   user: user ? JSON.parse(user) : {},
+  permissions: null,
 };
 
 const authReducer = (state = initialState, { type, payload }) => {
@@ -34,6 +35,12 @@ const authReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         user: payload,
+      };
+
+    case types.GET_USER_PERMISSIONS:
+      return {
+        ...state,
+        permissions: payload,
       };
     default:
       return state;

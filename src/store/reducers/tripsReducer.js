@@ -4,6 +4,8 @@ const initialState = {
   trips: [],
   drivers: [],
   totalPages: "",
+  scheduledTrips: [],
+  scheduledTrip: {},
 };
 
 const TripsReducer = (state = initialState, { type, payload }) => {
@@ -13,6 +15,18 @@ const TripsReducer = (state = initialState, { type, payload }) => {
         ...state,
         trips: payload.trips,
         drivers: payload.drivers,
+      };
+
+    case types.GET_SCHEDULED_TRIPS:
+      return {
+        ...state,
+        scheduledTrips: payload,
+      };
+
+    case types.GET_SCHEDULED_TRIP:
+      return {
+        ...state,
+        scheduledTrip: payload,
       };
 
     case types.GET_TOTAL_PAGES:

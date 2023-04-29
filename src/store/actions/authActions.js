@@ -15,7 +15,7 @@ export const setIsAdmin = (val) => ({
 
 export const login =
   (username, password, cb, setErrors) => async (dispatch) => {
-    dispatch(setIsLoading(true));
+    dispatch(setIsPostLoading(true));
 
     const data = JSON.stringify({
       username: username,
@@ -44,11 +44,15 @@ export const login =
           payload: res.data.data,
         });
 
-        dispatch(setIsloggedin(true));
+        dispatch({
+          type: types.SET_IS_LOGGEDIN,
+          payload: true,
+        });
+
         cb();
       }
 
-      dispatch(setIsLoading(false));
+      dispatch(setIsPostLoading(false));
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
@@ -58,7 +62,7 @@ export const login =
           }));
         }
       }
-      dispatch(setIsLoading(false));
+      dispatch(setIsPostLoading(false));
     }
   };
 
@@ -94,3 +98,20 @@ export const editPassword =
       dispatch(setIsPostLoading(false));
     }
   };
+
+export const getUserPermission = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const res = await fetcher.get("web-permission");
+
+    if (res.status === 200) {
+      dispatch({
+        type: types.GET_USER_PERMISSIONS,
+        payload: res.data.data,
+      });
+    }
+    dispatch(setIsLoading(false));
+  } catch (error) {
+    dispatch(setIsLoading(false));
+  }
+};
