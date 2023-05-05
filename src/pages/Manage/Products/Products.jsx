@@ -23,6 +23,7 @@ const Products = () => {
   const loading = useSelector((state) => state.common.isLoading);
   const permissions = useSelector(({ auth }) => auth.permissions);
   const products = useSelector((state) => state.pos.items);
+  const totalPages = useSelector((state) => state.pos.totalPages);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,9 +36,9 @@ const Products = () => {
     const body = document.querySelector("body");
     body.style.backgroundColor = "#fbfcfd";
 
-    dispatch(getProducts(true));
+    dispatch(getProducts(true, page));
     dispatch(getMainProducts());
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     if (!permissions) return;
@@ -60,7 +61,7 @@ const Products = () => {
             data={products.map((product) => ({
               name: product.name,
               icon: product.img,
-              state: product.state || 1,
+              state: product.is_active === "1" ? "فعال" : "غير فعال",
               area: product.price,
               id: product.id,
             }))}
@@ -76,14 +77,14 @@ const Products = () => {
         </div>
       )}
 
-      {/* {totalPages > 1 && (
+      {totalPages > 1 && (
         <Pagination
           totalPages={[...Array(totalPages)].map((_, i) => i + 1)}
           currentPage={page}
           loading={loading}
           setCurrentPage={setPage}
         />
-      )} */}
+      )}
     </Layout>
   );
 };

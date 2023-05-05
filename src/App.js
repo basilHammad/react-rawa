@@ -100,4 +100,36 @@ export default App;
 /**
  * fixed bugs
  * 4
+ * 8
+ * 10
+ * 13
+ * 15
+ * 21
+ * 22
+ * 23
+ * 25
+ * 32h
+ * 34
+ * 35
+ * 36
+ * 37
+ * 38
+ * 39
+ * 40
+ * 42
+ * 43
+ * 45
+ * 55
+ * 57
+ *
+ *
+ * check with ali
+ * 12
+ * 17
+ * 28 have business there is no field for mobile number when adding an expense
+ * 30
+ * 41
+ *
+ * issues
+ * 46 cant reproduce
  */

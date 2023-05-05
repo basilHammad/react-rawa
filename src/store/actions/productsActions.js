@@ -2,15 +2,21 @@ import fetcher from "../../config/axios";
 import { setIsLoading, setIsPostLoading } from "./commonActions";
 import * as types from "../types";
 
-export const getProducts = (all) => async (dispatch) => {
+export const getProducts = (all, page) => async (dispatch) => {
   dispatch(setIsLoading(true));
   try {
-    const res = await fetcher.get(`/product${all ? "?all=1" : ""}`);
+    const res = await fetcher.get(
+      `/product?page=${page} ${all ? "&all=true" : ""}`
+    );
 
     if (res.data.data) {
       dispatch({
         type: types.SET_PROVIDER_ITEMS,
         payload: res.data.data,
+      });
+      dispatch({
+        type: "products_total_pages",
+        payload: res.data.meta.last_page,
       });
     }
     dispatch(setIsLoading(false));
