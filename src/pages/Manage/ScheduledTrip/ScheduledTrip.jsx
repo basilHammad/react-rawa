@@ -193,8 +193,7 @@ const ScheduledTrip = () => {
             navigate={() => navigate(-1)}
           />
           <span className={stl.cityName}>
-            {trip.city}/{trip.areas?.map((area, i) => area.name + ", ")}
-            {console.log(trip)}
+            {trip.city}/{trip.areas?.map((area, i) => area?.name + ", ")}
           </span>
           <div className={stl.wrapper}>
             <div className={stl.topSection}>
@@ -225,11 +224,11 @@ const ScheduledTrip = () => {
               <div className={stl.row}>
                 <div className={stl.card}>
                   <strong>الوقت :</strong>
-                  <span>{trip.delivery_date}</span>
+                  <span>{trip?.delivery_date}</span>
                 </div>
                 <div className={stl.card}>
                   <strong>السائق :</strong>
-                  <span>{trip.driver}</span>
+                  <span>{trip?.driver}</span>
                 </div>
               </div>
             </div>

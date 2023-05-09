@@ -5,10 +5,17 @@ import { Link } from "react-router-dom";
 import stl from "./Order.module.css";
 
 const ORDER_STATUS = {
-  1: "قيد الانتظار",
-  2: "بدأ",
+  1: "قيد الإنتظار",
+  2: "قيد التسليم",
   3: "مكتمل",
   0: "ملغي",
+};
+
+const TRIP_STATUS = {
+  1: "قيد الإنتظار",
+  2: "قيد التسليم",
+  3: "مكتملة",
+  0: "ملغية",
 };
 
 const Order = ({
@@ -24,9 +31,11 @@ const Order = ({
   editable,
   status,
   item,
+  tripDetails,
 }) => {
   return !selectable ? (
-    <div to={`/manage/orders/edit/${orderId}`} className={stl.wrapper}>
+    // <div to={`/manage/orders/edit/${orderId}`} className={stl.wrapper}>
+    <div className={stl.wrapper}>
       <div className={stl.row}>
         <strong className={stl.title}>{name}</strong>
         <div className={stl.controls}>
@@ -54,6 +63,15 @@ const Order = ({
           style={{ justifyContent: "flex-start", gap: "8px" }}
         >
           <span>الحالة: </span> <span>{ORDER_STATUS[status]}</span>
+        </div>
+      ) : null}
+      {tripDetails ? (
+        <div
+          className={stl.row}
+          style={{ justifyContent: "flex-start", gap: "8px" }}
+        >
+          <span>حالة الرحلة: </span>{" "}
+          <span>{TRIP_STATUS[tripDetails.status]}</span>
         </div>
       ) : null}
       <div

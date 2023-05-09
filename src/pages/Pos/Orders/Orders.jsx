@@ -55,6 +55,24 @@ const Orders = () => {
   const [billNum, setBillNum] = useState("");
   const [isScheduled, setIsScheduled] = useState(false);
 
+  const [clientModalFieldsValues, setClientModalFieldsValues] = useState({
+    name: "",
+    mobile: "",
+    location: "",
+    cityId: "",
+    areaId: "",
+  });
+  const [clientModalFieldsErrors, setClientModalFieldsErrors] = useState({
+    name: "",
+    mobile: "",
+    location: "",
+    cityId: "",
+    areaId: "",
+  });
+
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedArea, setSelectedArea] = useState(null);
+
   const products = useSelector((state) => state.pos.items);
   const loading = useSelector((state) => state.common.isLoading);
   const isLoggedin = useSelector((state) => state.auth.isLoggedin);
@@ -64,7 +82,7 @@ const Orders = () => {
   const navigate = useNavigate();
 
   const closeSummaryModal = (e) => {
-    if (e.target !== e.currentTarget) return;
+    if (e && e.target !== e.currentTarget) return;
     setShowSummaryModal(false);
   };
 
@@ -106,6 +124,30 @@ const Orders = () => {
     setSelectedItems((pre) => [...pre, { ...product, qty: 1 }]);
   };
 
+  const resetClientPopup = () => {
+    setClientModalFieldsValues({
+      name: "",
+      mobile: "",
+      location: "",
+      cityId: "",
+      areaId: "",
+    });
+    setClientModalFieldsErrors({
+      name: "",
+      mobile: "",
+      location: "",
+      cityId: "",
+      areaId: "",
+    });
+
+    setSelectedCity(null);
+    setSelectedArea(null);
+    setIsScheduled(false);
+    setFromHour("");
+    setToHour("");
+    setSelectedDay([]);
+  };
+
   const onSummaryModalSubmit = () => {
     if (!selectedItems.length) return;
 
@@ -125,6 +167,8 @@ const Orders = () => {
           dispatch(getCodes());
           setClientName("");
           setClientId("");
+
+          resetClientPopup();
         },
         deleveryNote(selectedDay, fromHour, toHour),
         clientId,
@@ -201,9 +245,24 @@ const Orders = () => {
           cities={cities}
           isScheduled={isScheduled}
           setIsScheduled={setIsScheduled}
+          fieldsValues={clientModalFieldsValues}
+          setFieldsValues={setClientModalFieldsValues}
+          fieldsErrors={clientModalFieldsErrors}
+          setFieldsErrors={setClientModalFieldsErrors}
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
+          selectedArea={selectedArea}
+          setSelectedArea={setSelectedArea}
         />
       </Modal>
-      <Modal show={showSummaryModal} close={closeSummaryModal}>
+      <Modal
+        show={showSummaryModal}
+        close={closeSummaryModal}
+        back={() => {
+          closeSummaryModal();
+          setShowClientModal(true);
+        }}
+      >
         <SummaryPopup
           items={selectedItems}
           clientName={clientName}

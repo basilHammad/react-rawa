@@ -68,9 +68,9 @@ const accordionLinks = [
     text: "كشف حساب",
     path: "/manage/account-statement",
   },
-  { text: "تقرير الايرادات", path: "/manage/revenue-report" },
-  { text: "تقرير المصاريق", path: "/manage/expense-report" },
-  { text: "تقرير المشتريات", path: "/manage/purchase-report" },
+  { text: "الايرادات", path: "/manage/revenue-report" },
+  { text: "المصاريف", path: "/manage/expense-report" },
+  { text: "المشتريات", path: "/manage/purchase-report" },
 ];
 
 const Manage = () => {

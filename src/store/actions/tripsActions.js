@@ -9,7 +9,7 @@ export const getTrips =
     dispatch(setIsLoading(true));
     try {
       const res = await fetcher.get(
-        `/trips?page=${page}${all ? "&all=1" : ""}`
+        `/trips?page=${page}${all ? "&all=1" : ""}&perPage=16`
       );
 
       if (res.data.data) {
@@ -132,10 +132,10 @@ export const createScheduledTrip =
     }
   };
 
-export const getScheduledTrips = () => async (dispatch) => {
+export const getScheduledTrips = (page) => async (dispatch) => {
   dispatch(setIsLoading(true));
   try {
-    const res = await fetcher.get("/trips-scheduled");
+    const res = await fetcher.get(`/trips-scheduled?page=${page}`);
 
     if (res.data.data) {
       dispatch({

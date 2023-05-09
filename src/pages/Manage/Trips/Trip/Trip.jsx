@@ -66,6 +66,8 @@ const Trip = () => {
     if (!permissions?.includes("view-trips")) navigate("/unauthorized");
   }, [permissions]);
 
+  console.log(trips.find((trip) => trip.id == params.id));
+
   return (
     <Layout manage hideBeardcrumb={true}>
       <Header
@@ -101,15 +103,14 @@ const Trip = () => {
             ?.orders_ids?.map((item, i) => {
               return (
                 <Order
+                  tripDetails={trips.find((trip) => trip.id == params.id)}
                   item={item}
                   status={item.status}
                   orderId={item.id}
                   // editable={item.status == 2 || item.status == 1}
                   deletable={
-                    trips.find((trip) => trip.id == params.id)?.orders_ids
-                      .length > 1 &&
-                    trips.find((trip) => trip.id == params.id)?.status != 3 &&
-                    permissions?.includes("edit-trips")
+                    permissions?.includes("edit-trips") &&
+                    (item.status === "1" || item.status === "2")
                   }
                   onDelete={() => {
                     setShowConfirmModal(true);

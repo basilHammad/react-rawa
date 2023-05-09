@@ -126,4 +126,8 @@
     min-height: 50px;
     background-color: var(--blue);
   }
+
+  .totalsCell {
+    min-width: 50px;
+  }
 }

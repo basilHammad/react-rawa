@@ -174,8 +174,8 @@ const Table = ({
             );
           })}
           {showTotals && (
-            <div className={`${stl.row} ${stl.totals}`}>
-              <div className={`${stl.cell} m-show`}>
+            <div className={`${stl.row}`}>
+              <div className={`${stl.cell} ${stl.totalsCell} m-show`}>
                 <strong>المجموع:</strong>
               </div>
               {titles.map((title, i) => {

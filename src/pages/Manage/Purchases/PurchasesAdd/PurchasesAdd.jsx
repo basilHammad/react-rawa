@@ -22,6 +22,15 @@ import { getCodes } from "../../../../store/actions/commonActions";
 const TITLES = ["الشرح", "الكمية", "سعر الوحدة", "الخصم", "الضريبة", "المجموع"];
 const VAT = 0.16;
 
+function formatNumber(num) {
+  if (!num) return "";
+  const parsedNum = parseFloat(num);
+  if (isNaN(parsedNum)) {
+    return "Invalid input";
+  }
+  return parsedNum.toFixed(2);
+}
+
 const PurchasesAdd = () => {
   const suppliers = useSelector((state) => state.expenses.suppliers);
   const codes = useSelector((state) => state.common.codes);
@@ -153,11 +162,11 @@ const PurchasesAdd = () => {
       ...pre,
       {
         description: values.explanation,
-        quantity: values.quantity,
-        unit_price: values.unitPrice,
-        discount: values.discount,
-        tax: values.vat,
-        total_price: values.total,
+        quantity: parseInt(values.quantity, 10),
+        unit_price: formatNumber(values.unitPrice),
+        discount: formatNumber(values.discount),
+        tax: formatNumber(values.vat),
+        total_price: formatNumber(values.total),
         id: id,
       },
     ]);
@@ -281,8 +290,6 @@ const PurchasesAdd = () => {
     if (!Object.keys(codes).length) return;
     setValues((pre) => ({ ...pre, billNum: codes.purchase }));
   }, [codes]);
-
-  console.log(billDetails);
 
   return (
     <Layout manage>

@@ -147,10 +147,12 @@ const ExpensesAdd = () => {
   };
 
   const handleNameSelect = (option) => {
+    console.log("first", option);
     setSelectedName(option.name);
     setName(option.name);
     setClientId(option.id);
     setErrors((pre) => ({ ...pre, beneficiary: "" }));
+    setValues((pre) => ({ ...pre, beneficiaryNum: option.mobile }));
   };
 
   const handleRemoveSelection = () => {

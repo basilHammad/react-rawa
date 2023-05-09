@@ -75,6 +75,14 @@ const ClientPopup = ({
   isScheduled,
   setIsScheduled,
   order,
+  fieldsValues,
+  setFieldsValues,
+  fieldsErrors,
+  setFieldsErrors,
+  selectedCity,
+  setSelectedCity,
+  selectedArea,
+  setSelectedArea,
 }) => {
   const postLoading = useSelector((state) => state.common.isPostLoading);
   const clients = useSelector((state) => state.common.clients);
@@ -95,24 +103,24 @@ const ClientPopup = ({
     clientName ? clientName : ""
   );
   const [canEditFields, setCanEditFields] = useState(false);
-  const [fieldsValues, setFieldsValues] = useState({
-    name: "",
-    mobile: "",
-    location: "",
-    cityId: "",
-    areaId: "",
-  });
-  const [fieldsErrors, setFieldsErrors] = useState({
-    name: "",
-    mobile: "",
-    location: "",
-    cityId: "",
-    areaId: "",
-  });
+  // const [fieldsValues, setFieldsValues] = useState({
+  //   name: "",
+  //   mobile: "",
+  //   location: "",
+  //   cityId: "",
+  //   areaId: "",
+  // });
+  // const [fieldsErrors, setFieldsErrors] = useState({
+  //   name: "",
+  //   mobile: "",
+  //   location: "",
+  //   cityId: "",
+  //   areaId: "",
+  // });
   const [toHourOptions, setToHourOptions] = useState(hours);
   const [areasOptions, setAreasOptions] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [selectedArea, setSelectedArea] = useState(null);
+  // const [selectedCity, setSelectedCity] = useState(null);
+  // const [selectedArea, setSelectedArea] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -236,7 +244,8 @@ const ClientPopup = ({
           () => {
             closeClientModal();
             showSummaryModal();
-          }
+          },
+          setFieldsErrors
         )
       );
       return;
@@ -292,8 +301,6 @@ const ClientPopup = ({
     setSelectedCity({ label: client.cityName, value: client.cityId });
     setSelectedArea({ label: client.areaName, value: client.areaId });
   }, [order]);
-
-  console.log(fieldsValues);
 
   return (
     <div className={stl.wrapper}>

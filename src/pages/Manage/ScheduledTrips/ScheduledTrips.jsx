@@ -92,7 +92,7 @@ const ScheduledTrips = () => {
 
     dispatch(getEmployees(1, null, null, 10000, 1));
     dispatch(getCities());
-    dispatch(getScheduledTrips());
+    dispatch(getScheduledTrips(page));
   }, [isLoggedIn, navigate, page]);
 
   useEffect(() => {

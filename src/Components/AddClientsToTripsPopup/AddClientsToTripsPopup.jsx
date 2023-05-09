@@ -38,7 +38,7 @@ const AddClientsToTripsPopup = ({
 
   useEffect(() => {
     const filterOptions = clients.filter((client) =>
-      client.name.includes(clientName)
+      client?.name.includes(clientName)
     );
     setFilteredClients(filterOptions);
   }, [clientName]);

@@ -22,13 +22,32 @@ const DaysSelect = ({ selectedDay, setSelectedDay, handleDayChange }) => {
     setShowDays((pre) => !pre);
   };
 
+  function sortWeekDays(days) {
+    const weekdays = [
+      "الاحد",
+      "الاثنين",
+      "الثلاثاء",
+      "الاربعاء",
+      "الخميس",
+      "الجمعة",
+      "السبت",
+    ];
+
+    // Filter out any invalid days and sort the remaining days by their position in the weekdays array
+    const sortedDays = days
+      .filter((day) => weekdays.includes(day))
+      .sort((a, b) => weekdays.indexOf(a) - weekdays.indexOf(b));
+
+    return sortedDays;
+  }
+
   return (
     <>
       <label className={stl.label}>اليوم</label>
       <div className={stl.wrapper} onClick={handleShowDays}>
         <span className={`${stl.placeholder}`}>
           {selectedDay.length
-            ? selectedDay.map((day) => `${day} `)
+            ? sortWeekDays(selectedDay).map((day) => `${day} `)
             : "اختير اليوم"}
         </span>
         {showDays && (

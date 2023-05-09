@@ -27,7 +27,16 @@ import { getSuppliers } from "../../../../store/actions/expensesActions";
 import { getCodes } from "../../../../store/actions/commonActions";
 import Loader from "../../../../Components/Loader/Loader";
 
-const TITLES = ["الشرح", "الكمية", "سعر الوحدة", "الخصم", "المجموع", "الضريبة"];
+const TITLES = ["الشرح", "الكمية", "سعر الوحدة", "الخصم", "الضريبة", "المجموع"];
+
+function formatNumber(num) {
+  if (!num) return "";
+  const parsedNum = parseFloat(num);
+  if (isNaN(parsedNum)) {
+    return "Invalid input";
+  }
+  return parsedNum.toFixed(2);
+}
 
 const PurchasesEdit = () => {
   const suppliers = useSelector((state) => state.expenses.suppliers);
@@ -182,19 +191,33 @@ const PurchasesEdit = () => {
     }
 
     dispatch(
-      editSubPurchase(params.id, editedItemId, values, () => {
-        dispatch(getPurchaseById(params.id));
-        setShowModal(false);
-        setEditMode(false);
-        setValues((pre) => ({
-          ...pre,
-          explanation: "",
-          quantity: "",
-          unitPrice: "",
-          discount: "",
-          total: "",
-        }));
-      })
+      editSubPurchase(
+        params.id,
+        editedItemId,
+        {
+          billNum: values.billNum,
+          discount: formatNumber(values.discount),
+          explanation: values.explanation,
+          quantity: values.quantity,
+          supplier: values.supplier,
+          total: formatNumber(values.total),
+          unitPrice: formatNumber(values.unitPrice),
+          vat: values.vat,
+        },
+        () => {
+          dispatch(getPurchaseById(params.id));
+          setShowModal(false);
+          setEditMode(false);
+          setValues((pre) => ({
+            ...pre,
+            explanation: "",
+            quantity: "",
+            unitPrice: "",
+            discount: "",
+            total: "",
+          }));
+        }
+      )
     );
   };
 
@@ -271,6 +294,8 @@ const PurchasesEdit = () => {
     setSelectedName(purchase.supplier_name);
     setName(purchase.supplier_name);
   }, [purchase]);
+
+  console.log(billDetails);
 
   return (
     <Layout manage>
@@ -351,6 +376,8 @@ const PurchasesEdit = () => {
                       0
                     )}
                   showTotals
+                  canDelete
+                  canEdit
                 />
               </div>
             </>

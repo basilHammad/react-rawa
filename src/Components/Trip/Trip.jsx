@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import stl from "./Trip.module.css";
 
 const TRIP_STATUS = {
-  1: "قيد الانتظار",
+  1: "قيد الإنتظار",
   2: "قيد التسليم",
   3: "مكتملة",
   0: "ملغية",
@@ -64,7 +64,7 @@ const Trip = ({
             showModal(tripId);
             setDriverId(driverId);
           }}
-          disabled={!isToday || !canEdit}
+          disabled={!isToday || !canEdit || status === "0" || status === "3"}
         >
           ربط
         </button>

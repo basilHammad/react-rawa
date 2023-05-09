@@ -16,7 +16,7 @@
   background-color: #fff;
   border-radius: calc(var(--base) * 4);
   position: relative;
-  padding: calc(var(--base) * 6);
+  padding: 50px calc(var(--base) * 6);
   overflow-y: auto;
 }
 
@@ -36,6 +36,18 @@
   align-items: center;
 }
 
-.modal .close > svg {
+.modal .back {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .close > svg,
+.modal .back > svg {
   pointer-events: none;
 }

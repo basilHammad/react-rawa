@@ -101,7 +101,7 @@ export const createUser = (values, cityId, areaId, cb) => async (dispatch) => {
 };
 
 export const updateUser =
-  (values, id, cityId, areaId, cb) => async (dispatch) => {
+  (values, id, cityId, areaId, cb, fcb) => async (dispatch) => {
     dispatch(setIsPostLoading(true));
 
     try {
@@ -120,8 +120,11 @@ export const updateUser =
         dispatch(getClients());
         cb();
       }
+
       dispatch(setIsPostLoading(false));
     } catch (error) {
+      if (error.response.data.errors.mobile_number)
+        fcb((pre) => ({ ...pre, mobile: "رقم الجوال مستخدم لعميل اخر" }));
       dispatch(setIsPostLoading(false));
     }
   };
