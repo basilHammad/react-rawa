@@ -107,10 +107,19 @@ export default App;
  * 
  * ali
  * 12
- * 28 
+ * 28 there is a problem on customer number validation
+ * 26 
  * 50
  * 51
  * 62
+ * 
+ * need discussion
+ * 9
+ * 
+ * app 
+ * 11 
+ * 17
+ * 68
 
 
  */
