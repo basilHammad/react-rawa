@@ -4,6 +4,8 @@
 
 This project is set up with create react app. Below are the instructions to set up the environment and run the project.
 
+make sure to have the backend project running before running the app
+
 ## Environment Variables
 
 Create a `.env` file in the root directory of your project. add the following variables to .env file:
